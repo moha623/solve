@@ -1,125 +1,304 @@
-<body class="  font-sans">
- 
- 
-    <!-- Left: Product -->
-    <div class="flex-1 mt-8 flex justify-center items-start bg-[#85a8ac] max-w-7xl  p-12 mx-auto ">
-      <div class="relative mt-20">
-        <div
-          class="  rounded-full bg-gray-100 opacity-70 w-[370px] h-[370px] -z-10 left-[-60px] top-[-60px]"
-        >
-        
+<div class="max-w-7xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+  <div class="flex flex-col lg:flex-row justify-between p-6 md:p-8 lg:p-12">
+    <!-- Right: Main Product -->
+    <div class="flex flex-col md:flex-row w-full lg:w-2/3">
+      <!-- Product Image -->
+      <div
+        class="main-image-container flex justify-center md:justify-start items-center md:w-1/2 p-4"
+      >
+        <div class="circle-backdrop"></div>
         <img
-          src="https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="Armchair"
-          class="w-[320px] h-[320px] object-contain"
+          src="https://plus.unsplash.com/premium_photo-1678074057896-eee996d4a23e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8aW1hZ2UlMjBjaGFpc2V8ZW58MHx8MHx8fDA%3D"
+          alt="كرسي أنيق"
+          class="w-full max-w-xs object-contain transition-transform duration-500 hover:scale-105"
         />
-        </div>
+        <div class="discount-badge">خصم 17%</div>
       </div>
-      <div class="text-center ">
-        <div class="flex text-yellow-400 space-x-1">
-          <span>Reviews</span>
-          <span>★★★★★</span>
+
+      <!-- Product Details -->
+      <div class="flex flex-col items-start text-right md:w-1/2 py-6 md:py-0 md:pr-8">
+        <div class="flex items-center text-secondary space-x-reverse space-x-2 mb-2">
+          <div class="flex">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+          </div>
+          <span class="text-sm font-medium">4.8 (128 تقييم)</span>
         </div>
-        <h1 class="text-6xl font-bold mt-2 mb-2">Armchair room design</h1>
-        <p class="text-gray-500 mb-4">
-          Stylish armchair that decorate interior adding designer elements.
+
+        <h1 class="text-start text-3xl md:text-4xl lg:text-5xl font-bold text-accent mt-2 mb-3">
+          كرسي أنيق
+        </h1>
+
+        <p class="text-gray-600 mb-6 leading-relaxed text-right">
+          كرسي أنيق يعزز ديكورك الداخلي بعناصر التصميم. يتميز بقماش عالي الجودة وتصميم مريح لأقصى
+          درجات الراحة.
         </p>
-        <div class="flex-col items-center space-x-6">
-          <span class="text-2xl font-semibold">329 €</span>
-      <div class="flex items-center ">
+
+        <div class="flex flex-col w-full mb-6">
+          <div class="flex items-center space-x-reverse space-x-2 mb-4">
+            <span class="text-2xl md:text-3xl font-bold text-primary">329 €</span>
+            <span class="text-gray-400 line-through">399 €</span>
+          </div>
+
+          <div class="flex space-x-reverse space-x-4">
             <button
-            class="px-12 py-6 bg-gray-900 text-white rounded-xl shadow hover:bg-black flex items-center space-x-2 transition"
-          >
-            <span>Add to cart</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 ml-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+              class="cart-btn flex-1 bg-primary hover:bg-teal-700 text-white font-semibold py-4 px-6 rounded-xl shadow-md flex items-center justify-center space-x-2"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l1.6 8.4a1 1 0 001 .6h7.8a1 1 0 001-.6L21 13M7 13H6l-1-4h15.4M9 21h6"
-              />
-            </svg>
-          </button>
-          <button class="p-3 rounded-full border">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 text-gray-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+              <i class="fas fa-shopping-cart"></i>
+              <span>أضف إلى السلة</span>
+            </button>
+
+            <button
+              class="favorite-btn w-14 h-14 flex items-center justify-center rounded-full border-2 border-gray-200 text-gray-400 hover:text-secondary hover:border-secondary"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4.318 4.318c2.087-2.088 5.474-2.088 7.561 0l.121.121.121-.121c2.087-2.088 5.474-2.088 7.561 0 2.088 2.087 2.088 5.473 0 7.561l-7.682 7.682a1.5 1.5 0 01-2.122 0l-7.682-7.682c-2.088-2.088-2.088-5.474 0-7.561z"
-              />
-            </svg>
-          </button>
-      </div>
+              <i class="fas fa-heart text-lg"></i>
+            </button>
+          </div>
         </div>
-      </div>
-      <!-- Right: Other Products -->
-      <div class="  flex flex-col space-y-6 justify-start    ">
-        <!-- Grey armchair card -->
-        <div class="bg-white rounded-lg shadow-sm p-5 flex flex-col items-start w-48">
-          <img
-            src="https://images.unsplash.com/photo-1592078615290-033ee584e267?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80"
-            alt="Grey Armchair"
-            class="w-full h-28 object-cover rounded"
-          />
-          <div class="mt-4 font-bold text-gray-900">Grey armchair</div>
-          <div class="text-gray-700 text-sm mb-3">259 €</div>
-          <div class="flex items-center text-yellow-400 text-xs">★★★★★</div>
-          <button class="p-1 mt-2 rounded-full border bg-gray-100 text-black">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-4 w-4"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656l-6 6a1 1 0 01-1.414 0l-6-6a4 4 0 010-5.656z"
-              />
-            </svg>
-          </button>
-        </div>
-        <!-- Minimal lamp card -->
-        <div class="bg-white rounded-lg shadow-sm p-5 flex flex-col items-start w-48">
-          <img
-            src="https://images.unsplash.com/photo-1592078615290-033ee584e267?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80"
-            alt="Minimal lamp"
-            class="w-full h-28 object-cover rounded"
-          />
-          <div class="mt-4 font-bold text-gray-900">Minimal lamp</div>
-          <div class="text-gray-700 text-sm mb-3">59 €</div>
-          <div class="flex items-center text-yellow-400 text-xs">★★★★☆</div>
-          <button class="p-1 mt-2 rounded-full border bg-gray-100 text-black">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-4 w-4"
-              fill="none"
-              viewBox="0 0 20 20"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 10h16M4 14h16"
-              />
-            </svg>
-          </button>
+
+        <div class="border-t border-gray-100 pt-4 w-full text-right">
+          <div class="mb-6">
+            <h3 class="text-lg font-bold text-dark mb-3">مميزات المنتج:</h3>
+            <ul class="space-y-2">
+              <li class="flex items-center">
+                <i class="fas fa-check-circle text-primary ml-2"></i>
+                <span>تدليك عميق للعضلات</span>
+              </li>
+              <li class="flex items-center">
+                <i class="fas fa-check-circle text-primary ml-2"></i>
+                <span>تسخين للألم العضلي</span>
+              </li>
+              <li class="flex items-center">
+                <i class="fas fa-check-circle text-primary ml-2"></i>
+                <span>يعمل بمنفذ USB</span>
+              </li>
+              <li class="flex items-center">
+                <i class="fas fa-check-circle text-primary ml-2"></i>
+                <span>سهل الحمل والاستخدام</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="guarantee-badge p-4 flex items-center">
+            <i class="fas fa-shield-alt text-primary text-2xl ml-3"></i>
+            <div>
+              <h4 class="font-bold text-dark">ضمان استرداد الأموال</h4>
+              <p class="text-sm text-gray-600">30 يوم ضمان استرجاع إذا لم تكن راضيًا</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  
 
-  <!-- Logos -->
-</body>
+    <!-- Left: Other Products -->
+    <div
+      class="flex flex-col space-y-6 lg:pr-8 lg:border-r border-gray-100 mt-8 lg:mt-0 w-full lg:w-1/3"
+    >
+      <h2 class="text-xl font-bold text-accent text-right">قد يعجبك أيضًا</h2>
+
+      <!-- Grey armchair card -->
+      <div
+        class="product-card bg-white rounded-xl shadow-sm p-5 flex flex-col items-end border border-gray-100 hover:border-primary/20"
+      >
+        <img
+          src="https://images.unsplash.com/photo-1592078615290-033ee584e267?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80"
+          alt="كرسي رمادي"
+          class="w-full h-40 object-contain rounded-lg"
+        />
+        <div class="mt-4 font-bold text-accent text-right">كرسي رمادي مودرن</div>
+        <div class="flex items-center justify-between w-full mt-2">
+          <div class="flex items-center text-secondary text-xs">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <span class="text-gray-500 mr-1">(42)</span>
+          </div>
+          <div class="text-primary font-bold">259 €</div>
+        </div>
+        <button class="favorite-btn mt-3 p-2 rounded-full border border-gray-200 text-gray-400">
+          <i class="fas fa-heart"></i>
+        </button>
+      </div>
+
+      <!-- Minimal lamp card -->
+      <div
+        class="product-card bg-white rounded-xl shadow-sm p-5 flex flex-col items-end border border-gray-100 hover:border-primary/20"
+      >
+        <img
+          src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+          alt="لمبة مينيمال"
+          class="w-full h-40 object-contain rounded-lg"
+        />
+        <div class="mt-4 font-bold text-accent text-right">لمبة طاولة مينيمالية</div>
+        <div class="flex items-center justify-between w-full mt-2">
+          <div class="flex items-center text-secondary text-xs">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+            <span class="text-gray-500 mr-1">(27)</span>
+          </div>
+          <div class="text-primary font-bold">59 €</div>
+        </div>
+        <button class="favorite-btn mt-3 p-2 rounded-full border border-gray-200 text-gray-400">
+          <i class="fas fa-heart"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="max-w-6xl mx-auto">
+  <div class="gap-8 mt-10">
+    <!-- Order Form -->
+    <div class="bg-white rounded-2xl shadow-lg p-6">
+      <h2 class="text-2xl font-bold text-dark mb-6 text-center">أطلب الآن</h2>
+
+      <form class="space-y-5">
+        <div>
+          <label for="name" class="block text-gray-700 mb-2">الاسم</label>
+          <input
+            type="text"
+            id="name"
+            placeholder="أدخل اسمك"
+            class="form-input w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <div>
+          <label for="phone" class="block text-gray-700 mb-2">الهاتف</label>
+          <input
+            type="tel"
+            id="phone"
+            placeholder="أدخل رقم هاتفك"
+            class="form-input w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <div>
+          <label for="address" class="block text-gray-700 mb-2">عنوان</label>
+          <textarea
+            id="address"
+            rows="2"
+            placeholder="أدخل عنوانك"
+            class="form-input w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+          ></textarea>
+        </div>
+
+        <div class="summary-box p-4 space-y-3">
+          <div class="flex justify-between items-center">
+            <span class="text-gray-700">المجموع الفرعي :</span>
+            <span class="font-bold text-primary">99 د.ت</span>
+          </div>
+
+          <div class="flex justify-between items-center">
+            <span class="text-gray-700">التوصيل :</span>
+            <span class="font-bold text-green-600">+0 د.ت</span>
+          </div>
+
+          <div class="border-t pt-3 flex justify-between items-center">
+            <span class="text-lg font-bold text-dark">المجموع :</span>
+            <span class="text-xl font-bold text-primary">99 د.ت</span>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="purchase-btn w-full py-4 rounded-lg text-white font-bold text-lg"
+        >
+          <i class="fas fa-shopping-bag ml-2"></i> تأكيد الطلب
+        </button>
+      </form>
+
+      <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
+        <div class="flex items-start">
+          <i class="fas fa-truck text-primary text-xl ml-3 mt-1"></i>
+          <div>
+            <h4 class="font-bold text-dark">توصيل سريع وآمن</h4>
+            <p class="text-sm text-gray-600">سيتم توصيل طلبك خلال 2-3 أيام عمل</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Features -->
+  <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="bg-white p-6 rounded-2xl shadow-md flex flex-col items-center text-center">
+      <div class="bg-primary/10 p-4 rounded-full mb-4">
+        <i class="fas fa-shipping-fast text-primary text-2xl"></i>
+      </div>
+      <h3 class="font-bold text-dark mb-2">توصيل مجاني</h3>
+      <p class="text-gray-600 text-sm">لجميع الطلبات فوق 50 دينار</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl shadow-md flex flex-col items-center text-center">
+      <div class="bg-primary/10 p-4 rounded-full mb-4">
+        <i class="fas fa-shield-alt text-primary text-2xl"></i>
+      </div>
+      <h3 class="font-bold text-dark mb-2">ضمان الجودة</h3>
+      <p class="text-gray-600 text-sm">ضمان لمدة سنة على جميع المنتجات</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl shadow-md flex flex-col items-center text-center">
+      <div class="bg-primary/10 p-4 rounded-full mb-4">
+        <i class="fas fa-headset text-primary text-2xl"></i>
+      </div>
+      <h3 class="font-bold text-dark mb-2">دعم فني</h3>
+      <p class="text-gray-600 text-sm">خدمة عملاء متاحة 24/7</p>
+    </div>
+  </div>
+
+  <!-- Testimonials -->
+  <div class="mt-12">
+    <h2 class="text-2xl font-bold text-dark mb-6 text-center">آراء العملاء</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-white p-6 rounded-2xl shadow-md">
+        <div class="flex items-center mb-4">
+          <div class="flex text-yellow-400 ml-2">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <span class="text-gray-500">منذ 3 أيام</span>
+        </div>
+        <p class="text-gray-700 mb-4">
+          هذا المساج رائع! أستخدمه يومياً بعد العمل ويخفف من آلام ظهري وكتفي. الشحن كان سريعاً
+          والتغليف جميل.
+        </p>
+        <div class="flex items-center">
+          <div class="w-10 h-10 bg-gray-200 rounded-full ml-3"></div>
+          <span class="font-bold text-dark">محمد العلي</span>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl shadow-md">
+        <div class="flex items-center mb-4">
+          <div class="flex text-yellow-400 ml-2">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+          </div>
+          <span class="text-gray-500">منذ أسبوع</span>
+        </div>
+        <p class="text-gray-700 mb-4">
+          جودة المنتج ممتازة والسعر معقول جداً مقارنة بمنتجات أخرى في السوق. أوصي به لكل من يعاني من
+          آلام الكتف.
+        </p>
+        <div class="flex items-center">
+          <div class="w-10 h-10 bg-gray-200 rounded-full ml-3"></div>
+          <span class="font-bold text-dark">فاطمة السعدي</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

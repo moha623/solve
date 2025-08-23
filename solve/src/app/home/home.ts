@@ -7,5 +7,14 @@ import { RouterLink } from '@angular/router';
   styleUrl: './home.css'
 })
 export class Home {
+isDarkMode = false;
 
+  toggleDarkMode() {
+    this.isDarkMode = !this.isDarkMode;
+    if (this.isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }
 }

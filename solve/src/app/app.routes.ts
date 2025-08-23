@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { Layout } from './layout/layout';
 import { Home } from './home/home';
 import { Product } from './product/product';
+import { Dashbord } from './admin/dashbord/dashbord';
+import { AdminLayout } from './admin/admin-layout/admin-layout';
 
 export const routes: Routes = [
   {
@@ -15,9 +17,17 @@ export const routes: Routes = [
         redirectTo: '',
         pathMatch: 'full',
       },
-      {path:'product-item',component:Product}
+      { path: 'product-item', component: Product },
     ],
   },
-
+  {
+    path: 'admin',
+    component: AdminLayout,
+    children: [
+      { path: 'dashboard', component: Dashbord },
+      
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+    ],
+  },
   { path: '**', redirectTo: '' },
 ];

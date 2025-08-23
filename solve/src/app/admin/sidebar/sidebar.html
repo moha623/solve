@@ -1,0 +1,165 @@
+     <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4361ee',
+                        secondary: '#3f37c9',
+                        success: '#4cc9f0',
+                        danger: '#f72585',
+                        warning: '#f8961e',
+                        info: '#4895ef',
+                        dark: '#2b2d42',
+                        light: '#f8f9fa'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fb;
+        }
+        
+        .sidebar {
+            width: 250px;
+            transition: all 0.3s ease;
+        }
+        
+        .main-content {
+            transition: all 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(100%);
+                position: fixed;
+                z-index: 50;
+                height: 100vh;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 40;
+            }
+            
+            .overlay.active {
+                display: block;
+            }
+        }
+        
+        .dashboard-card {
+            transition: transform 0.3s ease;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .nav-item.active {
+            background-color: #4361ee;
+            color: white;
+        }
+        
+        .nav-item.active:hover {
+            background-color: #3a56d4;
+        }
+        
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        th {
+            background-color: #f1f5f9;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+    </style>
+ 
+    <div class="sidebar bg-white shadow-lg fixed md:relative h-screen overflow-y-auto">
+        <div class="p-5 border-b">
+            <h1 class="text-xl font-bold text-primary flex items-center">
+                <i class="fas fa-store ml-2"></i> لوحة التحكم
+            </h1>
+        </div>
+        
+        <div class="p-4">
+            <div class="flex items-center p-4 bg-light rounded-lg mb-6">
+                <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold">
+                    مد
+                </div>
+                <div class="mr-3">
+                    <p class="font-semibold">المدير العام</p>
+                    <p class="text-sm text-gray-500">مسؤول النظام</p>
+                </div>
+            </div>
+            
+            <ul class="space-y-2">
+                <li>
+                    <a href="#" class="nav-item flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded-lg transition active">
+                        <i class="fas fa-chart-pie ml-3"></i>
+                        لوحة التحكم
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-item flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">
+                        <i class="fas fa-plus-circle ml-3"></i>
+                        إضافة منتج
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-item flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">
+                        <i class="fas fa-box ml-3"></i>
+                        المنتجات
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-item flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">
+                        <i class="fas fa-shopping-cart ml-3"></i>
+                        الطلبات
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-item flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">
+                        <i class="fas fa-undo ml-3"></i>
+                        المرتجعات
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-item flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">
+                        <i class="fas fa-chart-line ml-3"></i>
+                        التقارير المالية
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-item flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">
+                        <i class="fas fa-cog ml-3"></i>
+                        الإعدادات
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-item flex items-center p-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">
+                        <i class="fas fa-sign-out-alt ml-3"></i>
+                        تسجيل الخروج
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+ 
+
+ 
