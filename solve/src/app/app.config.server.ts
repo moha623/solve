@@ -1,12 +1,12 @@
 import { mergeApplicationConfig, ApplicationConfig } from '@angular/core';
-import { provideServerRendering, withRoutes } from '@angular/ssr';
+import { provideServerRendering } from '@angular/platform-server';
 import { appConfig } from './app.config';
-import { serverRoutes } from './app.routes.server';
 
 const serverConfig: ApplicationConfig = {
   providers: [
-    provideServerRendering(withRoutes(serverRoutes))
+    provideServerRendering(),
+    // Note: Firebase services are client-only and should not be provided on the server
   ]
 };
 
-export const config = mergeApplicationConfig(appConfig, serverConfig);
+export const appServerConfig = mergeApplicationConfig(appConfig, serverConfig);

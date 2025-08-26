@@ -1,5 +1,10 @@
-<section class="relative min-h-screen flex flex-col justify-between overflow-hidden ">
+<!-- <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+  <p style="color: white"> Loading... </p>
+</ngx-spinner> -->
+
+<section class="relative min-h-screen flex flex-col justify-between overflow-hidden">
   <!-- Background with overlay -->
+
   <div class="absolute inset-0 z-0">
     <img
       src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1600&q=80"
@@ -14,7 +19,7 @@
     <div class="container mx-auto">
       <div class="flex justify-between items-center">
         <!-- Logo -->
-        <div class="flex items-center ">
+        <div class="flex items-center">
           <span class="text-4xl font-bold text-white heading-font">Promomag</span>
         </div>
 
@@ -28,12 +33,12 @@
 
         <!-- Navigation Icons -->
         <div class="flex items-center space-x-6 space-x-reverse">
-          <button
+          <!-- <button
             (click)="toggleDarkMode()"
             class="px-4 py-2 rounded bg-blue-950 dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 transition"
           >
             Toggle Dark Mode
-          </button>
+          </button> -->
 
           <a href="#" class="text-white hover:text-accent flex items-center gap-2">
             <span class="text-white font-medium hidden md:inline-block">عربة التسوق</span>
@@ -45,11 +50,14 @@
               >
             </div>
           </a>
-          <a routerLink="/admin/dashboard" class="text-white hover:text-accent flex items-center gap-2">
+          <a
+            routerLink="/admin/dashboard"
+            class="text-white hover:text-accent flex items-center gap-2"
+          >
             <span class="text-white font-medium hidden md:inline-block">حسابي</span>
             <i class="fas fa-user text-xl"></i>
           </a>
-          <button class="md:hidden text-white " id="menu-toggle">
+          <button class="md:hidden text-white" id="menu-toggle">
             <i class="fas fa-bars text-2xl"></i>
           </button>
         </div>
@@ -187,35 +195,103 @@
   <div class="container mx-auto px-4">
     <h2 class="text-3xl font-bold text-center text-primary heading-font mb-12">المجموعة المميزة</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <!-- Product 1 -->
-      <div
+ <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+ <div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-center text-primary mb-8">منتجاتنا</h1>
+  
+  <!-- Loading state -->
+
+    @if (isLoading) {
+       <div  class="flex justify-center items-center h-64">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+  </div>
+    }
+ 
+  
+  <!-- Products grid -->
+   @if (!isLoading) {
+      <div   class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <!-- Product card -->
+    <div *ngFor="let product of products" 
+    
+         class="bg-white rounded-lg overflow-hidden shadow-md card-hover transition-all duration-300 transform hover:-translate-y-1">
+      <img [src]="product.imageUrl || 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80'" 
+           [alt]="product.name" 
+           class="w-full h-64 object-cover">
+      <div class="p-6">
+        <h3 class="text-xl font-semibold text-primary mb-2">{{ product.name }}</h3>
+        <p class="text-neutral mb-4">{{ product.description }}</p>
+        <div class="flex justify-between items-center">
+          <span class="text-lg font-bold text-primary">{{ product.price }}$</span>
+          <button class="bg-primary text-white px-4 py-2 rounded hover:bg-opacity-90 transition-all">
+            أضف إلى السلة
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+   }
+
+  
+  <!-- No products message -->
+   @if (!isLoading && products.length === 0) {  <div   class="text-center py-12">
+    <p class="text-xl text-neutral">لا توجد منتجات متاحة حالياً</p>
+  </div>}
+
+  
+  <!-- Pagination controls -->
+   @if (totalPages > 1 && !isLoading) {
+      <div   class="flex justify-center mt-12 space-x-2 space-x-reverse">
+    <button 
+      (click)="previousPage()" 
+      [disabled]="currentPage === 1"
+      class="px-4 py-2 bg-primary text-white rounded disabled:bg-gray-300 disabled:cursor-not-allowed">
+      السابق
+    </button>
+    
+    <div class="flex space-x-1 space-x-reverse">
+      <button 
+        *ngFor="let page of [].constructor(totalPages); let i = index" 
+        (click)="goToPage(i + 1)"
+        [class.bg-primary]="currentPage === i + 1"
+        [class.text-white]="currentPage === i + 1"
+        [class.bg-gray-200]="currentPage !== i + 1"
+        class="px-4 py-2 rounded">
+        {{ i + 1 }}
+      </button>
+    </div>
+    
+    <button 
+      (click)="nextPage()" 
+      [disabled]="currentPage === totalPages"
+      class="px-4 py-2 bg-primary text-white rounded disabled:bg-gray-300 disabled:cursor-not-allowed">
+      التالي
+    </button>
+  </div>
+  
+   }
+
+  <!-- Page info -->
+   @if (totalItems > 0) {  <div  class="text-center mt-4 text-neutral">
+    عرض {{ products.length }} من أصل {{ totalItems }} منتج
+  </div>}
+
+</div>
+ 
+
+<!-- <div class="flex justify-center mt-6">
+  <button *ngIf="!loading" (click)="loadMore()" class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-secondary">
+    تحميل المزيد
+  </button>
+  <span *ngIf="loading" class="px-6 py-3 text-gray-600">جارِ التحميل...</span>
+</div> -->
+
+
+      <!-- Product 2 -->
+      <!-- <div
         routerLink="/product-item"
         class="bg-gray-50 rounded-lg overflow-hidden shadow-md card-hover transition-all"
       >
-        <img
-          src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80"
-          alt="كرسي عصري"
-          class="w-full h-64 object-cover"
-        />
-        <div class="p-6">
-          <h3 class="text-xl font-semibold text-primary mb-2">كرسي الاستراحة الأنيق</h3>
-          <p class="text-neutral mb-4">مصمم للراحة والأناقة، مثالي لمساحة المعيشة الخاصة بك.</p>
-          <div class="flex justify-between items-center">
-            <span class="text-lg font-bold text-primary">299$</span>
-            <button
-              class="bg-primary text-white px-4 py-2 rounded hover:bg-opacity-90 transition-all"
-            >
-              أضف إلى السلة
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Product 2 -->
-      <div 
-              routerLink="/product-item"
-      class="bg-gray-50 rounded-lg overflow-hidden shadow-md card-hover transition-all">
         <img
           src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80"
           alt="طاولة خشبية"
@@ -233,12 +309,13 @@
             </button>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Product 3 -->
-      <div
-              routerLink="/product-item"
-      class="bg-gray-50 rounded-lg overflow-hidden shadow-md card-hover transition-all">
+      <!-- <div
+        routerLink="/product-item"
+        class="bg-gray-50 rounded-lg overflow-hidden shadow-md card-hover transition-all"
+      >
         <img
           src="https://images.unsplash.com/photo-1538688525198-9b88f6f53126?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80"
           alt="أريكة مريحة"
@@ -256,7 +333,7 @@
             </button>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <div class="text-center mt-12">

@@ -1,9 +1,9 @@
  
-        body {
+        /* body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f5f7fb;
         }
-        
+         */
         .sidebar {
             width: 250px;
             transition: all 0.3s ease;
@@ -70,4 +70,27 @@
         tr:nth-child(even) {
             background-color: #f8fafc;
         }
+  
  
+    :host {
+      display: block;
+      font-family: 'Tajawal', sans-serif;
+    }
+    
+    .focus\\:ring-primary:focus {
+      --tw-ring-color: #3b82f6;
+    }
+    
+    .bg-primary {
+      background-color: #3b82f6;
+    }
+    
+    .hover\\:bg-secondary:hover {
+      background-color: #2563eb;
+    }
+    
+    .text-primary {
+      color: #3b82f6;
+    }
+ 
+

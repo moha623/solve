@@ -8,7 +8,7 @@ import { AdminLayout } from './admin/admin-layout/admin-layout';
 export const routes: Routes = [
   {
     path: '',
-    title: 'Touriste - Accueil',
+    title: ' Accueil',
     component: Layout, // Layout with header/footer
     children: [
       { path: '', component: Home },

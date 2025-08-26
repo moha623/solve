@@ -113,73 +113,151 @@
       <h2 class="text-xl font-semibold mb-6 text-dark flex items-center">
         <i class="fas fa-plus-circle ml-2 text-primary"></i> إضافة منتج جديد
       </h2>
-
-      <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <form
+        [formGroup]="productForm"
+        (ngSubmit)="onSubmit()"
+        class="grid grid-cols-1 md:grid-cols-2 gap-6"
+      >
+        <!-- Product Name -->
         <div>
           <label class="block text-gray-700 mb-2">اسم المنتج</label>
           <input
             type="text"
+            formControlName="name"
+            required
             class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:outline-none"
           />
+          @if (productForm.get('name')?.invalid && productForm.get('name')?.touched) {
+          <div class="text-red-600 mt-1 text-sm">اسم المنتج مطلوب</div>
+          }
         </div>
 
+        <!-- Price -->
         <div>
           <label class="block text-gray-700 mb-2">السعر</label>
           <input
             type="number"
+            formControlName="price"
+            min="0"
+            required
             class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:outline-none"
           />
+          @if (productForm.get('price')?.invalid && productForm.get('price')?.touched) {
+          <div class="text-red-600 mt-1 text-sm">السعر مطلوب ويجب أن يكون صفر أو أكثر</div>
+          }
         </div>
 
+        <!-- Category -->
         <div>
           <label class="block text-gray-700 mb-2">الفئة</label>
           <select
+            formControlName="category"
+            required
             class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:outline-none"
           >
-            <option>إلكترونيات</option>
-            <option>أثاث</option>
-            <option>ملابس</option>
-            <option>كتب</option>
+            <option value="">اختر الفئة</option>
+            <option value="إلكترونيات">إلكترونيات</option>
+            <option value="أثاث">أثاث</option>
+            <option value="ملابس">ملابس</option>
+            <option value="كتب">كتب</option>
           </select>
+          @if (productForm.get('category')?.invalid && productForm.get('category')?.touched) {
+          <div class="text-red-600 mt-1 text-sm">الفئة مطلوبة</div>
+          }
         </div>
 
+        <!-- Stock -->
         <div>
           <label class="block text-gray-700 mb-2">الكمية في المخزن</label>
           <input
             type="number"
+            formControlName="stock"
+            min="0"
+            required
             class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:outline-none"
           />
+          @if (productForm.get('stock')?.invalid && productForm.get('stock')?.touched) {
+          <div class="text-red-600 mt-1 text-sm">الكمية مطلوبة ويجب أن تكون صفر أو أكثر</div>
+          }
         </div>
 
+        <!-- Description -->
         <div class="md:col-span-2">
           <label class="block text-gray-700 mb-2">الوصف</label>
           <textarea
             rows="3"
+            formControlName="description"
+            required
             class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:outline-none"
           ></textarea>
+          @if (productForm.get('description')?.invalid && productForm.get('description')?.touched) {
+          <div class="text-red-600 mt-1 text-sm">الوصف مطلوب</div>
+          }
         </div>
 
+        <!-- Image Upload -->
         <div class="md:col-span-2">
           <label class="block text-gray-700 mb-2">صورة المنتج</label>
-          <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
-            <p class="text-gray-500">
-              اسحب وأفلت الملف للرفع أو <span class="text-primary">استعرض</span>
-            </p>
+          <input
+            type="file"
+            (change)="onFileSelected($event)"
+            accept="image/*"
+            #fileInput
+            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-secondary"
+          />
+          @if (productForm.get('image')?.invalid && productForm.get('image')?.touched) {
+          <div class="text-red-600 mt-1 text-sm">صورة المنتج مطلوبة</div>
+          } @if (uploadPercent !== null) {
+          <div class="mt-2 text-sm text-gray-600">
+            تحميل الصورة: {{ uploadPercent | number : '1.0-0' }}%
           </div>
+          } @if (downloadURL) {
+          <div class="mt-2 text-green-600 font-medium">
+            <i class="fas fa-check-circle"></i> تم رفع الصورة بنجاح
+          </div>
+          }
         </div>
 
+        <!-- Buttons -->
         <div class="md:col-span-2 flex justify-start space-x-4 space-x-reverse mt-4">
           <button
+            type="button"
+            (click)="resetForm()"
             class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
           >
             إعادة تعيين
           </button>
-          <button class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-secondary">
-            إضافة المنتج
+          <button
+            type="submit"
+            [disabled]="productForm.invalid || loading"
+            class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-secondary disabled:opacity-50"
+          >
+            @if (!loading) {
+            <span>إضافة المنتج</span>
+            } @if (loading) {
+            <span><i class="fas fa-spinner fa-spin"></i> جاري الإضافة...</span>
+            }
           </button>
         </div>
+
+        <!-- Success/Error Messages -->
+        <div class="md:col-span-2 mt-4">
+          @if (successMessage) {
+          <div class="mt-6 p-4 bg-green-100 text-green-700 rounded-lg">
+            <i class="fas fa-check-circle"></i>
+            <p class="text-green-600 font-semibold">{{ successMessage }}</p>
+          </div>
+
+          } @if (errorMessage) {
+          <div class="mt-6 p-4 bg-red-100 text-red-700 rounded-lg">
+            <i class="fas fa-exclamation-circle"></i>
+            <p class="text-red-600 font-semibold">{{ errorMessage }}</p>
+          </div>
+
+          }
+        </div>
       </form>
+ 
     </div>
 
     <!-- Products Table -->
