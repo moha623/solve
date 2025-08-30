@@ -1,0 +1,150 @@
+<!-- components/register/register.component.html -->
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h2>إنشاء حساب جديد</h2>
+      <p>املأ النموذج أدناه لإنشاء حسابك</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form">
+      <!-- Name -->
+      <div class="form-group">
+        <label for="name">الاسم الكامل</label>
+        <input
+          type="text"
+          id="name"
+          formControlName="name"
+          placeholder="ادخل اسمك الكامل"
+          class="form-input"
+          [class.error]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched"
+        />
+        @if (registerForm.get('name')?.invalid && registerForm.get('name')?.touched) {
+          <div class="error-message">
+            @if (registerForm.get('name')?.errors?.['required']) {
+              <span>الاسم الكامل مطلوب</span>
+            }
+            @if (registerForm.get('name')?.errors?.['minlength']) {
+              <span>الاسم يجب أن يكون حرفين على الأقل</span>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">البريد الإلكتروني</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="ادخل بريدك الإلكتروني"
+          class="form-input"
+          [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+        />
+        @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+          <div class="error-message">
+            @if (registerForm.get('email')?.errors?.['required']) {
+              <span>البريد الإلكتروني مطلوب</span>
+            }
+            @if (registerForm.get('email')?.errors?.['email']) {
+              <span>صيغة البريد الإلكتروني غير صحيحة</span>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">كلمة المرور</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          placeholder="ادخل كلمة المرور"
+          class="form-input"
+          [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+        />
+        @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+          <div class="error-message">
+            @if (registerForm.get('password')?.errors?.['required']) {
+              <span>كلمة المرور مطلوبة</span>
+            }
+            @if (registerForm.get('password')?.errors?.['minlength']) {
+              <span>كلمة المرور يجب أن تكون 6 أحرف على الأقل</span>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="form-group">
+        <label for="confirmPassword">تأكيد كلمة المرور</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          placeholder="أعد إدخال كلمة المرور"
+          class="form-input"
+          [class.error]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
+        />
+        @if (registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched) {
+          <div class="error-message">
+            @if (registerForm.get('confirmPassword')?.errors?.['required']) {
+              <span>تأكيد كلمة المرور مطلوب</span>
+            }
+          </div>
+        }
+        @if (registerForm.errors?.['mismatch'] && registerForm.get('confirmPassword')?.touched) {
+          <div class="error-message">كلمات المرور غير متطابقة</div>
+        }
+      </div>
+
+      <!-- Terms Agreement -->
+      <div class="form-group">
+        <label class="checkbox-container">
+          <input type="checkbox" formControlName="agreeToTerms" />
+          <span class="checkmark"></span>
+          أوافق على <a href="#" class="terms-link">الشروط والأحكام</a> و <a href="#" class="terms-link">سياسة الخصوصية</a>
+        </label>
+        @if (registerForm.get('agreeToTerms')?.invalid && registerForm.get('agreeToTerms')?.touched) {
+          <div class="error-message">يجب الموافقة على الشروط والأحكام</div>
+        }
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        [disabled]="registerForm.invalid || loading"
+        class="btn btn-primary btn-full"
+      >
+        @if (loading) {
+          <span>جاري إنشاء الحساب...</span>
+        } @else {
+          <span>إنشاء الحساب</span>
+        }
+      </button>
+    </form>
+
+    <!-- Success Message -->
+    @if (successMessage) {
+      <div class="success-message mt-4">
+        <i class="fas fa-check-circle"></i>
+        {{ successMessage }}
+      </div>
+    }
+
+    <!-- Error Message -->
+    @if (errorMessage) {
+      <div class="error-message mt-4">
+        <i class="fas fa-exclamation-circle"></i>
+        {{ errorMessage }}
+      </div>
+    }
+
+    <div class="auth-footer">
+      <p>
+        لديك حساب بالفعل؟ <a routerLink="/login" class="auth-link">تسجيل الدخول</a>
+      </p>
+    </div>
+  </div>
+</div>

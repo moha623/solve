@@ -1,46 +1,49 @@
-import { Component, inject, NgZone, PLATFORM_ID, Inject, EnvironmentInjector, runInInjectionContext } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import {
-  Firestore,
-  collection,
-  addDoc,
-  serverTimestamp,
-} from '@angular/fire/firestore';
-// Commented out Storage imports as upload is disabled
-// import {
-//   Storage,
-//   ref,
-//   uploadBytesResumable,
-//   getDownloadURL
-// } from '@angular/fire/storage';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SupabaseService } from '../../services/supabase.service';
+import { AuthService } from '../../services/auth';
+import { createClient } from '@supabase/supabase-js';
+import { environment } from '../../../envirement/environment';
 
 @Component({
   selector: 'app-dashbord',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './dashbord.html',
-  styleUrls: ['./dashbord.css']
+  styleUrls: ['./dashbord.css'],
 })
-export class Dashbord {
-  isDarkMode = false;
-  productForm: FormGroup;
+export class Dashbord implements OnInit {
+  productForm!: FormGroup;
   loading = false;
   successMessage = '';
   errorMessage = '';
   uploadPercent: number | null = null;
-  downloadURL = '';  // Will stay empty since upload disabled
-  isBrowser: boolean;
+  downloadURL: string | null = null;
+  private supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
+  
+  // Add authentication state
+  isAuthenticated = false;
+  userEmail: string | null = null;
 
-  private firestore = inject(Firestore);
-  // Commented out storage injection
-  // private storage = inject(Storage);
-  private fb = inject(FormBuilder);
-  private ngZone = inject(NgZone);
-  private environmentInjector = inject(EnvironmentInjector);
+  constructor(
+    private fb: FormBuilder, 
+    private supabaseService: SupabaseService,
+    private authService: AuthService // Inject AuthService
+  ) {}
 
-  constructor(@Inject(PLATFORM_ID) platformId: Object) {
-    this.isBrowser = isPlatformBrowser(platformId);
+  async ngOnInit() {
+    // Check authentication status
+    this.authService.authStateChanged.subscribe(state => {
+      this.isAuthenticated = state;
+      if (state) {
+        this.userEmail = this.authService.user?.email || null;
+      }
+    });
+
+    const { data: buckets, error } = await this.supabase.storage.listBuckets();
+    console.log(buckets);
     
     this.productForm = this.fb.group({
       name: ['', Validators.required],
@@ -48,125 +51,96 @@ export class Dashbord {
       category: ['', Validators.required],
       stock: [0, [Validators.required, Validators.min(0)]],
       description: ['', Validators.required],
-      image: [null, Validators.required]
+      image: [null, Validators.required],
     });
   }
 
+  async onFileSelected(event: any) {
+    // if (!this.isAuthenticated) {
+    //   this.errorMessage = 'يجب تسجيل الدخول أولاً';
+    //   return;
+    // }
+
+    const file: File = event.target.files[0];
+    if (!file) return;
+
+    this.loading = true;
+    this.uploadPercent = 0;
+    const filePath = `products/${Date.now()}_${file.name}`;
+
+    try {
+      const { data, error } = await this.supabaseService.uploadImage(filePath, file);
+      if (error) throw error;
+
+      this.downloadURL = this.supabaseService.getDownloadURL(filePath);
+      this.productForm.patchValue({ image: this.downloadURL });
+    } catch (error: any) {
+      this.errorMessage = 'خطأ في رفع الصورة: ' + error.message;
+    } finally {
+      this.loading = false;
+      this.uploadPercent = null;
+    }
+  }
+
   async onSubmit() {
-    if (this.productForm.invalid || !this.isBrowser) return;
+    // if (!this.isAuthenticated) {
+    //   this.errorMessage = 'يجب تسجيل الدخول أولاً';
+    //   return;
+    // }
+
+    if (this.productForm.invalid) return;
 
     this.loading = true;
     this.successMessage = '';
     this.errorMessage = '';
 
+    const productData = this.productForm.value;
+    console.log('Submitting Product:', productData);
+    
     try {
-      await runInInjectionContext(this.environmentInjector, async () => {
-        // Commented out upload image call
-        // if (this.productForm.value.image) {
-        //   await this.uploadImage();
-        // }
-
-        const productsCollection = collection(this.firestore, 'products');
-
-        // Prepare form data, remove file object which is not storable
-        const formData = {...this.productForm.value};
-        delete formData.image;
-
-        // Save to Firestore without image URL because upload is disabled
-        await addDoc(productsCollection, {
-          ...formData,
-          imageUrl: '',  // empty string since no upload
-          createdAt: serverTimestamp()
-        });
-      });
-
-      this.successMessage = 'تم إضافة المنتج بنجاح إلى قاعدة البيانات';
-      this.resetForm();
-    } catch(error) {
-      console.error('Error adding product:', error);
-      this.errorMessage = 'حدث خطأ أثناء إضافة المنتج. يرجى المحاولة مرة أخرى.';
+      const { data, error } = await this.supabaseService.insertProduct(productData);
+      
+      if (error) {
+        console.error('Insert error:', error);
+        throw error;
+      }
+      
+      this.successMessage = 'تم إضافة المنتج بنجاح';
+      this.productForm.reset();
+      this.downloadURL = null;
+    } catch (error: any) {
+      if (error.message.includes('NavigatorLockAcquireTimeoutError')) {
+        this.errorMessage = 'تم انتهاء وقت الانتظار، يرجى المحاولة مرة أخرى';
+      } else {
+        this.errorMessage = error.message || 'حدث خطأ أثناء إضافة المنتج';
+      }
     } finally {
       this.loading = false;
     }
   }
 
-  // Commented out entire uploadImage method
-  /*
-  async uploadImage() {
-    if (!this.isBrowser) return;
-    
-    const file = this.productForm.value.image;
-    const filePath = `products/${new Date().getTime()}_${file.name}`;
-
-    return runInInjectionContext(this.environmentInjector, async () => {
-      const storageRef = ref(this.storage, filePath);
-      const uploadTask = uploadBytesResumable(storageRef, file);
-
-      return new Promise<void>((resolve, reject) => {
-        uploadTask.on('state_changed',
-          (snapshot) => {
-            this.ngZone.run(() => {
-              this.uploadPercent = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-            });
-          },
-          (error) => {
-            this.ngZone.run(() => {
-              console.error('Upload failed:', error);
-              this.errorMessage = 'خطأ في تحميل الصورة.';
-              reject(error);
-            });
-          },
-          async () => {
-            try {
-              const url = await getDownloadURL(uploadTask.snapshot.ref);
-              this.ngZone.run(() => {
-                this.downloadURL = url;
-                this.uploadPercent = null;
-                resolve();
-              });
-            } catch (error) {
-              this.ngZone.run(() => {
-                console.error('Error getting download URL:', error);
-                reject(error);
-              });
-            }
-          }
-        );
-      });
-    });
+  resetForm() {
+    this.productForm.reset();
+    this.successMessage = '';
+    this.errorMessage = '';
+    this.downloadURL = null;
   }
-  */
 
-  // Keep your file selection method even if upload disabled
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.productForm.patchValue({ image: file });
-      this.productForm.get('image')?.updateValueAndValidity();
+  // Add login method
+  async login(email: string, password: string) {
+    try {
+      await this.authService.signIn(email, password);
+    } catch (error: any) {
+      this.errorMessage = error.message || 'حدث خطأ أثناء تسجيل الدخول';
     }
   }
 
-  resetForm() {
-    this.productForm.reset({
-      name: '',
-      price: 0,
-      category: '',
-      stock: 0,
-      description: '',
-      // image: null
-    });
-    this.uploadPercent = null;
-    this.downloadURL = '';
-  }
-
-  toggleDarkMode() {
-    this.isDarkMode = !this.isDarkMode;
-    if (this.isBrowser) {
-      if (this.isDarkMode) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
+  // Add logout method
+  async logout() {
+    try {
+      await this.authService.signOut();
+    } catch (error: any) {
+      this.errorMessage = error.message || 'حدث خطأ أثناء تسجيل الخروج';
     }
   }
 }

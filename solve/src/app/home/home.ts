@@ -1,10 +1,8 @@
  
  import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { RouterLink } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { Blogservice } from '../services/blogservice';
+import { Component, OnInit } from '@angular/core';
+import { SupabaseService } from '../services/supabase.service';// Adjust the import path as necessary
 
 interface Product {
   id: string;
@@ -23,83 +21,59 @@ interface Product {
  
 })
 export class Home {
- 
-   products: Product[] = [];
-  private productsSubscription: Subscription | undefined;
-  
-  // Pagination variables
-  currentPage = 1;
-  itemsPerPage = 3;
+ products: any[] = [];
+  isLoading = false;
   totalItems = 0;
+  currentPage = 1;
+  itemsPerPage = 9;  // Adjust as needed
   totalPages = 0;
-  
-  // Loading state
-  isLoading = true;
-  
-  constructor(private firestore: AngularFirestore) {}
 
-  ngOnInit(): void {
-    this.loadProductsCount();
+  constructor(private supabaseService: SupabaseService) {}
+
+  ngOnInit() {
     this.loadProducts();
   }
 
-  loadProductsCount(): void {
-    this.firestore.collection('products').get().subscribe(snapshot => {
-      this.totalItems = snapshot.size;
-      this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-    });
-  }
-
-  loadProducts(): void {
+  async loadProducts() {
     this.isLoading = true;
-    
-    // Calculate the starting point based on current page
-    const startAt = (this.currentPage - 1) * this.itemsPerPage;
-    
-    if (this.productsSubscription) {
-      this.productsSubscription.unsubscribe();
-    }
-    
-    this.productsSubscription = this.firestore
-      .collection('products', ref => 
-        ref.orderBy('name').limit(this.itemsPerPage).startAt(startAt)
-      )
-      .valueChanges({ idField: 'id' })
-      .subscribe((products: any[]) => {
-        this.products = products;
-        this.isLoading = false;
-      }, error => {
-        console.error('Error fetching products:', error);
-        this.isLoading = false;
-      });
-  }
+    try {
+      // Fetch total count
+      // const countResult = await this.supabaseService.countProducts();
+      // this.totalItems = countResult || 0;
+      this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
 
-  goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.loadProducts();
+      // Calculate range for pagination
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = this.currentPage * this.itemsPerPage - 1;
+
+      // Fetch paginated products
+      // this.products = await this.supabaseService.getProductsRange(start, end);
+    } catch (error) {
+      console.error('Error loading products:', error);
+    } finally {
+      this.isLoading = false;
     }
   }
 
-  nextPage(): void {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.loadProducts();
-    }
-  }
-
-  previousPage(): void {
+  previousPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
       this.loadProducts();
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.productsSubscription) {
-      this.productsSubscription.unsubscribe();
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.loadProducts();
     }
   }
- 
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadProducts();
+    }
+  }
  
 }

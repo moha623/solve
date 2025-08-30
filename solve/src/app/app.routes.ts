@@ -4,6 +4,9 @@ import { Home } from './home/home';
 import { Product } from './product/product';
 import { Dashbord } from './admin/dashbord/dashbord';
 import { AdminLayout } from './admin/admin-layout/admin-layout';
+import { Login } from './auth/login/login';
+import { Register } from './auth/register/register';
+import { Auth } from './auth/auth';
 
 export const routes: Routes = [
   {
@@ -25,9 +28,19 @@ export const routes: Routes = [
     component: AdminLayout,
     children: [
       { path: 'dashboard', component: Dashbord },
-      
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
+  {
+    path: 'auth',
+    component:Auth,
+    title: 'Solve - Register/Login',
+    children: [
+      { path: 'login', component: Login },
+      { path: 'register', component: Register },
+        { path: '', redirectTo: 'login', pathMatch: 'full' },
+    ],
+  },
+
   { path: '**', redirectTo: '' },
 ];

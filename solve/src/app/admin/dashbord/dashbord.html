@@ -1,23 +1,4 @@
-<!-- <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#4361ee',
-                        secondary: '#3f37c9',
-                        success: '#4cc9f0',
-                        danger: '#f72585',
-                        warning: '#f8961e',
-                        info: '#4895ef',
-                        dark: '#2b2d42',
-                        light: '#f8f9fa'
-                    }
-                }
-            }
-        }
-    </script> -->
-
-<!-- Main Content -->
+ 
 <div class="main-content flex-1 overflow-x-hidden">
   <!-- Header -->
   <header class="bg-white shadow-sm p-4 flex justify-between items-center">
@@ -45,7 +26,7 @@
 
   <!-- Dashboard Content -->
   <div class="p-5">
-    <!-- Stats Cards -->
+  
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
       <div class="dashboard-card bg-white p-5 rounded-xl shadow-sm border-r-4 border-primary">
         <div class="flex justify-between items-center">
@@ -114,7 +95,7 @@
         <i class="fas fa-plus-circle ml-2 text-primary"></i> إضافة منتج جديد
       </h2>
       <form
-        [formGroup]="productForm"
+        *ngIf="productForm" [formGroup]="productForm" (ngSubmit)="onSubmit()"
         (ngSubmit)="onSubmit()"
         class="grid grid-cols-1 md:grid-cols-2 gap-6"
       >
