@@ -1,13 +1,12 @@
 <!-- components/login/login.component.html -->
 <div class="auth-container">
-  <div class="auth-card">
+  <div class="auth-card shadow-lg">
     <div class="auth-header">
       <h2>تسجيل الدخول للإدارة</h2>
       <p>مرحباً بعودتك! يرجى إدخال بياناتك للدخول</p>
     </div>
 
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
-      <!-- Email -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form" novalidate>
       <div class="form-group">
         <label for="email">البريد الإلكتروني</label>
         <input
@@ -17,20 +16,16 @@
           placeholder="ادخل بريدك الإلكتروني"
           class="form-input"
           [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+          autocomplete="email"
+          required
+          aria-describedby="emailError"
         />
-        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
-          <div class="error-message">
-            @if (loginForm.get('email')?.errors?.['required']) {
-              <span>البريد الإلكتروني مطلوب</span>
-            }
-            @if (loginForm.get('email')?.errors?.['email']) {
-              <span>صيغة البريد الإلكتروني غير صحيحة</span>
-            }
-          </div>
-        }
+        <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="error-message" id="emailError">
+          <span *ngIf="loginForm.get('email')?.errors?.['required']">البريد الإلكتروني مطلوب</span>
+          <span *ngIf="loginForm.get('email')?.errors?.['email']">صيغة البريد الإلكتروني غير صحيحة</span>
+        </div>
       </div>
 
-      <!-- Password -->
       <div class="form-group">
         <label for="password">كلمة المرور</label>
         <input
@@ -40,20 +35,16 @@
           placeholder="ادخل كلمة المرور"
           class="form-input"
           [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+          autocomplete="current-password"
+          required
+          aria-describedby="passwordError"
         />
-        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-          <div class="error-message">
-            @if (loginForm.get('password')?.errors?.['required']) {
-              <span>كلمة المرور مطلوبة</span>
-            }
-            @if (loginForm.get('password')?.errors?.['minlength']) {
-              <span>كلمة المرور يجب أن تكون 6 أحرف على الأقل</span>
-            }
-          </div>
-        }
+        <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error-message" id="passwordError">
+          <span *ngIf="loginForm.get('password')?.errors?.['required']">كلمة المرور مطلوبة</span>
+          <span *ngIf="loginForm.get('password')?.errors?.['minlength']">كلمة المرور يجب أن تكون 6 أحرف على الأقل</span>
+        </div>
       </div>
 
-      <!-- Remember Me -->
       <div class="form-options">
         <label class="checkbox-container">
           <input type="checkbox" formControlName="rememberMe" />
@@ -63,20 +54,18 @@
         <a routerLink="/forgot-password" class="forgot-link">نسيت كلمة المرور؟</a>
       </div>
 
-      <!-- Submit Button -->
       <button
         type="submit"
         [disabled]="loginForm.invalid || loading"
         class="btn btn-primary btn-full"
+        aria-busy="{{loading}}"
       >
-        @if (loading) {
-          <span>جاري تسجيل الدخول...</span>
-        } @else {
-          <span>تسجيل الدخول</span>
-        }
+        <ng-container *ngIf="loading; else loginText">
+          <span class="spinner"></span> جاري تسجيل الدخول...
+        </ng-container>
+        <ng-template #loginText>تسجيل الدخول</ng-template>
       </button>
 
-      <!-- Magic Link Button -->
       <button
         type="button"
         (click)="signInWithMagicLink()"
@@ -87,21 +76,15 @@
       </button>
     </form>
 
-    <!-- Magic Link Success Message -->
-    @if (showMagicLinkMessage) {
-      <div class="success-message mt-4">
-        <i class="fas fa-check-circle"></i>
-        تم إرسال رابط الدخول إلى بريدك الإلكتروني. يرجى التحقق من صندوق الوارد.
-      </div>
-    }
+    <div *ngIf="showMagicLinkMessage" class="success-message mt-4">
+      <i class="fas fa-check-circle"></i>
+      تم إرسال رابط الدخول إلى بريدك الإلكتروني. يرجى التحقق من صندوق الوارد.
+    </div>
 
-    <!-- Error Message -->
-    @if (errorMessage) {
-      <div class="error-message mt-4">
-        <i class="fas fa-exclamation-circle"></i>
-        {{ errorMessage }}
-      </div>
-    }
+    <div *ngIf="errorMessage" class="error-message mt-4">
+      <i class="fas fa-exclamation-circle"></i>
+      {{ errorMessage }}
+    </div>
 
     <div class="auth-footer">
       <p>

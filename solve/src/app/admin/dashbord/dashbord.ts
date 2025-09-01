@@ -82,42 +82,38 @@ export class Dashbord implements OnInit {
     }
   }
 
-  async onSubmit() {
-    // if (!this.isAuthenticated) {
-    //   this.errorMessage = 'يجب تسجيل الدخول أولاً';
-    //   return;
-    // }
+async onSubmit() {
+  if (this.loading) return;  // Prevent multiple submits while loading
+  if (this.productForm.invalid) return;
 
-    if (this.productForm.invalid) return;
+  this.loading = true;
+  this.successMessage = '';
+  this.errorMessage = '';
 
-    this.loading = true;
-    this.successMessage = '';
-    this.errorMessage = '';
+  const productData = this.productForm.value;
+  console.log('Submitting Product:', productData);
 
-    const productData = this.productForm.value;
-    console.log('Submitting Product:', productData);
-    
-    try {
-      const { data, error } = await this.supabaseService.insertProduct(productData);
-      
-      if (error) {
-        console.error('Insert error:', error);
-        throw error;
-      }
-      
-      this.successMessage = 'تم إضافة المنتج بنجاح';
-      this.productForm.reset();
-      this.downloadURL = null;
-    } catch (error: any) {
-      if (error.message.includes('NavigatorLockAcquireTimeoutError')) {
-        this.errorMessage = 'تم انتهاء وقت الانتظار، يرجى المحاولة مرة أخرى';
-      } else {
-        this.errorMessage = error.message || 'حدث خطأ أثناء إضافة المنتج';
-      }
-    } finally {
-      this.loading = false;
+  try {
+    const { data, error } = await this.supabaseService.insertProduct(productData);
+
+    if (error) {
+      console.error('Insert error:', error);
+      throw error;
     }
+
+    this.successMessage = 'تم إضافة المنتج بنجاح';
+    this.productForm.reset();
+    this.downloadURL = null;
+  } catch (error: any) {
+    if (error.message.includes('NavigatorLockAcquireTimeoutError')) {
+      this.errorMessage = 'تم انتهاء وقت الانتظار، يرجى المحاولة مرة أخرى';
+    } else {
+      this.errorMessage = error.message || 'حدث خطأ أثناء إضافة المنتج';
+    }
+  } finally {
+    this.loading = false;
   }
+}
 
   resetForm() {
     this.productForm.reset();

@@ -1,0 +1,22 @@
+<!-- components/related-products/related-products.component.html -->
+
+
+   <div class="flex flex-col space-y-6 lg:pr-8 lg:border-r border-gray-100 mt-8 lg:mt-0 w-full lg:w-1/3"
+    >
+  <h2 class="text-xl font-bold text-gray-800 text-right">قد يعجبك أيضًا</h2>
+
+  <div *ngFor="let product of relatedProducts" class="  bg-white rounded-xl shadow-sm p-5 flex flex-col items-end border border-gray-100 hover:border-blue-600/20">
+    <img [src]="product.image_url" [alt]="product.name" class="w-full h-40 object-contain rounded-lg" />
+    <div class="mt-4 font-bold text-gray-800 text-right">{{ product.name }}</div>
+    <div class="flex items-center justify-between w-full mt-2">
+      <div class="flex items-center text-yellow-400 text-xs">
+        <i class="fas fa-star" *ngFor="let star of getStarsArray(product.rating)"></i>
+        <span class="text-gray-500 mr-1">({{ product.reviewCount }})</span>
+      </div>
+      <div class="text-blue-600 font-bold">{{ product.price }} €</div>
+    </div>
+    <button class="favorite-btn mt-3 p-2 rounded-full border border-gray-200 text-gray-400 hover:text-red-500">
+      <i class="fas fa-heart"></i>
+    </button>
+  </div>
+   </div>

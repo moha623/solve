@@ -1,0 +1,264 @@
+/* components/auth.styles.css */
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  font-family: 'Tajawal', sans-serif;
+}
+
+.auth-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 420px;
+  padding: 40px 35px;
+  transition: transform 0.3s ease;
+}
+
+.auth-card:hover {
+  transform: translateY(-5px);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.auth-header h2 {
+  color: #333;
+  margin-bottom: 8px;
+  font-weight: 700;
+  font-size: 28px;
+}
+
+.auth-header p {
+  color: #555;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.auth-form {
+  margin-bottom: 15px;
+}
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 10px;
+  color: #444;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-input:focus {
+  border-color: #6c63ff;
+  box-shadow: 0 0 8px rgba(108, 99, 255, 0.45);
+  outline: none;
+}
+
+.form-input.error {
+  border-color: #e74c3c;
+  background-color: #fff0f0;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 13px;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.error-message i {
+  margin-left: 6px;
+  color: #e74c3c;
+}
+
+.success-message {
+  color: #27ae60;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.success-message i {
+  margin-left: 6px;
+}
+
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #444;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  user-select: none;
+  position: relative;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 18px;
+  width: 18px;
+}
+
+.checkmark {
+  height: 18px;
+  width: 18px;
+  background-color: #fff;
+  border: 1.5px solid #ddd;
+  border-radius: 4px;
+  margin-left: 10px;
+  position: relative;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: #6c63ff;
+  border-color: #6c63ff;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkbox-container .checkmark:after {
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg);
+}
+
+.forgot-link {
+  color: #6c63ff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
+.btn {
+  display: inline-block;
+  padding: 14px 0;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-primary {
+  background-color: #6c63ff;
+  color: white;
+  box-shadow: 0 4px 15px rgba(108, 99, 255, 0.4);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #594fed;
+  box-shadow: 0 6px 20px rgba(89, 79, 237, 0.6);
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 2px solid #6c63ff;
+  color: #6c63ff;
+  font-weight: 600;
+}
+
+.btn-outline:hover:not(:disabled) {
+  background-color: #6c63ff;
+  color: white;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 14px;
+  color: #666;
+}
+
+.auth-link {
+  color: #6c63ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+.mt-3 {
+  margin-top: 20px;
+}
+
+.mt-4 {
+  margin-top: 25px;
+}
+
+/* Loading spinner style */
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 3px solid hsla(0, 0%, 100%, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease infinite;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

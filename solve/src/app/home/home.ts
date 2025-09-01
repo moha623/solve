@@ -2,33 +2,32 @@
  import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { SupabaseService } from '../services/supabase.service';// Adjust the import path as necessary
 
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  imageUrl: string;
-  // Add other product properties as needed
-}
+import { Homeservice } from '../services/homeservice';
+ 
+import { BrowserModule } from '@angular/platform-browser';
+import { Product } from '../models/product.model';
+ 
+ 
+
+
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink,   CommonModule],
+  imports: [RouterLink,     ],
   templateUrl: './home.html',
   styleUrl: './home.css',
  
 })
 export class Home {
- products: any[] = [];
+products: Product[] = [];
   isLoading = false;
   totalItems = 0;
   currentPage = 1;
-  itemsPerPage = 9;  // Adjust as needed
+  itemsPerPage = 6;
   totalPages = 0;
 
-  constructor(private supabaseService: SupabaseService) {}
+  constructor(private homeService: Homeservice) {}
 
   ngOnInit() {
     this.loadProducts();
@@ -38,8 +37,8 @@ export class Home {
     this.isLoading = true;
     try {
       // Fetch total count
-      // const countResult = await this.supabaseService.countProducts();
-      // this.totalItems = countResult || 0;
+      const count = await this.homeService.countProducts();
+      this.totalItems = count || 0;
       this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
 
       // Calculate range for pagination
@@ -47,9 +46,11 @@ export class Home {
       const end = this.currentPage * this.itemsPerPage - 1;
 
       // Fetch paginated products
-      // this.products = await this.supabaseService.getProductsRange(start, end);
+      this.products = await this.homeService.getProductsRange(start, end);
+      console.log(this.products);
     } catch (error) {
       console.error('Error loading products:', error);
+      this.products = [];
     } finally {
       this.isLoading = false;
     }
@@ -75,5 +76,7 @@ export class Home {
       this.loadProducts();
     }
   }
- 
+ handleImageError(event: any) {
+  event.target.src = 'path/to/placeholder/image.jpg';
+}
 }

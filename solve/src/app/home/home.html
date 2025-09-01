@@ -25,10 +25,9 @@
 
         <!-- Desktop Navigation -->
         <div class="hidden md:flex space-x-8">
-          <a href="#" class="text-white nav-link">الرئيسية</a>
+          <a href="#" class="text-white nav-link ml-4">الرئيسية</a>
           <a href="#" class="text-white nav-link">منتجاتنا</a>
-          <a href="#" class="text-white nav-link">عنا</a>
-          <a routerLink="/auth/login" class="text-white nav-link" >اتصل بنا</a>
+          <a routerLink="/product" class="text-white nav-link">اتصل بنا</a>
         </div>
 
         <!-- Navigation Icons -->
@@ -40,7 +39,10 @@
             Toggle Dark Mode
           </button> -->
 
-          <a href="#" class="text-white hover:text-accent flex items-center gap-2">
+          <a
+            routerLink="/cart-product"
+            class="text-white hover:text-accent flex items-center gap-2"
+          >
             <span class="text-white font-medium hidden md:inline-block">عربة التسوق</span>
             <div class="relative">
               <i class="fas fa-shopping-cart text-xl"></i>
@@ -50,10 +52,7 @@
               >
             </div>
           </a>
-          <a
-            routerLink="/admin/dashboard"
-            class="text-white hover:text-accent flex items-center gap-2"
-          >
+          <a routerLink="/auth/login" class="text-white hover:text-accent flex items-center gap-2">
             <span class="text-white font-medium hidden md:inline-block">حسابي</span>
             <i class="fas fa-user text-xl"></i>
           </a>
@@ -95,7 +94,7 @@
               تسوق الآن <i class="fas fa-arrow-left mr-2"></i>
             </button>
             <button
-              class="bg-transparent border-2 border-white text-white font-bold py-4 px-8 rounded-full text-lg hover:bg-white hover:text-dark transition-colors"
+              class="border-2 border-white text-white font-bold py-4 px-8 rounded-full text-lg hover:bg-accent hover:text-dark transition-colors"
             >
               اكتشف المزيد
             </button>
@@ -195,145 +194,101 @@
   <div class="container mx-auto px-4">
     <h2 class="text-3xl font-bold text-center text-primary heading-font mb-12">المجموعة المميزة</h2>
 
- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
- <div class="container mx-auto px-4 py-8">
-  <h1 class="text-3xl font-bold text-center text-primary mb-8">منتجاتنا</h1>
-  
-  <!-- Loading state -->
+    <div class="container mx-auto px-4 py-8">
+      <h1 class="text-3xl font-bold text-center text-primary mb-8">منتجاتنا</h1>
 
-    @if (isLoading) {
-       <div  class="flex justify-center items-center h-64">
-    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-  </div>
-    }
- 
-  
-  <!-- Products grid -->
-   @if (!isLoading) {
-      <div   class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-    <!-- Product card -->
-    <div *ngFor="let product of products" 
-    
-         class="bg-white rounded-lg overflow-hidden shadow-md card-hover transition-all duration-300 transform hover:-translate-y-1">
-      <img [src]="product.imageUrl || 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80'" 
-           [alt]="product.name" 
-           class="w-full h-64 object-cover">
-      <div class="p-6">
-        <h3 class="text-xl font-semibold text-primary mb-2">{{ product.name }}</h3>
-        <p class="text-neutral mb-4">{{ product.description }}</p>
-        <div class="flex justify-between items-center">
-          <span class="text-lg font-bold text-primary">{{ product.price }}$</span>
-          <button class="bg-primary text-white px-4 py-2 rounded hover:bg-opacity-90 transition-all">
-            أضف إلى السلة
-          </button>
-        </div>
+      <!-- Loading state -->
+      @if (isLoading) {
+      <div class="flex justify-center items-center h-64">
+        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
       </div>
-    </div>
-  </div>
-   }
+      }
 
-  
-  <!-- No products message -->
-   @if (!isLoading && products.length === 0) {  <div   class="text-center py-12">
-    <p class="text-xl text-neutral">لا توجد منتجات متاحة حالياً</p>
-  </div>}
-
-  
-  <!-- Pagination controls -->
-   @if (totalPages > 1 && !isLoading) {
-      <div   class="flex justify-center mt-12 space-x-2 space-x-reverse">
-    <button 
-      (click)="previousPage()" 
-      [disabled]="currentPage === 1"
-      class="px-4 py-2 bg-primary text-white rounded disabled:bg-gray-300 disabled:cursor-not-allowed">
-      السابق
-    </button>
-    
-    <div class="flex space-x-1 space-x-reverse">
-      <button 
-        *ngFor="let page of [].constructor(totalPages); let i = index" 
-        (click)="goToPage(i + 1)"
-        [class.bg-primary]="currentPage === i + 1"
-        [class.text-white]="currentPage === i + 1"
-        [class.bg-gray-200]="currentPage !== i + 1"
-        class="px-4 py-2 rounded">
-        {{ i + 1 }}
-      </button>
-    </div>
-    
-    <button 
-      (click)="nextPage()" 
-      [disabled]="currentPage === totalPages"
-      class="px-4 py-2 bg-primary text-white rounded disabled:bg-gray-300 disabled:cursor-not-allowed">
-      التالي
-    </button>
-  </div>
-  
-   }
-
-  <!-- Page info -->
-   @if (totalItems > 0) {  <div  class="text-center mt-4 text-neutral">
-    عرض {{ products.length }} من أصل {{ totalItems }} منتج
-  </div>}
-
-</div>
- 
-
-<!-- <div class="flex justify-center mt-6">
-  <button *ngIf="!loading" (click)="loadMore()" class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-secondary">
-    تحميل المزيد
-  </button>
-  <span *ngIf="loading" class="px-6 py-3 text-gray-600">جارِ التحميل...</span>
-</div> -->
-
-
-      <!-- Product 2 -->
-      <!-- <div
-        routerLink="/product-item"
-        class="bg-gray-50 rounded-lg overflow-hidden shadow-md card-hover transition-all"
-      >
-        <img
-          src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80"
-          alt="طاولة خشبية"
-          class="w-full h-64 object-cover rounded-lg"
-        />
-        <div class="p-6">
-          <h3 class="text-xl font-semibold text-primary mb-2">طاولة طعام مودرن</h3>
-          <p class="text-neutral mb-4">مصنوعة من الخشب الصلب مع تصميم بسيط وأنيق.</p>
-          <div class="flex justify-between items-center">
-            <span class="text-lg font-bold text-primary">599$</span>
-            <button
-              class="bg-primary text-white px-4 py-2 rounded hover:bg-opacity-90 transition-all"
-            >
-              أضف إلى السلة
-            </button>
+      <!-- Products grid -->
+      @if (!isLoading && products.length > 0) {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Product card -->
+        @for (product of products; track product.id) {
+        <div
+        routerLink="/product/{{product.id}}"
+          class="bg-white rounded-lg overflow-hidden shadow-md card-hover transition-all duration-300 transform hover:-translate-y-1"
+        >
+          <img
+            [src]="product.image_url"
+            [alt]="product.name"
+            class="w-full h-64 object-cover"
+            (error)="handleImageError($event)"
+          />
+          <div class="p-6">
+            <h3 class="text-xl font-semibold text-primary mb-2">{{ product.name }}</h3>
+            <p class="text-neutral mb-4">{{ product.description || 'لا يوجد وصف' }}</p>
+            <div class="flex justify-between items-center">
+              <span class="text-lg font-bold text-primary">{{ product.price }} دينار</span>
+              <button
+                class="bg-primary text-white px-4 py-2 rounded hover:bg-opacity-90 transition-all"
+              >
+                أضف إلى السلة
+              </button>
+            </div>
           </div>
         </div>
-      </div> -->
+        }
+      </div>
+      }
 
-      <!-- Product 3 -->
-      <!-- <div
-        routerLink="/product-item"
-        class="bg-gray-50 rounded-lg overflow-hidden shadow-md card-hover transition-all"
-      >
-        <img
-          src="https://images.unsplash.com/photo-1538688525198-9b88f6f53126?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80"
-          alt="أريكة مريحة"
-          class="w-full h-64 object-cover"
-        />
-        <div class="p-6">
-          <h3 class="text-xl font-semibold text-primary mb-2">طقم أريكة فاخر</h3>
-          <p class="text-neutral mb-4">راحة فائقة مع تصميم أنيق لغرفة المعيشة الخاصة بك.</p>
-          <div class="flex justify-between items-center">
-            <span class="text-lg font-bold text-primary">1,299$</span>
+      <!-- No products message -->
+      @if (!isLoading && products.length === 0) {
+      <div class="text-center py-12">
+        <p class="text-xl text-neutral">لا توجد منتجات متاحة حالياً</p>
+      </div>
+      }
+
+      <!-- Pagination controls -->
+      @if (totalPages >= 1 && !isLoading) {
+
+      <div id="pagination" class="flex justify-center mt-12 space-x-2 space-x-reverse">
+        <button
+          (click)="previousPage()"
+          [disabled]="currentPage === 1"
+          id="prev-btn"
+          class="px-4 py-2 bg-primary text-white rounded disabled:bg-gray-300 disabled:cursor-not-allowed"
+        >
+          السابق
+        </button>
+
+        <div class="flex space-x-1 space-x-reverse" id="page-buttons">
+          <div class="flex space-x-1 space-x-reverse">
+            @for (page of [].constructor(totalPages); track $index; let i = $index) {
             <button
-              class="bg-primary text-white px-4 py-2 rounded hover:bg-opacity-90 transition-all"
+              (click)="goToPage(i + 1)"
+              [class.bg-primary]="currentPage === i + 1"
+              [class.text-white]="currentPage === i + 1"
+              [class.bg-gray-200]="currentPage !== i + 1"
+              class="px-4 py-2 rounded"
             >
-              أضف إلى السلة
+              {{ i + 1 }}
             </button>
+            }
           </div>
         </div>
-      </div> -->
+
+        <button
+          (click)="nextPage()"
+          [disabled]="currentPage === totalPages"
+          id="next-btn"
+          class="px-4 py-2 bg-primary text-white rounded disabled:bg-gray-300 disabled:cursor-not-allowed"
+        >
+          التالي
+        </button>
+      </div>
+      }
+
+      <!-- Page info -->
+      @if (totalItems > 0 && !isLoading) {
+      <div class="text-center mt-4 text-neutral">
+        عرض {{ products.length }} من أصل {{ totalItems }} منتج
+      </div>
+      }
     </div>
 
     <div class="text-center mt-12">
