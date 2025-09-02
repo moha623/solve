@@ -10,7 +10,7 @@ import { Product } from '../models/product.model';
   styleUrl: './related-products.css'
 })
 export class RelatedProducts {
-  @Input() relatedProducts!: Product[];
+@Input() relatedProducts!: Product[];
 
   getStarsArray(rating: number): number[] {
     const totalStars = 5;

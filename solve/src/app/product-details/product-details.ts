@@ -12,7 +12,7 @@ import { Product } from '../models/product.model';
   styleUrl: './product-details.css'
 })
 export class ProductDetails {
-  @Input() product!: Product;
+@Input() product!: Product;
   quantity: number = 1;
 
   decreaseQuantity() {
