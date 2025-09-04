@@ -1,79 +1,173 @@
-.discount-badge {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  background: linear-gradient(135deg, #ec4899, #8b5cf6);
-  color: white;
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-weight: 700;
-  font-size: 14px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 20;
-}
-
-.circle-backdrop {
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, #dbeafe 0%, rgba(219, 234, 254, 0) 70%);
-  border-radius: 50%;
-  z-index: 1;
-}
-
-.quantity-btn {
-  background-color: #f1f5f9;
-  border: 1px solid #cbd5e1;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  transition: all 0.3s;
-}
-
-.quantity-btn:hover {
-  background-color: #e2e8f0;
-}
-
-.cart-btn {
-  background: linear-gradient(to left, #2563eb, #8b5cf6);
-  transition: all 0.3s;
-  box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
-}
-
-.cart-btn:hover {
-  background: linear-gradient(to left, #1d4ed8, #7c3aed);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 8px rgba(37, 99, 235, 0.3);
-}
-
-.favorite-btn {
-  transition: all 0.3s;
-}
-
-.favorite-btn:hover {
-  transform: scale(1.1);
-}
-
-.guarantee-badge {
-  background-color: #f8fafc;
-  border: 1px dashed #cbd5e1;
-  border-radius: 12px;
-}
-
-.star-filled {
-  color: #f59e0b;
-}
-
-.star-empty {
-  color: #cbd5e1;
-}
-
-@media (max-width: 768px) {
-  .circle-backdrop {
-    width: 200px;
-    height: 200px;
-  }
-}
+ body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8fafc;
+    }
+    
+    .product-container {
+      max-width: 100%;
+      margin: 0 auto;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    
+    .circle-backdrop {
+      background: radial-gradient(circle, #e0f2fe 0%, #bae6fd 50%, #e0f2fe 100%);
+      opacity: 0.7;
+    }
+    
+    .quantity-btn {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      transition: all 0.2s ease;
+      border: 1px solid #d1d5db;
+    }
+    
+    .quantity-btn:active {
+      transform: scale(0.95);
+    }
+    
+    .cart-btn {
+      background: linear-gradient(to left, #3b82f6, #2563eb);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+    }
+    
+    .cart-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+    }
+    
+    .favorite-btn {
+      transition: all 0.3s ease;
+    }
+    
+    .favorite-btn:active {
+      transform: scale(1.1);
+    }
+    
+    .guarantee-badge {
+      border: 1px solid #e5e7eb;
+      background: linear-gradient(to right, #f9fafb, #f3f4f6);
+    }
+    
+    .image-thumbnail {
+      transition: all 0.2s ease;
+    }
+    
+    .image-thumbnail:active {
+      transform: scale(1.1);
+    }
+    
+    .discount-badge {
+      background: linear-gradient(135deg, #ec4899, #8b5cf6);
+      color: white;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 14px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Swipeable image gallery for mobile */
+    .image-gallery {
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .image-gallery::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .gallery-image {
+      scroll-snap-align: start;
+      flex-shrink: 0;
+    }
+    
+    /* Mobile bottom action bar */
+    .mobile-action-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+      padding: 12px;
+      z-index: 50;
+    }
+    
+    /* Improved touch targets for mobile */
+    .touch-target {
+      min-height: 44px;
+      min-width: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Animation for the main image */
+    img {
+      transition: transform 0.5s ease;
+    }
+    
+    /* Input number arrows removal for a cleaner look */
+    input[type='number'] {
+      -moz-appearance: textfield;
+    }
+    
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    
+    /* Ripple effect for buttons */
+    .ripple {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .ripple:after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+      background-repeat: no-repeat;
+      background-position: 50%;
+      transform: scale(10, 10);
+      opacity: 0;
+      transition: transform .5s, opacity 1s;
+    }
+    
+    .ripple:active:after {
+      transform: scale(0, 0);
+      opacity: .3;
+      transition: 0s;
+    }
+    
+    /* Loading animation for images */
+    .image-loading {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+    }
+    
+    @keyframes loading {
+      0% {
+        background-position: 200% 0;
+      }
+      100% {
+        background-position: -200% 0;
+      }
+    }

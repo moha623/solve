@@ -1,3 +1,4 @@
+// supabase.service.ts
 import { Injectable } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { environment } from '../../envirement/environment';
@@ -12,14 +13,12 @@ export class SupabaseService {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
   }
 
-  async uploadImage(filePath: string, file: File) {
+async uploadImage(filePath: string, file: File): Promise<{ data: any; error: any }> {
     try {
-      const { data, error } = await this.supabase.storage
-        .from('products')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: false,
-        });
+      const { data, error } = await this.supabase.storage.from('products').upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: false,
+      });
 
       if (error) {
         console.error('Storage upload error:', error);
@@ -35,10 +34,9 @@ export class SupabaseService {
 
   getDownloadURL(filePath: string): string {
     try {
-      const { data } = this.supabase.storage
-        .from('products')
-        .getPublicUrl(filePath);
-      
+      const { data } = this.supabase.storage.from('products').getPublicUrl(filePath);
+      console.log('Getting download URL for path:', filePath);
+      console.log('Public URL:', data.publicUrl);
       return data.publicUrl;
     } catch (error) {
       console.error('Get download URL error:', error);
@@ -49,22 +47,37 @@ export class SupabaseService {
   async insertProduct(product: any) {
     try {
       console.log('Inserting product:', product);
-      
-      // Ensure we have all required fields
-      if (!product.name || !product.category || !product.image) {
+
+      // Updated validation for new Product model with media_urls array
+      if (!product.name || !product.description || !product.price || 
+          !product.media_urls || product.media_urls.length === 0) {
         throw new Error('Missing required product fields');
       }
-      
+
       const { data, error } = await this.supabase
         .from('products')
-        .insert([product])
-        .select(); // This returns the inserted data
-      
+        .insert([
+          {
+            id: product.id,
+            name: product.name,
+            description: product.description,
+            price: product.price,
+            original_price: product.originalPrice || null,
+            discount: product.discount || null,
+            rating: product.rating || 0,
+            review_count: product.reviewCount || 0,
+            features: product.features || [],
+            media_urls: product.media_urls, // Now an array of URLs
+            delivery_fee: product.deliveryFee || 0,
+          },
+        ])
+        .select();
+
       if (error) {
         console.error('Database insert error:', error);
         throw error;
       }
-      
+
       console.log('Insert successful:', data);
       return { data, error };
     } catch (error) {

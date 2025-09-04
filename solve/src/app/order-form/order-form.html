@@ -4,57 +4,82 @@
 
   <div class="mb-6 p-4 bg-gray-50 rounded-lg">
     <div class="flex items-center">
-      <img [src]="product.image_url" [alt]="product.name" class="w-16 h-16 object-cover rounded-lg">
+      <img
+        [src]="product.media_urls[1]"
+        [alt]="product.name"
+        class="w-16 h-16 object-cover rounded-lg"
+      />
       <div class="mr-4">
         <h3 class="font-bold text-gray-800">{{ product.name }}</h3>
-        <p class="text-gray-600">رقم المنتج: <span id="productId">{{ product.id }}</span></p>
+        <p class="text-gray-600">
+          رقم المنتج: <span id="productId">{{ product.id }}</span>
+        </p>
         <p class="text-blue-600 font-bold">{{ product.price }} €</p>
       </div>
     </div>
   </div>
 
-  <form   [formGroup]="orderForm" (ngSubmit)="onSubmit()" class="space-y-5">
+  <form [formGroup]="orderForm" (ngSubmit)="onSubmit()" class="space-y-5">
     <div>
       <label for="name" class="block text-gray-700 mb-2">الاسم</label>
-      <input type="text" id="name" formControlName="name" placeholder="أدخل اسمك" class="form-input w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      <input
+        type="text"
+        id="name"
+        formControlName="name"
+        placeholder="أدخل اسمك"
+        class="form-input w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
     </div>
 
     <div>
       <label for="phone" class="block text-gray-700 mb-2">الهاتف</label>
-      <input type="tel" id="phone" formControlName="phone" placeholder="أدخل رقم هاتفك" class="form-input w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      <input
+        type="tel"
+        id="phone"
+        formControlName="phone"
+        placeholder="أدخل رقم هاتفك"
+        class="form-input w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
     </div>
 
     <div>
       <label for="address" class="block text-gray-700 mb-2">عنوان</label>
-      <textarea id="address" rows="2" formControlName="address" placeholder="أدخل عنوانك" class="form-input w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+      <textarea
+        id="address"
+        rows="2"
+        formControlName="address"
+        placeholder="أدخل عنوانك"
+        class="form-input w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      ></textarea>
     </div>
 
-    <div class="summary-box p-4 space-y-3">
-      <div class="flex justify-between items-center">
-        <span class="text-gray-700">سعر الوحدة :</span>
-        <span class="font-bold text-blue-600">{{ product.price }} €</span>
-      </div>
+ <!-- Update the summary section -->
+<div class="summary-box p-4 space-y-3">
+  <div class="flex justify-between items-center">
+    <span class="text-gray-700">سعر الوحدة :</span>
+    <span class="font-bold text-blue-600">{{ product.price   }} €</span>
+  </div>
 
-      <div class="flex justify-between items-center">
-        <span class="text-gray-700">الكمية :</span>
-        <span class="font-bold text-blue-600">{{ quantity }}</span>
-      </div>
+  <div class="flex justify-between items-center">
+    <span class="text-gray-700">الكمية :</span>
+    <span class="font-bold text-blue-600">{{ quantity }}</span>
+  </div>
 
-      <div class="flex justify-between items-center">
-        <span class="text-gray-700">المجموع الفرعي :</span>
-        <span class="font-bold text-blue-600">{{ subtotal }} €</span>
-      </div>
+  <div class="flex justify-between items-center">
+    <span class="text-gray-700">المجموع الفرعي :</span>
+    <span class="font-bold text-blue-600">{{ subtotal   }} €</span>
+  </div>
 
-      <div class="flex justify-between items-center">
-        <span class="text-gray-700">التوصيل :</span>
-        <span class="font-bold text-green-600">+{{ product.deliveryFee }} €</span>
-      </div>
+  <div class="flex justify-between items-center">
+    <span class="text-gray-700">التوصيل :</span>
+    <span class="font-bold text-green-600">+{{ product.deliveryFee   }} €</span>
+  </div>
 
-      <div class="border-t pt-3 flex justify-between items-center">
-        <span class="text-lg font-bold text-gray-800">المجموع :</span>
-        <span class="text-xl font-bold text-blue-600">{{ total }} €</span>
-      </div>
-    </div>
+  <div class="border-t pt-3 flex justify-between items-center">
+    <span class="text-lg font-bold text-gray-800">المجموع :</span>
+    <span class="text-xl font-bold text-blue-600">{{ total   }} €</span>
+  </div>
+</div>
 
     <button type="submit" class="purchase-btn w-full py-4 rounded-lg text-white font-bold text-lg">
       <i class="fas fa-shopping-bag ml-2"></i> تأكيد الطلب

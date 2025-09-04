@@ -1,114 +1,211 @@
 <!-- components/product-details/product-details.component.html -->
-<div class="flex flex-col lg:flex-row w-full p-6 md:p-8">
+<div
+  class="flex flex-col lg:flex-row w-full p-6 md:p-8 bg-white rounded-lg lg:shadow-md"
+ 
+  role="region"
+  aria-label="تفاصيل المنتج"
+>
   <!-- Image Section -->
-  <div class="flex justify-center items-center lg:w-1/2 p-4 relative">
-    <div class="circle-backdrop"></div>
-    <img
-      [src]="product.image_url || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80'"
-      [alt]="product.name"
-      class="w-full max-w-md object-contain transition-transform duration-500 hover:scale-105 relative z-10 rounded-lg"
-    />
-    <div class="discount-badge" *ngIf="product.discount">خصم {{ product.discount }}%</div>
-    
-    <!-- Additional product images -->
-    <div class="absolute bottom-4 right-4 flex space-x-reverse space-x-2">
-      <div class="w-12 h-12 bg-white p-1 rounded border border-gray-200 cursor-pointer">
-        <img [src]="product.image_url" 
-             class="w-full h-full object-cover rounded" alt="صورة مصغرة">
-      </div>
-      <div class="w-12 h-12 bg-white p-1 rounded border border-gray-200 cursor-pointer">
-        <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80" 
-             class="w-full h-full object-cover rounded" alt="صورة مصغرة">
-      </div>
+  <section class="flex flex-col items-center lg:w-1/2 p-4 relative" aria-label="صور المنتج">
+    <div
+      class="circle-backdrop absolute inset-0 bg-blue-50 rounded-full transform scale-75 -translate-y-4"
+      aria-hidden="true"
+    ></div>
+
+    <!-- Main Image -->
+    <div class="relative z-10 mb-4 w-full max-w-md h-96 flex items-center justify-center">
+      <img
+        [src]="mainImage"
+        [alt]="product.name"
+        (error)="handleImageError($event)"
+        class="w-full h-full object-contain transition-transform duration-500 hover:scale-105 rounded-lg"
+        loading="lazy"
+      />
     </div>
-  </div>
+
+    <!-- Discount Badge -->
+    <div
+      *ngIf="product.discount && product.discount > 0"
+      class="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold z-20"
+      role="alert"
+      aria-live="polite"
+    >
+      خصم {{ product.discount }}%
+    </div>
+
+    <!-- Additional Product Images -->
+    <nav class="flex space-x-4 mt-4" aria-label="صور إضافية للمنتج">
+      <!-- Main image thumbnail -->
+      <button
+        type="button"
+        class="w-16 h-16 bg-white p-1 rounded border-2 cursor-pointer transition-all focus:outline-none"
+        [class.border-blue-500]="selectedImageIndex === 0"
+        [class.border-gray-200]="selectedImageIndex !== 0"
+        (click)="selectImage(0)"
+        aria-current="{{ selectedImageIndex === 0 ? 'true' : 'false' }}"
+        aria-label="صورة رئيسية"
+      >
+        <img
+          [src]="product.media_urls[0]"
+          (error)="handleImageError($event)"
+          class="w-full h-full object-cover rounded"
+          alt="صورة رئيسية"
+          loading="lazy"
+        />
+      </button>
+
+      <!-- Additional image thumbnails -->
+      <ng-container *ngFor="let img of additionalImages; let i = index">
+        <button
+          type="button"
+          class="w-16 h-16 bg-white p-1 rounded border-2 cursor-pointer transition-all focus:outline-none"
+          [class.border-blue-500]="selectedImageIndex === i + 1"
+          [class.border-gray-200]="selectedImageIndex !== i + 1"
+          (click)="selectImage(i + 1)"
+          aria-current="{{ selectedImageIndex === i + 1 ? 'true' : 'false' }}"
+          [attr.aria-label]="'صورة إضافية ' + (i + 1)"
+        >
+          <img
+            [src]="img"
+            (error)="handleImageError($event)"
+            class="w-full h-full object-cover rounded"
+            alt="صورة إضافية {{ i + 1 }}"
+            loading="lazy"
+          />
+        </button>
+      </ng-container>
+    </nav>
+  </section>
 
   <!-- Product Info Section -->
-  <div class="flex flex-col items-start lg:w-1/2 py-6 lg:py-0 lg:pr-8">
-    <div class="flex items-center text-yellow-400 space-x-reverse space-x-2 mb-2">
-      <div class="flex">
-        <i class="fas fa-star" [ngClass]="star <= product.rating ? 'star-filled' : 'star-empty'" *ngFor="let star of getStarsArray(product.rating)"></i>
+  <section class="flex flex-col items-start lg:w-1/2 py-6 lg:py-0 lg:pr-8 text-right">
+    <!-- Rating -->
+    <div class="flex items-center text-yellow-400 space-x-2 mb-2" aria-label="تقييم المنتج">
+      <div
+        class="flex"
+        role="img"
+        aria-roledescription="stars"
+        [attr.aria-valuenow]="product.rating"
+        aria-valuemin="0"
+        aria-valuemax="5"
+      >
+        <i
+          *ngFor="let star of getStarsArray(product.rating)"
+          class="fas fa-star text-lg"
+          [class.text-yellow-400]="star <= product.rating"
+          [class.text-gray-300]="star > product.rating"
+          aria-hidden="true"
+        ></i>
       </div>
-      <span class="text-sm font-medium text-gray-700">{{ product.rating }} ({{ product.reviewCount }} تقييم)</span>
+      <span class="text-sm font-medium text-gray-700"
+        >{{ product.rating }} ({{ product.reviewCount }} تقييم)</span
+      >
     </div>
 
-    <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mt-2 mb-3">
+    <!-- Product Name -->
+    <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mt-2 mb-3 w-full">
       {{ product.name }}
     </h1>
 
-    <p class="text-gray-600 mb-6 leading-relaxed text-right">
+    <!-- Description -->
+    <p class="text-gray-600 mb-6 leading-relaxed w-full">
       {{ product.description }}
     </p>
 
     <div class="flex flex-col w-full mb-6">
-      <div class="flex items-center space-x-reverse space-x-2 mb-4">
-        <span class="text-2xl md:text-3xl font-bold text-blue-600">{{ product.price }} €</span>
-        <span class="text-gray-400 line-through" *ngIf="product.originalPrice">{{ product.originalPrice }} €</span>
+      <!-- Pricing -->
+      <div class="flex items-center space-x-2 mb-4">
+        <span class="text-2xl md:text-3xl font-bold text-blue-600"
+          >{{ totalPrice | number : '1.2-2' }} دينار</span
+        >
+        <span
+          *ngIf="product.originalPrice && product.originalPrice > product.price"
+          class="text-lg text-gray-500 line-through"
+        >
+          {{ product.originalPrice * quantity | number : '1.2-2' }} دينار
+        </span>
       </div>
 
-      <!-- Color Selection -->
-      <!-- <div class="mb-4" *ngIf="product.colors && product.colors.length">
-        <h3 class="text-gray-700 font-medium mb-2">اللون:</h3>
-        <div class="flex space-x-reverse space-x-3">
-          <div *ngFor="let color of product.colors" 
-               class="w-8 h-8 rounded-full border-2 border-white shadow cursor-pointer" 
-               [style.background-color]="color">
-          </div>
-        </div>
-      </div> -->
-      
       <!-- Quantity Selection -->
       <div class="mb-6">
-        <h3 class="text-gray-700 font-medium mb-2">الكمية:</h3>
-        <div class="flex items-center">
-          <button (click)="decreaseQuantity()" class="quantity-btn rounded-r-lg">
-            <i class="fas fa-minus"></i>
+        <label for="quantityInput" class="text-gray-700 font-medium mb-2 block">الكمية:</label>
+        <div class="flex items-center justify-start">
+          <button
+            (click)="increaseQuantity()"
+            class="quantity-btn rounded-l-lg bg-blue-100 text-blue-600 hover:bg-blue-200"
+            aria-label="زيادة الكمية"
+          >
+            <i class="fas fa-plus"></i>
           </button>
           <input
+            id="quantityInput"
             type="number"
             [(ngModel)]="quantity"
             min="1"
-            class="w-16 h-10 text-center border-t border-b border-gray-300 focus:outline-none"
+            class="w-16 h-12 text-center border-t border-b border-gray-300 focus:outline-none"
+            aria-live="polite"
+            aria-atomic="true"
           />
-          <button (click)="increaseQuantity()" class="quantity-btn rounded-l-lg">
-            <i class="fas fa-plus"></i>
+          <button
+            (click)="decreaseQuantity()"
+            class="quantity-btn rounded-r-lg bg-blue-100 text-blue-600 hover:bg-blue-200"
+            aria-label="تقليل الكمية"
+          >
+            <i class="fas fa-minus"></i>
           </button>
+        </div>
+        <div class="text-gray-500 text-sm mt-2">
+          السعر للوحدة: {{ product.price | number : '1.2-2' }} دينار
         </div>
       </div>
 
       <!-- Action Buttons -->
-      <div class="flex space-x-reverse space-x-4">
-        <button class="cart-btn flex-1 text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center space-x-2">
-          <i class="fas fa-shopping-cart"></i>
+      <div class="flex space-x-4 justify-start">
+        <button
+          class="cart-btn bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-40 rounded-xl flex items-center justify-center space-x-2 space-x-reverse"
+          aria-label="إضافة إلى السلة"
+        >
+          <i class="fas fa-shopping-cart" aria-hidden="true"></i>
           <span>أضف إلى السلة</span>
         </button>
 
-        <button class="favorite-btn w-14 h-14 flex items-center justify-center rounded-full border-2 border-gray-200 text-gray-400 hover:text-red-500 hover:border-red-500">
-          <i class="fas fa-heart text-lg"></i>
+        <button
+          class="favorite-btn w-14 h-14 flex items-center justify-center rounded-full border-2 border-gray-200 text-gray-400 hover:text-red-500 hover:border-red-500"
+          aria-label="إضافة إلى المفضلة"
+        >
+          <i class="fas fa-heart text-lg" aria-hidden="true"></i>
         </button>
       </div>
     </div>
 
     <!-- Product Features -->
-    <div class="border-t border-gray-100 pt-4 w-full text-right" *ngIf="product.features && product.features.length">
-      <div class="mb-6">
+    <section
+      class="border-t border-gray-100 pt-4 w-full"
+      *ngIf="product.features && product.features.length"
+      aria-label="مميزات المنتج"
+    >
+      <div>
         <h3 class="text-lg font-bold text-gray-800 mb-3">مميزات المنتج:</h3>
         <ul class="space-y-2">
-          <li class="flex items-center" *ngFor="let feature of product.features">
-            <i class="fas fa-check-circle text-blue-600 ml-2"></i>
+          <li class="flex items-center justify-start" *ngFor="let feature of product.features">
+               <i class="fas fa-check-circle text-blue-600 ml-2" aria-hidden="true"></i>
             <span class="text-gray-600">{{ feature }}</span>
+        
           </li>
         </ul>
       </div>
 
       <!-- Guarantee Section -->
-      <div class="guarantee-badge p-4 flex items-center rounded-xl">
-        <i class="fas fa-shield-alt text-blue-600 text-2xl ml-3"></i>
-        <div>
+      <div
+        class="guarantee-badge p-4 bg-gray-50 rounded-xl flex items-center justify-start mt-6"
+        aria-label="ضمان استرداد الأموال"
+      >
+        <div class="text-right ml-3">
           <h4 class="font-bold text-gray-800">ضمان استرداد الأموال</h4>
           <p class="text-sm text-gray-600">30 يوم ضمان استرجاع إذا لم تكن راضيًا</p>
         </div>
+        <i class="fas fa-shield-alt text-blue-600 text-2xl" aria-hidden="true"></i>
       </div>
-    </div>
-  </div>
+    </section>
+  </section>
 </div>

@@ -7,6 +7,7 @@ import { Login } from './auth/login/login';
 import { Register } from './auth/register/register';
 import { Auth } from './auth/auth';
 import {  ProductPage } from './product/productPage';
+import { OrderReturns } from './admin/order-returns/order-returns';
 
 export const routes: Routes = [
   {
@@ -30,6 +31,7 @@ export const routes: Routes = [
     component: AdminLayout,
     children: [
       { path: 'dashboard', component: Dashbord },
+      {path: 'orders-returns', component: OrderReturns },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },

@@ -16,4 +16,8 @@ export class RelatedProducts {
     const totalStars = 5;
     return Array.from({ length: totalStars }, (_, i) => i + 1);
   }
+
+      handleImageError(event: any) {
+    event.target.src = 'path/to/placeholder/image.jpg';
+  }
 }

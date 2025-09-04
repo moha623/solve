@@ -1,4 +1,3 @@
-// models/product.model.ts
 export interface Product {
   id: string;
   name: string;
@@ -9,6 +8,6 @@ export interface Product {
   rating: number;
   reviewCount: number;
   features: string[];
-  image_url: string;
+  media_urls: string[]; // Changed from image_url to media_urls (array)
   deliveryFee: number;
 }

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
- 
+ import { DecimalPipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ProductService } from '../services/product.service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -20,10 +20,17 @@ export class OrderForm {
     this.createForm();
   }
 
+  ngOnInit() {
+    // Ensure quantity is at least 1
+    if (!this.quantity || this.quantity < 1) {
+      this.quantity = 1;
+    }
+  }
+
   createForm() {
     this.orderForm = this.fb.group({
       name: ['', Validators.required],
-      phone: ['', Validators.required],
+      // phone: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       address: ['', Validators.required]
     });
   }
@@ -33,10 +40,10 @@ export class OrderForm {
   }
 
   get total(): number {
-    return this.subtotal + this.product.deliveryFee;
+    return this.subtotal + (this.product.deliveryFee || 0);
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.orderForm.valid) {
       const order = {
         product_id: this.product.id,
@@ -45,16 +52,25 @@ export class OrderForm {
         customer_name: this.orderForm.value.name,
         customer_phone: this.orderForm.value.phone,
         customer_address: this.orderForm.value.address,
-        total_price: this.total
+        total_price: this.total,
+        subtotal: this.subtotal,
+        delivery_fee: this.product.deliveryFee || 0
       };
 
-      this.productService.createOrder(order).then(() => {
+      try {
+        await this.productService.createOrder(order);
         alert('تم استلام طلبك بنجاح!');
-      }).catch(error => {
+        this.orderForm.reset();
+      } catch (error) {
         console.error('Error creating order:', error);
-      });
+        alert('حدث خطأ أثناء تقديم الطلب. يرجى المحاولة مرة أخرى.');
+      }
     } else {
-      alert('يرجى ملء جميع الحقول المطلوبة');
+      alert('يرجى ملء جميع الحقول المطلوبة بشكل صحيح');
     }
+  }
+
+  handleImageError(event: any) {
+    event.target.src = 'path/to/placeholder/image.jpg';
   }
 }

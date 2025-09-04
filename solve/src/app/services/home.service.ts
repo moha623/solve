@@ -39,11 +39,19 @@ async getProductsRange(start: number, end: number): Promise<Product[]> {
     throw error;
   }
 
-  // ببساطة إعادة تسمية image إلى image_url
-  const productsWithUrls = data.map(product => ({
-    ...product,
-    image_url: product.image // استخدم الحقل image مباشرة
-  }));
+  console.log("Raw data from Supabase:", data);
+
+  // Debug each product to see what fields exist
+  const productsWithUrls = data.map(product => {
+    console.log("Product fields:", Object.keys(product));
+    console.log("Product image:", product.image);
+    console.log("Product image_url:", product.image_url);
+    
+    return {
+      ...product,
+      image_url: product.image_url // Use the existing image_url
+    };
+  });
 
   return productsWithUrls as Product[];
 }
