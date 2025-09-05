@@ -1,4 +1,3 @@
-// guards/auth.guard.ts
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
@@ -14,12 +13,11 @@ export class AuthGuard implements CanActivate {
     return this.authService.authStateChanged.pipe(
       take(1),
       map(isAuthenticated => {
-        if (isAuthenticated) {
-          return true;
-        } else {
+        if (!isAuthenticated) {
           this.router.navigate(['/login']);
           return false;
         }
+        return true;
       })
     );
   }

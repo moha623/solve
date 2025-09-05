@@ -1,16 +1,17 @@
 
 <app-product-details
   [product]="product"
+  [quantity]="quantity"
   (quantityChange)="onQuantityChange($event)"
   *ngIf="product"
 >
 </app-product-details>
 
-<div class="my-10">
+<!-- <div class="my-10">
   <div class="gap-8 mt-10">
     <app-order-form [product]="product" [quantity]="quantity" *ngIf="product"> </app-order-form>
   </div>
-</div>
+</div> -->
 
 <app-related-products [relatedProducts]="relatedProducts" *ngIf="relatedProducts.length > 0">
 </app-related-products>

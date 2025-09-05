@@ -16,7 +16,11 @@ export class Login {
   errorMessage = '';
   showMagicLinkMessage = false;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(
+    private fb: FormBuilder, 
+    private authService: AuthService, 
+    private router: Router
+  ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -33,7 +37,6 @@ export class Login {
     try {
       const { email, password } = this.loginForm.value;
       await this.authService.signIn(email, password);
-      // Navigation is handled by the auth state change listener
     } catch (error: any) {
       this.errorMessage = error.message || 'حدث خطأ أثناء تسجيل الدخول';
     } finally {

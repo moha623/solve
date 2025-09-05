@@ -59,9 +59,6 @@ export class ProductService {
     return data;
   }
 
- 
- 
-
   async createOrder(order: Order): Promise<any> {
     const { data, error } = await this.supabase
       .from('orders')
@@ -86,4 +83,7 @@ export class ProductService {
 
     return data;
   }
+
+
+  
 }

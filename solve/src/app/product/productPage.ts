@@ -5,7 +5,7 @@ import { ProductService } from '../services/product.service';
  
 import { ProductDetails } from "../product-details/product-details";
  
-import { OrderForm } from "../order-form/order-form";
+ 
 import { CommonModule } from '@angular/common';
 import { RelatedProducts } from "../related-products/related-products";
 import { Product } from '../models/product.model';
@@ -13,7 +13,7 @@ import { Product } from '../models/product.model';
  
 @Component({
   selector: 'app-product',
-  imports: [ProductDetails, OrderForm, CommonModule, RelatedProducts],
+  imports: [ProductDetails, CommonModule, RelatedProducts],
   templateUrl: './product.html',
   styleUrl: './product.css'
 })

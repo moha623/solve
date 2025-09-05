@@ -18,7 +18,7 @@
       <div class="flex justify-between items-center">
         <!-- Logo -->
         <div class="flex items-center">
-          <span routerLink="/admin/dashboard" class="text-4xl font-bold text-white heading-font">Promomag</span>
+          <span  class="text-4xl font-bold text-white heading-font">Promomag</span>
         </div>
 
         <!-- Desktop Navigation -->
@@ -43,13 +43,13 @@
 
         <!-- Navigation Icons -->
         <div class="flex items-center space-x-6 space-x-reverse">
-          <a class="text-white hover:text-accent flex items-center gap-2">
+          <!-- <a class="text-white hover:text-accent flex items-center gap-2">
             <span class="text-white font-medium hidden md:inline-block">عربة التسوق</span>
             <div class="relative">
               <i class="fas fa-shopping-cart text-xl"></i>
             </div>
-          </a>
-          <a routerLink="/auth/login" class="text-white hover:text-accent flex items-center gap-2">
+          </a> -->
+          <a routerLink="/login" class="text-white hover:text-accent flex items-center gap-2">
             <span class="text-white font-medium hidden md:inline-block">حسابي</span>
             <i class="fas fa-user text-xl"></i>
           </a>
@@ -78,7 +78,7 @@
             <a
               href="#product"
               class="absolute top-1/4 right-0 transform translate-x-1/2 -translate-y-1/2 bg-white rounded-full w-14 h-14 flex items-center justify-center transition-all duration-300 hover:bg-accent hover:text-white"
-              (click)="navigateTo('products')"
+              
             >
               <i class="fas fa-box text-xl"></i>
             </a>
@@ -92,14 +92,14 @@
 
             <a
               class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 bg-white rounded-full w-14 h-14 flex items-center justify-center transition-all duration-300 hover:bg-accent hover:text-white"
-              (click)="navigateTo('cart')"
+          href="#product"
             >
               <i class="fas fa-shopping-cart text-xl"></i>
             </a>
 
             <a
               class="absolute bottom-1/4 left-0 transform -translate-x-1/2 translate-y-1/2 bg-white rounded-full w-14 h-14 flex items-center justify-center transition-all duration-300 hover:bg-accent hover:text-white"
-              routerLink="/auth/login"
+              routerLink="/login"
             >
               <i class="fas fa-user text-xl"></i>
             </a>

@@ -21,20 +21,20 @@ export class Dashbord implements OnInit {
   successMessage = '';
   errorMessage = '';
   uploadPercent: number | null = null;
-  mediaPreviews: {url: string, type: string, name: string}[] = [];
+  mediaPreviews: { url: string; type: string; name: string }[] = [];
   private supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
-  
+
   isAuthenticated = false;
   userEmail: string | null = null;
 
   constructor(
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private supabaseService: SupabaseService,
     private authService: AuthService
   ) {}
 
   async ngOnInit() {
-    this.authService.authStateChanged.subscribe(state => {
+    this.authService.authStateChanged.subscribe((state) => {
       this.isAuthenticated = state;
       if (state) {
         this.userEmail = this.authService.user?.email || null;
@@ -43,7 +43,7 @@ export class Dashbord implements OnInit {
 
     const { data: buckets, error } = await this.supabase.storage.listBuckets();
     console.log(buckets);
-    
+
     this.productForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
@@ -54,11 +54,11 @@ export class Dashbord implements OnInit {
       reviewCount: [0, [Validators.min(0)]],
       features: [''],
       media_urls: [[], Validators.required], // Changed to array for multiple media
-      deliveryFee: [0, [Validators.min(0)]]
+      deliveryFee: [0, [Validators.min(0)]],
     });
   }
 
-   async onMediaSelected(event: any) {
+  async onMediaSelected(event: any) {
     const files: FileList = event.target.files;
     if (!files || files.length === 0) return;
 
@@ -83,17 +83,17 @@ export class Dashbord implements OnInit {
         // Get the public URL of the uploaded file
         const downloadURL = this.supabaseService.getDownloadURL(filePath);
         mediaUrls.push(downloadURL);
-        
+
         // Add to preview
         this.mediaPreviews.push({
           url: downloadURL,
           type: fileType,
-          name: file.name
+          name: file.name,
         });
 
         uploadedCount++;
         this.uploadPercent = (uploadedCount / totalFiles) * 100;
-        
+
         console.log('Media uploaded successfully:', downloadURL);
       } catch (error: any) {
         console.error('Media upload error:', error);
@@ -116,10 +116,10 @@ export class Dashbord implements OnInit {
 
   async onSubmit() {
     if (this.loading) return;
-    
+
     // Mark all fields as touched to show validation messages
     if (this.productForm.invalid) {
-      Object.keys(this.productForm.controls).forEach(key => {
+      Object.keys(this.productForm.controls).forEach((key) => {
         this.productForm.get(key)?.markAsTouched();
       });
       return;
@@ -141,11 +141,14 @@ export class Dashbord implements OnInit {
         discount: formValue.discount > 0 ? formValue.discount : null,
         rating: formValue.rating,
         reviewCount: formValue.reviewCount,
-        features: formValue.features ? 
-          formValue.features.split(',').map((f: string) => f.trim()).filter((f: string) => f.length > 0) 
+        features: formValue.features
+          ? formValue.features
+              .split(',')
+              .map((f: string) => f.trim())
+              .filter((f: string) => f.length > 0)
           : [],
         media_urls: formValue.media_urls, // Now an array of URLs
-        deliveryFee: formValue.deliveryFee
+        deliveryFee: formValue.deliveryFee,
       };
 
       console.log('Submitting product:', productData);
@@ -189,22 +192,14 @@ export class Dashbord implements OnInit {
       reviewCount: 0,
       features: '',
       media_urls: [],
-      deliveryFee: 0
+      deliveryFee: 0,
     });
     this.successMessage = '';
     this.errorMessage = '';
     this.mediaPreviews = [];
   }
 
-      handleImageError(event: any) {
+  handleImageError(event: any) {
     event.target.src = 'path/to/placeholder/image.jpg';
   }
-}  
-
-
-// handleImageError(event: any) {
-//     event.target.src = 'path/to/placeholder/image.jpg';
-//   } 
-
-
-// (change)="onFileSelected($event)"
+}
