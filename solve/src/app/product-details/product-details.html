@@ -3,18 +3,18 @@
   class="product-container flex flex-col lg:flex-row w-full p-4 md:p-6 lg:p-8 bg-white rounded-lg lg:shadow-md"
   role="region"
   aria-label="تفاصيل المنتج"
+  *ngIf="product; else loading"
 >
   <!-- Image Section -->
-  <section 
-    class="flex flex-col items-center lg:w-1/2 p-4 relative"
-    aria-label="صور المنتج"
-  >
+  <section class="flex flex-col items-center lg:w-1/2 p-4 relative" aria-label="صور المنتج">
     <div
       class="circle-backdrop absolute inset-0 bg-blue-50 rounded-full transform scale-75 -translate-y-4"
       aria-hidden="true"
     ></div>
     <!-- Main Image -->
-    <div class="relative z-10 mb-4 w-full max-w-md h-72 sm:h-80 md:h-96 flex items-center justify-center">
+    <div
+      class="relative z-10 mb-4 w-full max-w-md h-72 sm:h-80 md:h-96 flex items-center justify-center"
+    >
       <img
         [src]="mainImage"
         [alt]="product.name"
@@ -78,10 +78,13 @@
     </nav>
   </section>
 
-  <!-- Product Info Section -->
-  <section class="flex flex-col items-start lg:w-1/2 py-6 lg:py-0 lg:pr-8 text-right w-full">
+ <section class="flex flex-col items-start lg:w-1/2 py-6 lg:py-0 lg:pr-8 text-right w-full">
     <!-- Rating -->
-    <div class="flex items-center text-yellow-400 space-x-2 mb-2" aria-label="تقييم المنتج" dir="rtl">
+    <div
+      class="flex items-center text-yellow-400 space-x-2 mb-2"
+      aria-label="تقييم المنتج"
+      dir="rtl"
+    >
       <div
         class="flex"
         role="img"
@@ -156,7 +159,7 @@
         </div>
       </div>
       <!-- Action Buttons -->
-      <div class="hidden lg:flex space-x-4 justify-start" dir="rtl">
+      <!-- <div class="hidden lg:flex space-x-4 justify-start" dir="rtl">
         <button
           class="cart-btn bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-20 rounded-xl flex items-center justify-center space-x-2 space-x-reverse"
           aria-label="إضافة إلى السلة"
@@ -172,7 +175,7 @@
           <span>العودة للتسوق</span>
           <i class="fas fa-arrow-left" aria-hidden="true"></i>
         </button>
-      </div>
+      </div> -->
     </div>
     <!-- Product Features -->
     <section
@@ -183,7 +186,11 @@
       <div>
         <h3 class="text-lg font-bold text-gray-800 mb-3">مميزات المنتج:</h3>
         <ul class="space-y-2">
-          <li class="flex items-center justify-start" *ngFor="let feature of product.features" dir="rtl">
+          <li
+            class="flex items-center justify-start"
+            *ngFor="let feature of product.features"
+            dir="rtl"
+          >
             <i class="fas fa-check-circle text-blue-600 ml-2" aria-hidden="true"></i>
             <span class="text-gray-600">{{ feature }}</span>
           </li>
@@ -204,35 +211,40 @@
     </section>
   </section>
 </div>
-
+<ng-template #loading>
+  <p>Loading product details...</p>
+</ng-template>
 <!-- Mobile bottom action bar -->
-<div class="mobile-action-bar lg:hidden fixed bottom-0 left-0 right-0 bg-white p-4 flex justify-between shadow-lg z-50" dir="rtl">
+<div
+  class="mobile-action-bar lg:hidden fixed bottom-0 left-0 right-0 bg-white p-4 flex justify-between shadow-lg z-50"
+  dir="rtl"
+>
   <button
     class="cart-btn flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl flex items-center justify-center space-x-2 space-x-reverse mx-1"
-    aria-label="إضافة إلى السلة"
-  >
-    <i class="fas fa-shopping-cart" aria-hidden="true"></i>
-    <span>أضف إلى السلة</span>
-  </button>
-  <button
-    class="return-shopping-btn flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 rounded-xl flex items-center justify-center space-x-2 mx-1"
     aria-label="العودة للتسوق"
     (click)="goBackToShopping()"
   >
     <span>العودة للتسوق</span>
     <i class="fas fa-arrow-left" aria-hidden="true"></i>
   </button>
+  <!-- <button
+    class="return-shopping-btn flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 rounded-xl flex items-center justify-center space-x-2 mx-1"
+    aria-label="العودة للتسوق"
+    (click)="goBackToShopping()"
+  >
+    <span>العودة للتسوق</span>
+    <i class="fas fa-arrow-left" aria-hidden="true"></i>
+  </button> -->
 </div>
 
 <div class="my-10 px-4 sm:px-6 md:px-8">
   <div class="gap-8 mt-10 max-w-4xl mx-auto">
-    <div
-      class="bg-white rounded-2xl shadow-lg p-6"
-      *ngIf="product"
-      dir="rtl"
-    >
+    <div class="bg-white rounded-2xl shadow-lg p-6" *ngIf="product" dir="rtl">
       <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">أطلب الآن</h2>
-      <div class="mb-6 p-4 bg-gray-50 rounded-lg flex items-center space-x-4 sm:space-x-6" dir="rtl">
+      <div
+        class="mb-6 p-4 bg-gray-50 rounded-lg flex items-center space-x-4 sm:space-x-6"
+        dir="rtl"
+      >
         <img
           [src]="product.media_urls[0]"
           [alt]="product.name"
@@ -241,9 +253,7 @@
         />
         <div class="mr-4">
           <h3 class="font-bold text-gray-800 text-base sm:text-lg">{{ product.name }}</h3>
-          <p class="text-gray-600 text-sm">
-            رقم المنتج: {{ product.id }}
-          </p>
+          <p class="text-gray-600 text-sm">رقم المنتج: {{ product.id }}</p>
           <p class="text-blue-600 font-bold text-lg">{{ product.price }} د</p>
         </div>
       </div>
@@ -313,7 +323,10 @@
           تأكيد الطلب
         </button>
       </form>
-      <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100 flex items-start space-x-3 sm:space-x-6" dir="rtl">
+      <div
+        class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100 flex items-start space-x-3 sm:space-x-6"
+        dir="rtl"
+      >
         <div class="ml-3">
           <i class="fas fa-truck text-blue-500 text-xl sm:text-2xl"></i>
         </div>

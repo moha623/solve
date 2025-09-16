@@ -33,6 +33,7 @@ throw new Error('Method not implemented.');
 
   ngOnInit() {
     this.loadProducts();
+        this.startRotation();
   }
 
     async loadProducts() {
@@ -49,7 +50,7 @@ throw new Error('Method not implemented.');
 
       // Fetch paginated products
       this.products = await this.homeService.getProductsRange(start, end);
-      console.log('Products loaded:', this.products);
+  
       
       // Initialize loading states
       this.products.forEach(product => {
@@ -98,14 +99,14 @@ throw new Error('Method not implemented.');
     this.imageLoadingStates[productId] = false;
   }
 
-  handleImageError(event: any, productId: string) {
-    console.log('Image error occurred, using placeholder');
-    this.imageLoadingStates[productId] = false;
-    this.imageErrors[productId] = true;
+  // handleImageError(event: any, productId: string) {
+  //   console.log('Image error occurred, using placeholder');
+  //   this.imageLoadingStates[productId] = false;
+  //   this.imageErrors[productId] = true;
     
-    // Set placeholder image
-    event.target.src = 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80';
-  }
+  //   // Set placeholder image
+  //   event.target.src = 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80';
+  // }
 
   openWhatsApp() {
     const url = `https://wa.me/${this.whatsappNumber}?text=${encodeURIComponent(
@@ -177,7 +178,86 @@ getEndIndex(): number {
 // Add to cart functionality
 addToCart(product: Product): void {
   // Implement your cart functionality here
-  console.log('Adding to cart:', product);
+ 
   // You can integrate with a cart service here
 }
+
+  currentIndex = 0;
+  private rotationInterval: any;
+    ngOnDestroy() {
+    this.stopRotation();
+  }
+  startRotation() {
+    this.rotationInterval = setInterval(() => {
+      this.nextProduct();
+    }, 4000);
+  }
+
+  stopRotation() {
+    if (this.rotationInterval) {
+      clearInterval(this.rotationInterval);
+    }
+  }
+
+  pauseRotation() {
+    this.stopRotation();
+  }
+
+  resumeRotation() {
+    this.startRotation();
+  }
+
+  nextProduct() {
+    this.currentIndex = (this.currentIndex + 1) % this.products.length;
+  }
+
+  previousProduct() {
+    this.currentIndex = (this.currentIndex - 1 + this.products.length) % this.products.length;
+  }
+
+  selectProduct(index: number) {
+    this.currentIndex = index;
+  }
+
+  getProductClass(index: number): string {
+    if (index === this.currentIndex) {
+      return 'active';
+    }
+    
+    const prevIndex = (this.currentIndex - 1 + this.products.length) % this.products.length;
+    if (index === prevIndex) {
+      return 'prev';
+    }
+    
+    const nextIndex = (this.currentIndex + 1) % this.products.length;
+    if (index === nextIndex) {
+      return 'next';
+    }
+    
+    return 'hidden';
+  }
+
+  getStars(rating: number): string[] {
+    const stars = [];
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    
+    for (let i = 0; i < fullStars; i++) {
+      stars.push('fas fa-star');
+    }
+    
+    if (hasHalfStar) {
+      stars.push('fas fa-star-half-alt');
+    }
+    
+    const emptyStars = 5 - stars.length;
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push('far fa-star');
+    }
+    
+    return stars;
+  }
+    handleImageError(event: any) {
+    event.target.src = 'path/to/placeholder/image.jpg';
+  }
 }

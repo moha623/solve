@@ -19,28 +19,23 @@ export const routes: Routes = [
     children: [
       { path: '', component: Home, pathMatch: 'full' },
       { path: 'product/:id', component: ProductPage },
-      // Add more child routes for public pages here if needed
     ],
   },
   {
     path: 'admin',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard],  // Uncommented guard
     component: AdminLayout,
     children: [
-      {path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: Dashbord },
       { path: 'orders-returns', component: OrderReturns },
-      // Other admin routes here
     ],
   },
   { path: 'login', component: Login },
-  // { path: 'register', component: Register }, // Uncomment if register is enabled
+  // { path: 'register', component: Register },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
-
-  // Redirect empty path explicitly if needed
-  { path: '', redirectTo: '', pathMatch: 'full' }, 
   
-  // Wildcard route to catch all undefined routes and redirect to home or login
-  { path: '**', redirectTo: '', pathMatch: 'full' }, 
+  // Wildcard route should remain at the end
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

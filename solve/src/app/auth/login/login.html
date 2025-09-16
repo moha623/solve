@@ -1,10 +1,20 @@
 <!-- components/login/login.component.html -->
+<!-- Arrow button container -->
+<div class="back-arrow-container">
+  <a href="/" aria-label="Back to home page" class="back-arrow-button">
+    &#8592; <!-- Left arrow Unicode -->
+  </a>
+</div>
+
 <div class="auth-container">
+
   <div class="auth-card shadow-lg">
-    <div class="auth-header">
-      <h2>تسجيل الدخول للإدارة</h2>
-      <p>مرحباً بعودتك! يرجى إدخال بياناتك للدخول</p>
-    </div>
+ <div class="auth-header">
+
+  <h2>تسجيل الدخول للإدارة</h2>
+  <p>مرحباً بعودتك! يرجى إدخال بياناتك للدخول</p>
+</div>
+
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form" novalidate>
       <div class="form-group">

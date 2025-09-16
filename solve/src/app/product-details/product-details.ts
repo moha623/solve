@@ -29,8 +29,6 @@ export class ProductDetails {
   orderForm!: FormGroup;
   // Sample additional images (in a real app, these would come from the product data)
   additionalImages: string[] = [
-    'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
   ];
   constructor(
     private fb: FormBuilder,
@@ -78,7 +76,7 @@ export class ProductDetails {
 
   get mainImage(): string {
     if (this.selectedImageIndex === 0) {
-      return this.product.media_urls[1] || this.imagePlaceholder;
+      return this.product.media_urls[0] || this.imagePlaceholder;
     } else {
       return this.additionalImages[this.selectedImageIndex - 1] || this.imagePlaceholder;
     }

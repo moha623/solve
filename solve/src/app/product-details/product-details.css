@@ -225,3 +225,26 @@ input::-webkit-inner-spin-button {
     font-size: 1.75rem /*28px*/;
   }
 }
+.toast {
+  animation: slideIn 0.3s ease-out, fadeOut 0.5s ease-in 2.5s forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

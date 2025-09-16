@@ -1,19 +1,29 @@
-// dashbord.component.ts
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SupabaseService } from '../../services/supabase.service';
 import { AuthService } from '../../services/auth.service';
-import { createClient } from '@supabase/supabase-js';
-import { environment } from '../../../envirement/environment';
+import { trigger, transition, style, animate } from '@angular/animations';
+import { RouterModule } from "@angular/router";
 
 @Component({
   selector: 'app-dashbord',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './dashbord.html',
   styleUrls: ['./dashbord.css'],
+  animations: [
+    trigger('slideInOut', [
+      transition(':enter', [
+        style({ transform: 'translateX(100%)', opacity: 0 }),
+        animate('300ms ease-out', style({ transform: 'translateX(0)', opacity: 1 })),
+      ]),
+      transition(':leave', [
+        animate('300ms ease-in', style({ transform: 'translateX(100%)', opacity: 0 })),
+      ]),
+    ]),
+  ],
 })
 export class Dashbord implements OnInit {
   productForm!: FormGroup;
@@ -22,10 +32,17 @@ export class Dashbord implements OnInit {
   errorMessage = '';
   uploadPercent: number | null = null;
   mediaPreviews: { url: string; type: string; name: string }[] = [];
-  private supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
 
-  isAuthenticated = false;
-  userEmail: string | null = null;
+  products: any[] = [];
+  totalProducts = 247;
+  currentPage = 1;
+  itemsPerPage = 8;
+  totalPages = Math.ceil(this.totalProducts / this.itemsPerPage);
+  showDeleteModal = false;
+  selectedProduct: any = null;
+
+  showToast = false;
+  toastMessage = '';
 
   constructor(
     private fb: FormBuilder,
@@ -34,16 +51,6 @@ export class Dashbord implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.authService.authStateChanged.subscribe((state) => {
-      this.isAuthenticated = state;
-      if (state) {
-        this.userEmail = this.authService.user?.email || null;
-      }
-    });
-
-    const { data: buckets, error } = await this.supabase.storage.listBuckets();
-    console.log(buckets);
-
     this.productForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
@@ -53,9 +60,11 @@ export class Dashbord implements OnInit {
       rating: [0, [Validators.min(0), Validators.max(5)]],
       reviewCount: [0, [Validators.min(0)]],
       features: [''],
-      media_urls: [[], Validators.required], // Changed to array for multiple media
+      media_urls: [[], Validators.required],
       deliveryFee: [0, [Validators.min(0)]],
     });
+
+    this.loadProducts();
   }
 
   async onMediaSelected(event: any) {
@@ -68,23 +77,19 @@ export class Dashbord implements OnInit {
     let uploadedCount = 0;
     const mediaUrls: string[] = [];
 
-    // Process each file
     for (let i = 0; i < totalFiles; i++) {
       const file = files[i];
       const fileExtension = file.name.split('.').pop()?.toLowerCase();
-      const fileType = file.type.split('/')[0]; // 'image' or 'video'
+      const fileType = file.type.split('/')[0];
       const filePath = `products/${Date.now()}_${file.name}`;
 
       try {
-        // Upload the file to Supabase storage
         const { data, error } = await this.supabaseService.uploadImage(filePath, file);
         if (error) throw error;
 
-        // Get the public URL of the uploaded file
         const downloadURL = this.supabaseService.getDownloadURL(filePath);
         mediaUrls.push(downloadURL);
 
-        // Add to preview
         this.mediaPreviews.push({
           url: downloadURL,
           type: fileType,
@@ -93,15 +98,12 @@ export class Dashbord implements OnInit {
 
         uploadedCount++;
         this.uploadPercent = (uploadedCount / totalFiles) * 100;
-
-        console.log('Media uploaded successfully:', downloadURL);
       } catch (error: any) {
         console.error('Media upload error:', error);
         this.errorMessage = `خطأ في رفع الملف: ${file.name}: ${error.message}`;
       }
     }
 
-    // Update the form control with all media URLs
     this.productForm.patchValue({ media_urls: mediaUrls });
     this.loading = false;
     this.uploadPercent = null;
@@ -117,7 +119,6 @@ export class Dashbord implements OnInit {
   async onSubmit() {
     if (this.loading) return;
 
-    // Mark all fields as touched to show validation messages
     if (this.productForm.invalid) {
       Object.keys(this.productForm.controls).forEach((key) => {
         this.productForm.get(key)?.markAsTouched();
@@ -130,7 +131,6 @@ export class Dashbord implements OnInit {
     this.errorMessage = '';
 
     try {
-      // Prepare the product data
       const formValue = this.productForm.value;
       const productData = {
         id: this.generateId(),
@@ -147,13 +147,10 @@ export class Dashbord implements OnInit {
               .map((f: string) => f.trim())
               .filter((f: string) => f.length > 0)
           : [],
-        media_urls: formValue.media_urls, // Now an array of URLs
+        media_urls: formValue.media_urls,
         deliveryFee: formValue.deliveryFee,
       };
 
-      console.log('Submitting product:', productData);
-
-      // Check if media_urls is defined and has at least one item
       if (!productData.media_urls || productData.media_urls.length === 0) {
         throw new Error('At least one media file is required');
       }
@@ -202,4 +199,121 @@ export class Dashbord implements OnInit {
   handleImageError(event: any) {
     event.target.src = 'path/to/placeholder/image.jpg';
   }
+
+  async loadProducts(): Promise<void> {
+    try {
+      const { products, totalCount } = await this.supabaseService.getProducts(
+        this.currentPage,
+        this.itemsPerPage
+      );
+      this.products = products;
+      this.totalProducts = totalCount || 0;
+      this.totalPages = Math.ceil(this.totalProducts / this.itemsPerPage);
+    } catch (error) {
+      console.error('Error loading products:', error);
+    }
+  }
+
+  openDeleteModal(product: any): void {
+    this.selectedProduct = product;
+    this.showDeleteModal = true;
+  }
+
+  closeDeleteModal(): void {
+    this.showDeleteModal = false;
+    this.selectedProduct = null;
+  }
+
+  async confirmDelete(): Promise<void> {
+    if (this.selectedProduct) {
+      try {
+        await this.supabaseService.deleteProduct(this.selectedProduct.id);
+        this.showToastMessage(
+          `Product "${this.selectedProduct.name}" has been deleted successfully`
+        );
+        this.closeDeleteModal();
+        this.loadProducts();
+      } catch (error) {
+        console.error('Error deleting product:', error);
+        this.showToastMessage('Error deleting product. Please try again.');
+      }
+    }
+  }
+
+  showToastMessage(message: string): void {
+    this.toastMessage = message;
+    this.showToast = true;
+
+    setTimeout(() => {
+      this.showToast = false;
+    }, 3000);
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.loadProducts();
+    }
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.loadProducts();
+    }
+  }
+
+  getStatusClass(product: any): string {
+    const stock = product.stock || 0;
+    if (stock > 10) {
+      return 'bg-green-100 text-green-800';
+    } else if (stock > 0) {
+      return 'bg-yellow-100 text-yellow-800';
+    } else {
+      return 'bg-red-100 text-red-800';
+    }
+  }
+
+  getStatusText(product: any): string {
+    const stock = product.stock || 0;
+    if (stock > 10) {
+      return 'نشط';
+    } else if (stock > 0) {
+      return 'مخزون منخفض';
+    } else {
+      return 'نفذ من المخزون';
+    }
+  }
+
+
+ 
+
+// Returns the array of page numbers for generating buttons
+totalPagesArray(): number[] {
+  return Array(this.totalPages)
+    .fill(0)
+    .map((_, i) => i + 1);
+}
+
+// Navigate to page n and reload products
+gotoPage(page: number): void {
+  if (page !== this.currentPage) {
+    this.currentPage = page;
+    this.loadProducts();
+  }
+}
+
+ 
+
+// Calculate start item number on current page (1-based)
+startItem(): number {
+  return (this.currentPage - 1) * this.itemsPerPage + 1;
+}
+
+// Calculate end item number on current page
+endItem(): number {
+  const end = this.currentPage * this.itemsPerPage;
+  return end > this.totalProducts ? this.totalProducts : end;
+}
+
 }

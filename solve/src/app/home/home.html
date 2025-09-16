@@ -115,83 +115,71 @@
       </div>
     </div>
   </nav>
+<!-- (load)="handleImageLoad(product.id)" (error)="handleImageError($event )" -->
+<!-- Hero Content -->
+<div class="relative z-10 px-4 md:px-8 pb-16 pt-10 flex-grow flex items-center">
+  <div class="container mx-auto">
+    <div class="flex flex-col md:flex-row items-center justify-between">
+      <div class="md:w-1/2 mb-12 md:mb-0 hero-content">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white heading-font mb-6 leading-tight">
+          حوّل مساحاتك<br />بأناقة فائقة
+        </h1>
+        <p class="text-light text-xl mb-8 max-w-md">
+          اكتشف أثاثًا يجمع بين الأناقة والراحة والوظائف لمنزلك. تصفح مجموعتنا المميزة من القطع
+          المصممة بعناية.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a class="cta-button bg-accent text-dark font-bold py-4 px-8 rounded-full text-lg" href="#product">
+            تسوق الآن <i class="fas fa-arrow-left mr-2"></i>
+          </a>
+          <button class="border-2 border-white text-white font-bold py-4 px-8 rounded-full text-lg hover:bg-accent hover:text-dark transition-colors">
+            اكتشف المزيد
+          </button>
+        </div>
+      </div>
 
-  <!-- Hero Content -->
-  <div class="relative z-10 px-4 md:px-8 pb-16 pt-10 flex-grow flex items-center">
-    <div class="container mx-auto">
-      <div class="flex flex-col md:flex-row items-center justify-between">
-        <div class="md:w-1/2 mb-12 md:mb-0 hero-content">
-          <h1
-            class="text-4xl md:text-5xl lg:text-6xl font-bold text-white heading-font mb-6 leading-tight"
-          >
-            حوّل مساحتك<br />بأناقة فائقة
-          </h1>
-          <p class="text-light text-xl mb-8 max-w-md">
-            اكتشف أثاثًا يجمع بين الأناقة والراحة والوظائف لمنزلك. تصفح مجموعتنا المميزة من القطع
-            المصممة بعناية.
-          </p>
-          <div class="flex flex-col sm:flex-row gap-4">
-            <a
-              class="cta-button bg-accent text-dark font-bold py-4 px-8 rounded-full text-lg"
-              href="#product"
-            >
-              تسوق الآن <i class="fas fa-arrow-left mr-2"></i>
-            </a>
-            <button
-              class="border-2 border-white text-white font-bold py-4 px-8 rounded-full text-lg hover:bg-accent hover:text-dark transition-colors"
-            >
-              اكتشف المزيد
+      <!-- Animated Product Showcase - Fixed for mobile -->
+      <div class="w-full md:w-2/5 relative mt-12 md:mt-0" (mouseenter)="pauseRotation()" (mouseleave)="resumeRotation()">
+        <div class="showcase-container mx-auto" style="max-width: 320px;">
+          <div class="product-showcase relative h-96">
+            <div *ngFor="let product of products; let i = index" 
+                 [class]="getProductClass(i)"
+                 class="product-card bg-white rounded-2xl p-4 shadow-lg absolute top-0 left-0 w-full transition-all duration-500">
+              <div class="h-48 mb-4 overflow-hidden rounded-xl">
+                <img (load)="handleImageLoad(product.id)" (error)="handleImageError($event )" [src]="product.media_urls[0]" [alt]="product.name" 
+                     class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+              </div>
+              <h3 class="font-bold text-dark text-lg text-center">{{ product.name }}</h3>
+              <div class="flex justify-between items-center mt-2 px-2">
+                <span class="text-accent font-bold">{{ product.price }} ر.س</span>
+                <div class="flex text-yellow-400">
+                  <i *ngFor="let star of getStars(product.rating)" [class]="star"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="showcase-controls flex justify-center mt-6 gap-4">
+            <button (click)="previousProduct()" class="control-btn bg-white bg-opacity-20 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-all">
+              <i class="fas fa-arrow-right"></i>
+            </button>
+            <button (click)="nextProduct()" class="control-btn bg-white bg-opacity-20 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-all">
+              <i class="fas fa-arrow-left"></i>
             </button>
           </div>
-        </div>
-
-        <!-- Product Showcase -->
-        <div class="md:w-2/5 grid grid-cols-2 gap-4">
-          <div class="product-card bg-white rounded-2xl p-4 shadow-lg">
-            <div class="h-40 mb-4 overflow-hidden rounded-xl">
-              <img
-                src="https://plus.unsplash.com/premium_photo-1678074057896-eee996d4a23e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8aW1hZ2UlMjBjaGFpc2V8ZW58MHx8MHx8fDA%3D"
-                alt="Modern Chair"
-                class="w-full h-full object-cover"
-              />
-            </div>
-            <h3 class="font-bold text-dark text-lg">كرسي مودرن</h3>
-            <div class="flex justify-between items-center mt-2">
-              <span class="text-accent font-bold">299 ر.س</span>
-              <div class="flex text-yellow-400">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-              </div>
-            </div>
-          </div>
-
-          <div class="product-card bg-white rounded-2xl p-4 shadow-lg">
-            <div class="h-40 mb-4 overflow-hidden rounded-xl">
-              <img
-                src="https://images.unsplash.com/photo-1551298370-9d3d53740c72?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80"
-                alt="Wooden Table"
-                class="w-full h-full object-cover"
-              />
-            </div>
-            <h3 class="font-bold text-dark text-lg">طاولة خشبية</h3>
-            <div class="flex justify-between items-center mt-2">
-              <span class="text-accent font-bold">599 ر.س</span>
-              <div class="flex text-yellow-400">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="far fa-star"></i>
-              </div>
+          
+          <div class="product-indicators flex justify-center mt-4 gap-2">
+            <div *ngFor="let product of products; let i = index" 
+                 (click)="selectProduct(i)"
+                 [class]="'indicator ' + (currentIndex === i ? 'active bg-white' : 'bg-white bg-opacity-30')"
+                 class="w-3 h-3 rounded-full cursor-pointer transition-all">
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
   <!-- Features Bar -->
   <div class="relative z-10 bg-white py-4 shadow-inner">
@@ -267,11 +255,11 @@
             
             <!-- Product image -->
             <img
-              [src]="product.media_urls[1] "
+              [src]="product.media_urls[0] "
               [alt]="product.name"
               class="w-full h-64 object-cover"
               (load)="handleImageLoad(product.id)"
-              (error)="handleImageError($event, product.id)"
+              (error)="handleImageError($event )"
               [class.hidden]="imageLoadingStates[product.id] || imageErrors[product.id]"
             />
             

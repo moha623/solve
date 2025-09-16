@@ -1,11 +1,9 @@
 /* components/auth.styles.css */
 .auth-container {
-  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
- 
-  padding: 20px;
+
   font-family: 'Tajawal', sans-serif;
 }
 
@@ -145,7 +143,7 @@
 }
 
 .checkmark:after {
-  content: "";
+  content: '';
   position: absolute;
   display: none;
 }
@@ -236,10 +234,6 @@
   text-decoration: underline;
 }
 
-.mt-3 {
-  margin-top: 20px;
-}
-
 .mt-4 {
   margin-top: 25px;
 }
@@ -261,4 +255,34 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.back-arrow-container {
+  text-align: left;
+
+  margin: 20px;
+  width: 48px;
+  height: 48px;
+}
+
+.back-arrow-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #9ca3af; /* Tailwind gray-400 equivalent */
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  font-size: 2rem;
+  color: white;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.back-arrow-button:hover,
+.back-arrow-button:focus {
+  background-color: #6b7280; /* Tailwind gray-600 */
+  transform: scale(1.1);
+  outline: none;
 }
