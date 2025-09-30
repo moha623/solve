@@ -1,0 +1,14 @@
+<div class="footer-container h-screen" dir="ltr" #footerContainer>
+  <div class="footer-content">
+    <div class="phrase-container">
+      <span 
+        *ngFor="let letter of letters; let i = index" 
+        class="letter" 
+        [class.visible]="letter.visible"
+        [class.active]="letter.active"
+        [class.space]="letter.char === ' '">
+        {{ letter.char === ' ' ? '&nbsp;' : letter.char }}
+      </span>
+    </div>
+  </div>
+</div>

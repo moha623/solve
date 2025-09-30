@@ -1,0 +1,69 @@
+.main-content {
+  transition: padding-left 0.3s ease, padding-right 0.3s ease;
+}
+
+div:has(.menu-btn-container:hover) + .main-content +nav {
+  padding-left: 25px;
+  padding-right: 25px;
+}
+div:has(.menu-btn-container:hover) + .main-content {
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+.menu-btn-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  border-top: 35px solid white;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  height: 0;
+  width: 190px;
+  border-bottom-left-radius: 300px;
+  border-bottom-right-radius: 100px;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.menu-btn-container:hover {
+  transform: translateX(-50%) scale(1.1);
+
+}
+
+.button-menu {
+  margin-top: -25px;
+}
+
+.menu-line {
+  border-top: 3px solid #374151;
+  background-color: #374151;
+  width: 28px;
+  height: 2px;
+  margin-bottom: 4px;
+}
+
+.nav-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  padding-top: 1rem;
+  background-color: white;
+  transition: all 0.5s ease-in-out;
+  z-index: 20;
+}
+
+.nav-hidden {
+  opacity: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+.nav-visible {
+  opacity: 1;
+  transform: translateY(0);
+}

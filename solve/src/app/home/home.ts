@@ -1,26 +1,65 @@
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { Component, HostListener, OnInit } from '@angular/core';
-import { Homeservice } from '../services/home.service';
-import { Product } from '../models/product.model';
-
+import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
+import {
+  trigger,
+  transition,
+  style,
+  animate,
+  query,
+  stagger,
+  keyframes,
+} from '@angular/animations';
+import { HybridScroll } from "../hybrid-scroll/hybrid-scroll";
+import { ParallaxBackground } from "../parallax-background/parallax-background";
+import { ParallaxGridComponent } from "../parallax-grid/parallax-grid";
+// import { HybridScroll } from '../hybrid-scroll/hybrid-scroll';
+// import { ParallaxBackground } from "../parallax-background/parallax-background";
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, CommonModule],
+  imports: [CommonModule, HybridScroll, ParallaxGridComponent, ParallaxBackground],
   templateUrl: './home.html',
   styleUrl: './home.css',
+  animations: [
+    // Mobile menu animation
+    trigger('mobileMenuAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('300ms ease-out', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [animate('300ms ease-in', style({ opacity: 0 }))]),
+    ]),
+    // Section scroll animation
+    trigger('scrollAnimation', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(50px)' }),
+        animate('800ms ease-out', style({ opacity: 1, transform: 'translateY(0)' })),
+      ]),
+    ]),
+    // Product card animation
+    trigger('productCardAnimation', [
+      transition('hidden => visible', [
+        animate(
+          '600ms ease-out',
+          keyframes([
+            style({ opacity: 0, transform: 'translateY(50px) scale(0.9)', offset: 0 }),
+            style({ opacity: 0.5, transform: 'translateY(15px) scale(0.95)', offset: 0.5 }),
+            style({ opacity: 1, transform: 'translateY(0) scale(1)', offset: 1 }),
+          ])
+        ),
+      ]),
+    ]),
+  ],
+  // Additional animations would be defined here
 })
 export class Home implements OnInit {
-navigateTo(arg0: string) {
-throw new Error('Method not implemented.');
-}
-  products: Product[] = [];
+
   isLoading = false;
   totalItems = 0;
   currentPage = 1;
   itemsPerPage = 6;
   totalPages = 0;
-  whatsappNumber = '+21620678780'; 
+  whatsappNumber = '+21620678780';
   whatsappMessage = 'مرحباً، أريد الاستفسار عن خدماتكم';
   isMobileMenuActive = false;
   isScrolled = false;
@@ -29,235 +68,60 @@ throw new Error('Method not implemented.');
   imageLoadingStates: { [key: string]: boolean } = {};
   imageErrors: { [key: string]: boolean } = {};
 
-  constructor(private homeService: Homeservice,    private router: Router) {}
-
-  ngOnInit() {
-    this.loadProducts();
-        this.startRotation();
-  }
-
-    async loadProducts() {
-    this.isLoading = true;
-    try {
-      // Fetch total count
-      const count = await this.homeService.countProducts();
-      this.totalItems = count || 0;
-      this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-
-      // Calculate range for pagination
-      const start = (this.currentPage - 1) * this.itemsPerPage;
-      const end = this.currentPage * this.itemsPerPage - 1;
-
-      // Fetch paginated products
-      this.products = await this.homeService.getProductsRange(start, end);
-  
-      
-      // Initialize loading states
-      this.products.forEach(product => {
-        this.imageLoadingStates[product.id] = true;
-        this.imageErrors[product.id] = false;
-      });
-    } catch (error) {
-      console.error('Error loading products:', error);
-      this.products = [];
-    } finally {
-      this.isLoading = false;
-    }
-  }
-
-  showAllProducts() {
-    this.itemsPerPage = 20;
-    this.currentPage = 1;
-    this.loadProducts();
-  }
-
-  previousPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.loadProducts();
-      this.scrollToTop();
-    }
-  }
-
-  nextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.loadProducts();
-      this.scrollToTop();
-    }
-  }
-
-  goToPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.loadProducts();
-      this.scrollToTop();
-    }
-  }
-
-  handleImageLoad(productId: string) {
-    this.imageLoadingStates[productId] = false;
-  }
-
-  // handleImageError(event: any, productId: string) {
-  //   console.log('Image error occurred, using placeholder');
-  //   this.imageLoadingStates[productId] = false;
-  //   this.imageErrors[productId] = true;
-    
-  //   // Set placeholder image
-  //   event.target.src = 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80';
-  // }
-
-  openWhatsApp() {
-    const url = `https://wa.me/${this.whatsappNumber}?text=${encodeURIComponent(
-      this.whatsappMessage
-    )}`;
-    window.open(url, '_blank');
-  }
-
-  toggleMobileMenu(): void {
-    this.isMobileMenuActive = !this.isMobileMenuActive;
-  }
-
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    this.isScrolled = window.pageYOffset > 300;
-  }
-
-  scrollToTop(): void {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  }
-
-  @HostListener('document:click', ['$event'])
-  onClickOutside(event: Event) {
-    const mobileMenu = document.getElementById('mobile-menu');
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    
-    if (this.isMobileMenuActive && 
-        mobileMenu && 
-        mobileMenuButton &&
-        !mobileMenu.contains(event.target as Node) && 
-        !mobileMenuButton.contains(event.target as Node)) {
-      this.isMobileMenuActive = false;
-    }
-  }
-
-  truncateDescription(description: string | null): string {
-    if (!description) return '';
-    if (description.length <= 60) return description;
-    return description.substring(0, 60) + '...';
-  }
-
-  navigateToProduct(productId: string): void {
-    this.router.navigate(['/product', productId]);
-  }
-   // Helper method to calculate discount percentage
-calculateDiscount(originalPrice: number, salePrice: number): number {
-  if (!originalPrice || originalPrice <= salePrice) return 0;
-  return Math.round(((originalPrice - salePrice) / originalPrice) * 100);
-}
-
-// Get array of page numbers for pagination
-getPagesArray(): number[] {
-  return Array(this.totalPages).fill(0).map((x, i) => i + 1);
-}
-
-// Get starting index of displayed products
-getStartIndex(): number {
-  return (this.currentPage - 1) * this.itemsPerPage + 1;
-}
-
-// Get ending index of displayed products
-getEndIndex(): number {
-  return Math.min(this.currentPage * this.itemsPerPage, this.totalItems);
-}
-
-// Add to cart functionality
-addToCart(product: Product): void {
-  // Implement your cart functionality here
- 
-  // You can integrate with a cart service here
-}
+  //animations
 
   currentIndex = 0;
-  private rotationInterval: any;
-    ngOnDestroy() {
-    this.stopRotation();
-  }
-  startRotation() {
-    this.rotationInterval = setInterval(() => {
-      this.nextProduct();
-    }, 4000);
+
+  // Add these properties for animation control
+  animationStates: string[] = [];
+  private observer!: IntersectionObserver;
+  @ViewChild('productSection', { static: false }) productSection!: ElementRef;
+
+  constructor(
+
+ 
+    private router: Router
+  ) {}
+
+  ngOnInit() { 
   }
 
-  stopRotation() {
-    if (this.rotationInterval) {
-      clearInterval(this.rotationInterval);
-    }
+ 
+ 
+ 
+ 
+  // Add this to your component class
+  ngAfterViewInit() {
+    this.initParallax();
   }
 
-  pauseRotation() {
-    this.stopRotation();
-  }
+  private initParallax() {
+    // Passive events check
+    let passiveSupported = false;
+    try {
+      window.addEventListener(
+        'test',
+        () => {},
+        Object.defineProperty({}, 'passive', {
+          get: function () {
+            passiveSupported = true;
+          },
+        })
+      );
+    } catch (err) {}
 
-  resumeRotation() {
-    this.startRotation();
-  }
-
-  nextProduct() {
-    this.currentIndex = (this.currentIndex + 1) % this.products.length;
-  }
-
-  previousProduct() {
-    this.currentIndex = (this.currentIndex - 1 + this.products.length) % this.products.length;
-  }
-
-  selectProduct(index: number) {
-    this.currentIndex = index;
-  }
-
-  getProductClass(index: number): string {
-    if (index === this.currentIndex) {
-      return 'active';
-    }
-    
-    const prevIndex = (this.currentIndex - 1 + this.products.length) % this.products.length;
-    if (index === prevIndex) {
-      return 'prev';
-    }
-    
-    const nextIndex = (this.currentIndex + 1) % this.products.length;
-    if (index === nextIndex) {
-      return 'next';
-    }
-    
-    return 'hidden';
-  }
-
-  getStars(rating: number): string[] {
-    const stars = [];
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 >= 0.5;
-    
-    for (let i = 0; i < fullStars; i++) {
-      stars.push('fas fa-star');
-    }
-    
-    if (hasHalfStar) {
-      stars.push('fas fa-star-half-alt');
-    }
-    
-    const emptyStars = 5 - stars.length;
-    for (let i = 0; i < emptyStars; i++) {
-      stars.push('far fa-star');
-    }
-    
-    return stars;
-  }
-    handleImageError(event: any) {
-    event.target.src = 'path/to/placeholder/image.jpg';
+    // Scroll listener
+    addEventListener(
+      'scroll',
+      () => {
+        const parallaxElement = document.querySelector('.parallax') as HTMLElement;
+        if (parallaxElement) {
+          const height = parallaxElement.getBoundingClientRect().height;
+          const percentage = Math.min(Math.max(window.pageYOffset / height, 0), 1);
+          document.documentElement.style.setProperty('--pct', percentage.toString());
+        }
+      },
+      passiveSupported ? { passive: true } : false
+    );
   }
 }

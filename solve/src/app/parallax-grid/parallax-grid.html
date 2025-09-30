@@ -1,0 +1,15 @@
+<section id="scene"   data-pointer-events="true" data-x-origin="0.5" data-y-origin="0.5" data-scalar-y="150.0" data-scalar-x="100.0" data-friction-x="0.05" data-friction-y="0.05">
+  <div class="layer main" data-depth="1.0">
+    <div class="col" *ngFor="let img of images">
+      <a href="#">
+        <div class="hover">
+          <div class="pad align-bottom">
+            <h2>Project Title</h2>
+          </div>
+          <div class="more" *ngIf="img.hasPlus"><i class="demo-icon icon-plus"></i></div>
+        </div>
+        <div class="bg-img" [style.backgroundImage]="'url(' + img.url + ')'"></div>
+      </a>
+    </div>
+  </div>
+</section>

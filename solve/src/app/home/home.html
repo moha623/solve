@@ -1,576 +1,114 @@
-<!-- <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
-  <p style="color: white"> Loading... </p>
-</ngx-spinner> -->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 480 240"
+  style="position: absolute; top: 0; left: 0; width: 0; height: 0; overflow: hidden"
+  focusable="false"
+  aria-hidden="true"
+>
+  <!-- show content using white mask fill -->
+  <style>
+    mask {
+      fill: white;
+    }
+  </style>
 
-<section class="relative min-h-screen flex flex-col justify-between overflow-hidden">
-  <!-- Background with overlay -->
-
-  <div class="absolute inset-0 z-0">
-    <img
-      src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1600&q=80"
-      alt="Modern Furniture"
-      class="w-full h-full object-cover"
+  <!-- masks -->
+  <mask id="m1">
+    <path
+      d="M480 215.9h-3.9v3.3l-18-.7V240H480zM405 240l-.6-85.5-4.4-3.6-6.9-.7h-6.2v.5l-17.7-.5v-1h-1.3v1l-.7-.1-.6 1-4.3.1v-1l-.7-.1v-1.3l-.5-.5h-1v.8l-1.5-.1v.7l-.6-.1v-1.3l-1.3.3v1.2l-1.8-.2-3.1-.1-1.8-1.5-1.9 1.2v.7l-6.3-.1-.8-.2.4 90.4zm-181.5 0v-86.5l1-1.2h.4v-9.5h2.6v-4.5l.7-.4v-5.1l3.9-1.1h.9v-1.2h-.7v-1.3l2.8-1v-2.7l1.3-.9h5.1v2.5l.8.1 1.3.9v3.7l3.2-.2v2l.3 3.4.4.2v4.6l2.3.1.3 6.7 1.1.2v2.6l.9.1v51.1l6.3.3.7.2v10l2.3.1v6.6l.7.1v10.3h.4v9.8zm-128.8 0l1.8-1.2v-1.5h.6v-.7l2.3-1.5h.4v-2.9l.8-.9h3.6v3.6h3l8.3.4v-25.4l2.4-1.3v-6.1l1.5-.7 3.4-.9v-4l.4-.4.4-3.1h2.6v-1.5l1.1-.5h1.9v-.5h.6v-2.6h1v-.7h7.8v3l-.5.5v.7l.5.1.5.7 2.2-.2v-.3h.6v.4l.5-.1.5-.4h.3v3.7l.7.1v5.8l4.6-.3.5 15.1 1.1.2.3 23.4zM0 224.5l5.2-3.3 34.4 2.6v2.6h1.2V240H0zm267.2 15.2v-3.8l1.7-2.8h2l.3-11.8 1-2.2h3.8v-1.2h6.3l.6-4.3h4.1v-1.8h11.3v2l2.8.6v3.6l.7 1.1h6.3l.9.1v2h4.1v14.7l4.1-.1v1l6 .1v3.1h2.8l-.4-22.5h3.5v-1.8l3.7-.1v1.3h3.1V240h-68.7z"
     />
-    <div class="absolute inset-0 hero-overlay"></div>
-  </div>
-  <nav class="relative z-50 py-6 px-4 md:px-8">
-    <div class="container mx-auto">
-      <div class="flex justify-between items-center">
-        <!-- Logo -->
-        <div class="flex items-center">
-          <span  class="text-4xl font-bold text-white heading-font">Promomag</span>
-        </div>
+  </mask>
+  <mask id="m2">
+    <path
+      d="M480 149h-10.9v64.1l-5.7.8v12.6h-6.6V175l-.6-.8v-1.5l-2-1.1-.8-.1v-1.2l.5-.8-2.7-1.8-1.9.1v-.4l-9-.2v.5l-1-.1v3.8l-1.2.1v1.3l-1.5-.2v52.2l-9.8-.4-.3 2.1h-1.9v-7.6l-.4-.5v-1.8l-1.1-1.3v-2.9l-1.3-1.7v-3.1l-1.2-1.7v-3.7l-3.3-3.6-1.5-.4v-2.8l-1.9-1.4-.2-1.7-2-.1v.6l-1.7.1v-1l-2.1-.1v1.3l-.5-.1-.3 1-.6.4v3.4h-1.8l.3 42.2h75zm-256.5 91v-9.5h-3.3v-35.2l-1.9-1.3v-2.7l-.5-.4v-2.3h-1.4l-2.8-4.8v-1.1h-3.3l-.7.5v1.2l-2.5 4.2h-.7l-1.3 1.1v-8.4l-10.2-.4v.3l-8-.3-3 1.8v25.5l-.5-.1v-6.7l-.8-.3-21.7-.9-3.8 2.5V240zm-96.7-48.4v-19.9h-.7l-.3-.8h-1l-.9.5h-1.3l-.8-.5-1.1.6-11.3-.6-12.3 4.5-.3 35.8-3.2-2.6-1.4-.1v-.7h-3.3l-1.2.2-2.8 4.3v.9h-1.2v3.2l-2.5 1.2v4.9l-2.2.9v10.7l-3.4-.3v-7.9l-7.2-.3V224l-6.6-3.7-9.9 4.6-6.1 3.4v2.3l-3.6.6-1.4-.2v9h86z"
+    />
+  </mask>
+  <mask id="m3">
+    <path
+      d="M0 134.8h7.8V133h4.8v1.5l11.4-.1 3.2 1.5h4.3v4.7h1.3l-.2 47.2 6.7-2.3 2.4-.2h.6v-41.2l.3-.1v-4.7l-.2-.5-.6-1.7.6-.5.5-.8.5-.2.2-1.5 2.5-.8.3-.8 2.1-.2 4.9-.3h1.7l.3-.5h13.5l6.3 2.5.9.1v.9h4.4v7.9l.3.1v1.6l-.4.1.4 21.8.2.3.2 26.5h1.4v8.6l2-1.2h3.7v-39.5l1.4-.2 1.6-.4v-1.3l.4-.3v-7.1l.6-.2V149l.5-3.1.3-.7.6.1.4 3.6.5-.2v-1.4l.7-2.6.5.1.2 2 .2 2.2.3-.2v-2.2l.3-1.4h.7l.4 3.4.7-.4v-3h.8l.3 3.6.5-.1.5-2 .3-1.3.5.2v2.9l.6-.3v-2.7h.9v3.3l1.3.6v2h.4v7.1l.6.2v1.7l2-.1V240H0zm118.7 36.6v-10.8l11.7-3.5h3.5l1.9-.4h2.6v1l3-.2 1.4-.8h6.8v.7l17.2.5V240H118zm97.7 17.2l1.3-12.9h5.8l28.6-5.8 23.5.5v30.3l4.7-5.1 5.6 4.4v.1h.6l.5 11.7V240h-70.6zm93.1 32.6l-.2-8.1.7-2.3h1.3l3.1-5.5 3.2 3.3h2.4l.6 20.4h1.4l.5-.9 3.3-.2.2 12.1h-16.7zm94.9-60.3l1.8 1.9v6.7h12.5v-1.9l1.2-.4 7.6 1.1.7 5.1 2.1.9v4.9h1.4l.9 1.1h2.6l1.4 1.4 20.2 29.4h.8l.3-5.3.4-.3.3-9.4.4-.1v-9.3l.6-.1v-8.5h.2v-5.2l.6-.3 6.1.2.7.6.3.4v.7l.7.1v.4h.9v65h-64.7z"
+    />
+    <path d="M80.5 140.6l1.3-.4h1.4l.4.6v1.8h2.8l.9.5v5.9h4.3l3.4-1.8.4 1.8v91H73.8z" />
+  </mask>
+  <mask id="m4">
+    <path
+      d="M32.7 148.3l3.1 5.4.7 3 2 1.1-1.2 7.2 5 1 65-2.5 2.4-.5v-6.3l3.5-1.4 4.1-.1v4.8l1.8.5 19.3-3.8v-22.5l.9-6h16.3l.8.5.4 3.9.8 18.9 4 .2 3.5-.1v-8.4l.5-.6v-1l1.2-.4.3-.6.9-.4 2.6-.1.4.4h5.2v13.7l.4.3v2.3l3.2-.2v2.7l2.9-.1.3 20.1 2.7.2v-20l.7-.5.3-10.4-1.1-1.1 1.4-.9v-1.8l1.4-.3v-5.7l-.2-.5 5.4-6.6 1.9-.3 4.3 5.8.7.1.2 4.6h1l.3.9v1h.3l.2 1.7h.5l.3.5-.7 1-.1 8.2.6.9.2 1.4V240H32.7zm231.1 21.9v-8l1.9-1.5 5.2.3v-.9l.7-.3h1.8v1.1h3.8l5.8.1-.3 7.3.3 11.3v13.3h4v3.3h11.1v-1.4l1.3-1.9 6.7-.1v8.8h1.7v-9.8l.6-1.9 2-.3.7 1.8h1.4v-3.8l5.1-.1 1 3h1.1v.7h2.8l.2-.9.9-.4 2 .1 3.4-.1v-1.8l7.4-.1 2.1.6v3.5h.9v-2.6l1.2-1.5h.6l1.3 52h-78.7zm156.4-2.9v-10.2h11v.4l1.3.5v.8l1.3-.2.3 8.2 5.7-.3 1.3 1.7h8v-2.1l.3-3.1 1.7-.4 1.2-.4v-3l3.5.2 13.7.2V240h-49.3z"
+    />
+  </mask>
+  <mask id="m5">
+    <path
+      d="M32.7 144.9h1.9v-2.6H36v-1.9l1.3-.3v-1.6l.4-.2v-.7h3l.2.8.5.1v.5l.6.4h.9l37.6-4.4h1.8v1.2l2.3-.2v1.2l2-.2v-2l1.7-.2H91v1.9l2.2-.1v1.8l1.6.1v.7l.6-.2v2.2l1-.3 4.4.1v1.3l.4.6 2.8-.1v-4.1l1.8-.7v-.8l2-.3 1.8.1v1l1.7-.1v.7l1.1-.1.2-.5h.4v-.6h1.2v-.7l.4.1v-.3h1l.4.4.3 1.6 1.7-.1v-.2l2.6-.1v-2.3h2.7v2.3l2.6-.1v.9l3.2.1.4-.4 1.2-.1v.6h1.5v-.5l1.1.2v.7l.4-.2v-.4l2.7.1v.9h2.3V240H33zM157.5 149.2l1.5-.8v-6.9h1.4v-.6h2v-2.2h2.1l1.4-1.1h2.1v1.8l1.1.8 11.4-.1 1.4.8v1.5l1 .2.7.2v2.3l2.7.4.7.1 16.3.4h5.4l.5-2.6v-2.1l1.1-.8 1.5-.3v-2l3 .1h1.6v2.5l1.4.2.4 1.6h.9V140l3.1-1.5 1.3-.5.7-3.1 2.8-.7.5-4.3h1.9v-3.3l2.2-6.6.5-2.8.5-2.2 1.3 4.6 1.9 5 .1.3.5-.3v-6.9l14-.5.8.5v10.1l.5-7.1 1.1-.7h2.8v3l2.4-.1.3 2.3v6.5l1.7-1 2.5-.1v-3.8l.3-2.2.5-1.7h2.6v1.7l.6.2v1.7h.6v1.3l.4.6.5.2v1.6l.4.1v.6h1.5l.3-7.1 1.1-.9 11-.1.7 38.2v10l2.3-3.2v-2.1l2.7-3.2 2.3-.3v-2.4l1-1.3V152l1.3-1.2h.9V94.3h.7V80.8h1.1v.7-6.2l.8-.5v-2.7h1.1v-2h.9v-2.3h.6l.4-.9.4 1.7.6-.2v-3.3h.3v1.2h.7l.4-5.4h.4v-8.5l.8-.6V50.6l.8-.7v-7.4l.3-.3v-2.4l-.3-.4.3-.2v-.9l-.3-.2h.3v-.8l-.3-.9.5-.3v-9.3h.4v3.8l.4.2v5.4l.3.2-.2.5.2.5-.2.3.2.5-.3.5.3 1.1-.3.5.2 2.2.5.4v7.2l.4.5.3-.5v.9l-.2.5-.2.4.3.4.9.5-.5.4.2.8.3 8.8.2.3v2.3l.6.3v1l.4-.4v1.1l.3.1.5-2.5v3.4l1.7.6v1.1l.8.6-.2.7.2.9.7-.5.6.2.2 2.6.7-.1.2 5.5v.5l1.1.4v.7l.4.4v12l.8.2V151h2.4l.8 7.1v4.9l3.4-.5 3.4.3.8.8 1 .2v8.1h2.5l1.3-.9h1.2v-1.1h2.2v1l2.9-1v-3l2.1-.1v-7h.8l4.6-10v-14l9-.6 5.6 1.7-.1 11.4 8.3.7 20.4 3.6 12.9-.3v-4.8l9.7-.9 1.1 2.4 3.1 4.5 1.3-1 3.9-.4 1.3 1.4 3.5-.4v-32.5l3.4-.6 3.1.9h1.3l1-.9.6 1.5 1 .1v-.8h3.5v3l1.1.4v14.6l1.2.3.5-.7 4.6 3.4.6 1.6v3.1l1.3.1v-1.2l1.3.2 1.5-1 6.8.2 2.8-.2 2.4-.5v-1.7l7.4.1v1.5l2.6.4.6 1.5h5.8V240H157.5z"
+    />
+  </mask>
+  <mask id="m6">
+    <path
+      d="M178.5 126.2h2.6l.7.9 3.2-.5v1.6h2.1l.7 1.9h1.9l1.9-1.9 3.2 3.3 1.7-.7v-4.3l2.1-.3.6-1.6h2.7l.4.9 1.5.1v-1.3h10.5l1.1 1.5 1.6-.5 1.8.3.9.1.4-2.9.4-.6.3-2.2 1.2-2.7h.8l1.2 2.3.8 1.8.8.6v2.4l1.2-1.7.8.2.6 1.1 1.2-.9 1 .4 4.6-.8 1.8-.1 14.4-.7 2.3-6.2V114l.5-.5v-1.9l.8-4.7 1.2 4v2.7l.3.5.5.7v1l1 6 1.4-.1.6-4.9.9-.4v-4.8l4.1.1.4 5.8 1.2.3.5 1.4h.9v12.3l14.7-.7 3.4-.2.3-1.4 3 .2v1.2l3.6-.1v-1.1l23.4-1.2h1.7l.3 2.9 5.6.4v3.5h5l.4 1.7h2.4l1.6 2.1.3 2.4h1.7l.5-1.3 1.7-.6V137l1.3-.4 1.1-2.4 1.5.4.5 2.3 2.4-.2 1.4-.9 12.5.4v-2.8l3.1-.4v-2.7l8.9-.2.3 3.7.8.2v1.6h2.3v2.6l.6.2v11.9l4.5.2v-20.7l.8-.4v-1.2l.7-.1v-3.2l4.7.7.3 3.6 1 .7v.9l.7 1.2.5 4.8 1.9-.6v-17.1l1.5-.3 1.4-.6v-1l.8-.6 1.9.8.4 3.5 1.6-.1.8.7v15.7l1.2-.2.6-.7v-8.8h4.5l3.9.6 2.2.6V140l1.9.9 1.7-.1.8-.4v-1.2l1-.3.3-.5 1.4-1.3.9 1.4 1.1.6.3 1 2.9.1v-3.8l3.3-.2 15 1 3.8-.5v-3.3l3.2-.7.6-1.9h4.7l.8.4h1.5v1.8h1.3l.5 1.5 1.4-.1V133l-.6-.6.6-.5v-2.8l1.5-.4v3.1l1.3-.4v-1.5l2.3-.1 2-.2h4.4l.7.4 1 .1 1.3.5v1.3l1.9-.1.4.8h1.2v-.9l1.3-2.1v-.7l1.7-.2.6.8V240L0 236V131.5h2.3l.8-1.4h.6v-1.6l1-1.3h5.1l.5-1.4v-4.6l.7-.4h.6v5l.4.4v1l1.8-.1 1 .2.5.5.6-.6 1.4-.1v-5.9l1.2-.4.4 6.1 1 .2 2.9-.2 3.1-.1 3.4-.6H32l.7.3 2.4.2v-1.5l.9-.1.3-.8 2.5-.2.4.3 2.9-.4 7.1-1v-1.5l7-.7 1 1.1.7.5.5 3.8h2.5v4.8l13.3.5 2.4 1.9h5.5l1.7-.5 4.7-.3 2.5-.1.6-2.7 1.2.1.4-2.8 1.4-2 2-.1 1.2 3.2v3.3l2.3-2.1 4.7-.3h7.6l3 1.3 4.7-.8h6.7l3.3-.1 3.4.4 3-.5 9.6-1.2.8-5.3 3.9-.8 3.8.4v1.6l6-.6 1.9-1.6 1.5.1 1.1 2.6v3.6h4v-1.1h9.4"
+    />
+  </mask>
+  <mask id="m7">
+    <path
+      d="M480 128.7l-1.6-.3v-1.7l-.4-1h-2.5l-.2.8h-1.1l-.4-1.1h-2.5l-.9-.6h-4l-.2.9v.7l-.5.5-6.1-.7-4.9-.5-.4-.9h-.7l-.3.7h-.7v-.7h-.8v-.9h-.6v-.5h-.5v.3l-.8.1v.9h-.9v.7l-7.5-.1-.9-.3-15-.4-1.8-.1-.5-.3-.5.3-2.4-.2h-1.7l-2.6-.1v-.5l-5.8-.3-.9-1h-2.3v1.1l-1.6-.2-.6-.5-.8-.8h-.7v-.7l-1.8-.4v-1.4l-1.4-.4v-.6l-1.2-.3v-.6h-1.8v.7l-2.3-.7h-6.1l-.3.5-2.1.4-.3.3-.7-.1-1-.6-2.6-.1-.3.5h-1v-.9l-.6-.3-.5-4.7-.6-.2-.4-1.1-.7.9v-3.5h-1v-1h-1v.4l-1.1.1v6.4l-1.1-.4v-.9l-.5-1v-2.7l-2.4-.2v-2.5l-.6-.3V105l-6.2.2h-3.1l-.7 1.2-.5.5v2.6l-1.3.1.3-10.2H354v1l-1.4-1.2-2 1.5-.2.7-1.1.3-1.4 1.6-.3 6-.3.2-.4 3.4-1.4.2v-3.7l-.5-.2v-4l-1.3-2.4-2.3.1-.9 1-1-.2v-1.4l-2.3-3.7-.5.4 1.8 3.4-.3 1.8-1.2.3-.3-5.1-6.1-.2-.2 8.8-.5.3v1.4l-1.1.1-.4-.9-.4-.6-1.3-.2v-6.3l-.4-.3-1.9-.1-.6.5v4l-.9-.4-.5-.1-1.2 1v2.9l-.6.2v.9l-.6.7h-.5V108l-1.1-.6-1.4.1-.8 1.1-22.7-12.8h-.9v.9l-4.3-.3-.3 1.4-.3.7-1.1.4v5.9l-.7-.2-.6-.1v-4.2l-.5-.4v-4.5h-4.4v4.1l-1.4-3.6-1.4 2.8v.6H276l-.3.4-.2.2h-1.2v4.9l-1.2.1-.5-2.3h-3.3l-.4 1.1-.3 3.2-3.5-.2-.3-.8-.7-.4-.2-2-.9-1.2-1.2-.1-.7.3-1.2 1.3v2.3l-1.5.1-.5.7h-1.8v1.5l-.7.6-.9-.2v-5.2l-2.1-.1-2.7.1-.3 8.8-.7.3-.3.5-.9.1-.3.7-1.6-.1-.9.4-1.4-.2-2.5.5-2.5.1-1.3-.1v-1.5l-.9.2-.2 1.2-1.4.2v-1l-.8.1v.8l-1.4-.6-1.4.3-1.2.2-1.5.1v-5.4l-2.8-.1v-1l-.4.1v-.4l-1.1.2-.4.8-1.3.1-.2 2.3-.6-.1-.4 3-8.2-.3-7.2-.2-4.8-.2-1.2-.6-2.9.6-1.8.5-10.8-.1-3.3-2.1-.7-.7v-4.6l-3.3-.2v3.2l-1.2 1.5-2.5 1.2-2.5.7-1.6-1.4-.4-1.6v-2.4l-1.3-.5-2.2.5-1-.5-.4 1.3h-1.9v-2.3l-5.2-.8-.5 1.3-.9.1v-2.4l-.9-.7h-1.2l-.3 4.4-4.4.4v-.8l-1.4-1.5-2.4 1-.4 2-1.3-.7-1.4-.4-1.2-1.6v-.8l-1.2-.3-.4-1.2-3.7.1v4.2l-1.2 1.1-1.1-.2-1.1.2-.3-3.3-2.9-.1v2.8l-1.5.6v-1.7l-1.1-.1v-4.7l-1-.2v.5l-.6 5.3-1.4.3-.7-.5-1-.9-1.6.3v-1l-1.5.3-3.2 1.3h-1.1v-2l-1.4-1.1-1.3 1.1v3.9l-.6.4-.9-.2-.9-1.3-1.3-1.4v-2.1l-.6-.8-1 1.5-.4 4.7-1.7.1-1.9-.4-2-.4-1.1-1.3-.8-.1-3.9-.2-2.3.1-.9 2.2v1.5l-3.6.6-1.4.6-1.6 1.9-1 1.6-2.3.9-.5 2h-1.1v-2.8l-2.1-1.3-3.3-.1-1.6.8-3 1.2v2.6l-2 .1-2.6.1-2.5-.6-12.9-.9-2.2.1-1-1.3-.7-2.8v-1.3l-2.8.1v5.1l-16.3-.6-14-.2H3.8l-.7-.7-.7-1.7-1-1-1.4-.1V240h480z"
+    />
+  </mask>
+  <mask id="m8">
+    <path
+      d="M0 101.4l43.5-2.2h184.4l1.3-.6.5-1h.8l1 1.1 3.4.1 19.9-.3 1.5-.9h.6l1.6 1.2 70.3-.2 43.4.2.6-1.6v1.1l.8.5h81.7l.4-1h5.2l.4 1 18.7-.5V240H0z"
+    />
+  </mask>
 
-        <!-- Desktop Navigation -->
-        <div class="  md:flex space-x-8">
-          <!-- <a class="text-white nav-link ml-4">الرئيسية</a>
-          <a href="#product" class="text-white nav-link">منتجاتنا</a>
-          <a
-            (click)="openWhatsApp()"
-            class="text-white nav-link bg-transparent border-none cursor-pointer p-0"
-          >
-            اتصل بنا
-          </a> -->
-     
-            <div class="menu-btn-container" id="menu-btn" (click)="toggleMobileMenu()" aria-label="Toggle menu">
-              <span class="text-2xl font-bold text-center flex flex-col items-center button-menu">
-                <div class="menu-line"></div>
-                <div class="menu-line"></div>
-              </span>
-            </div>
-         
-        </div>
+  <!-- parallax parts + background image  -->
+  <svg id="bg">
+    <image
+      width="480"
+      height="240"
+      xlink:href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68939/ny.jpg"
+    />
+  </svg>
+  <svg id="p8"><use mask="url(#m8)" xlink:href="#bg" /></svg>
+  <svg id="p7"><use mask="url(#m7)" xlink:href="#bg" /></svg>
+  <svg id="p6"><use mask="url(#m6)" xlink:href="#bg" /></svg>
+  <svg id="p5"><use mask="url(#m5)" xlink:href="#bg" /></svg>
+  <svg id="p4"><use mask="url(#m4)" xlink:href="#bg" /></svg>
+  <svg id="p3"><use mask="url(#m3)" xlink:href="#bg" /></svg>
+  <svg id="p2"><use mask="url(#m2)" xlink:href="#bg" /></svg>
+  <svg id="p1"><use mask="url(#m1)" xlink:href="#bg" /></svg>
+</svg>
 
-        <!-- Navigation Icons -->
-        <div class="flex items-center space-x-6 space-x-reverse">
-          <!-- <a class="text-white hover:text-accent flex items-center gap-2">
-            <span class="text-white font-medium hidden md:inline-block">عربة التسوق</span>
-            <div class="relative">
-              <i class="fas fa-shopping-cart text-xl"></i>
-            </div>
-          </a> -->
-          <a routerLink="/login" class="text-white hover:text-accent flex items-center gap-2">
-            <span class="text-white font-medium hidden md:inline-block">حسابي</span>
-            <i class="fas fa-user text-xl"></i>
-          </a>
-
-          <!-- Mobile menu button -->
-          <!-- <button class="text-white" (click)="toggleMobileMenu()" aria-label="Toggle menu">
-            <i *ngIf="!isMobileMenuActive" class="fas fa-bars text-2xl"></i>
-            <i *ngIf="isMobileMenuActive" class="fas fa-times text-2xl"></i>
-          </button> -->
-        </div>
+<div class="page">
+  <header>
+    <div class="parallax">
+      <div class="bg">
+        <svg viewBox="0 0 480 240"><use xlink:href="#bg" /></svg>
       </div>
-
-      <!-- Mobile Circular Menu -->
-      <div class="fixed inset-0 z-40 overflow-hidden" *ngIf="isMobileMenuActive">
-        <div class="absolute inset-0 bg-gray-900 opacity-75" (click)="toggleMobileMenu()"></div>
-        <div class="absolute inset-0 flex items-center justify-center">
-          <div class="relative w-64 h-64">
-            <!-- Circular menu items -->
-            <a
-              class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full w-14 h-14 flex items-center justify-center transition-all duration-300 hover:bg-accent hover:text-white"
-              (click)="navigateTo('home')"
-            >
-              <i class="fas fa-home text-xl"></i>
-            </a>
-
-            <a
-              href="#product"
-              class="absolute top-1/4 right-0 transform translate-x-1/2 -translate-y-1/2 bg-white rounded-full w-14 h-14 flex items-center justify-center transition-all duration-300 hover:bg-accent hover:text-white"
-              
-            >
-              <i class="fas fa-box text-xl"></i>
-            </a>
-
-            <a
-              class="absolute bottom-1/4 right-0 transform translate-x-1/2 translate-y-1/2 bg-white rounded-full w-14 h-14 flex items-center justify-center transition-all duration-300 hover:bg-accent hover:text-white"
-              (click)="openWhatsApp()"
-            >
-              <i class="fas fa-phone text-xl"></i>
-            </a>
-
-            <a
-              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 bg-white rounded-full w-14 h-14 flex items-center justify-center transition-all duration-300 hover:bg-accent hover:text-white"
-          href="#product"
-            >
-              <i class="fas fa-shopping-cart text-xl"></i>
-            </a>
-
-            <a
-              class="absolute bottom-1/4 left-0 transform -translate-x-1/2 translate-y-1/2 bg-white rounded-full w-14 h-14 flex items-center justify-center transition-all duration-300 hover:bg-accent hover:text-white"
-              routerLink="/login"
-            >
-              <i class="fas fa-user text-xl"></i>
-            </a>
-
-            <a
-              class="absolute top-1/4 left-0 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full w-14 h-14 flex items-center justify-center transition-all duration-300 hover:bg-accent hover:text-white"
-              (click)="toggleMobileMenu()"
-            >
-              <i class="fas fa-times text-xl"></i>
-            </a>
-          </div>
-        </div>
+      <div class="p8">
+        <svg viewBox="0 0 480 240"><use xlink:href="#p8" /></svg>
+      </div>
+      <div class="p7">
+        <svg viewBox="0 0 480 240"><use xlink:href="#p7" /></svg>
+      </div>
+      <div class="p6">
+        <svg viewBox="0 0 480 240"><use xlink:href="#p6" /></svg>
+      </div>
+      <div class="p5">
+        <svg viewBox="0 0 480 240"><use xlink:href="#p5" /></svg>
+      </div>
+      <div class="p4">
+        <svg viewBox="0 0 480 240"><use xlink:href="#p4" /></svg>
+      </div>
+      <div class="p3">
+        <svg viewBox="0 0 480 240"><use xlink:href="#p3" /></svg>
+      </div>
+      <div class="p2">
+        <svg viewBox="0 0 480 240"><use xlink:href="#p2" /></svg>
+      </div>
+      <div class="p1">
+        <svg viewBox="0 0 480 240"><use xlink:href="#p1" /></svg>
       </div>
     </div>
-  </nav>
-<!-- (load)="handleImageLoad(product.id)" (error)="handleImageError($event )" -->
-<!-- Hero Content -->
-<div class="relative z-10 px-4 md:px-8 pb-16 pt-10 flex-grow flex items-center">
-  <div class="container mx-auto">
-    <div class="flex flex-col md:flex-row items-center justify-between">
-      <div class="md:w-1/2 mb-12 md:mb-0 hero-content">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white heading-font mb-6 leading-tight">
-          حوّل مساحاتك<br />بأناقة فائقة
-        </h1>
-        <p class="text-light text-xl mb-8 max-w-md">
-          اكتشف أثاثًا يجمع بين الأناقة والراحة والوظائف لمنزلك. تصفح مجموعتنا المميزة من القطع
-          المصممة بعناية.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4">
-          <a class="cta-button bg-accent text-dark font-bold py-4 px-8 rounded-full text-lg" href="#product">
-            تسوق الآن <i class="fas fa-arrow-left mr-2"></i>
-          </a>
-          <button class="border-2 border-white text-white font-bold py-4 px-8 rounded-full text-lg hover:bg-accent hover:text-dark transition-colors">
-            اكتشف المزيد
-          </button>
-        </div>
-      </div>
-
-      <!-- Animated Product Showcase - Fixed for mobile -->
-      <div class="w-full md:w-2/5 relative mt-12 md:mt-0" (mouseenter)="pauseRotation()" (mouseleave)="resumeRotation()">
-        <div class="showcase-container mx-auto" style="max-width: 320px;">
-          <div class="product-showcase relative h-96">
-            <div *ngFor="let product of products; let i = index" 
-                 [class]="getProductClass(i)"
-                 class="product-card bg-white rounded-2xl p-4 shadow-lg absolute top-0 left-0 w-full transition-all duration-500">
-              <div class="h-48 mb-4 overflow-hidden rounded-xl">
-                <img (load)="handleImageLoad(product.id)" (error)="handleImageError($event )" [src]="product.media_urls[0]" [alt]="product.name" 
-                     class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
-              </div>
-              <h3 class="font-bold text-dark text-lg text-center">{{ product.name }}</h3>
-              <div class="flex justify-between items-center mt-2 px-2">
-                <span class="text-accent font-bold">{{ product.price }} ر.س</span>
-                <div class="flex text-yellow-400">
-                  <i *ngFor="let star of getStars(product.rating)" [class]="star"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="showcase-controls flex justify-center mt-6 gap-4">
-            <button (click)="previousProduct()" class="control-btn bg-white bg-opacity-20 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-all">
-              <i class="fas fa-arrow-right"></i>
-            </button>
-            <button (click)="nextProduct()" class="control-btn bg-white bg-opacity-20 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-all">
-              <i class="fas fa-arrow-left"></i>
-            </button>
-          </div>
-          
-          <div class="product-indicators flex justify-center mt-4 gap-2">
-            <div *ngFor="let product of products; let i = index" 
-                 (click)="selectProduct(i)"
-                 [class]="'indicator ' + (currentIndex === i ? 'active bg-white' : 'bg-white bg-opacity-30')"
-                 class="w-3 h-3 rounded-full cursor-pointer transition-all">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  </header>
 </div>
 
-  <!-- Features Bar -->
-  <div class="relative z-10 bg-white py-4 shadow-inner">
-    <div class="container mx-auto">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="flex flex-col items-center text-center px-4">
-          <div class="bg-primary rounded-full w-14 h-14 flex items-center justify-center mb-2">
-            <i class="fas fa-truck text-white text-xl"></i>
-          </div>
-          <h3 class="font-bold text-dark">شحن مجاني</h3>
-          <p class="text-sm text-gray-600">لطلبات فوق 500 ر.س</p>
-        </div>
+<app-hybrid-scroll></app-hybrid-scroll> 
 
-        <div class="flex flex-col items-center text-center px-4">
-          <div class="bg-primary rounded-full w-14 h-14 flex items-center justify-center mb-2">
-            <i class="fas fa-undo text-white text-xl"></i>
-          </div>
-          <h3 class="font-bold text-dark">إرجاع مجاني</h3>
-          <p class="text-sm text-gray-600">ضمن 14 يوم من الشراء</p>
-        </div>
+<app-parallax-grid></app-parallax-grid>
 
-        <div class="flex flex-col items-center text-center px-4">
-          <div class="bg-primary rounded-full w-14 h-14 flex items-center justify-center mb-2">
-            <i class="fas fa-shield-alt text-white text-xl"></i>
-          </div>
-          <h3 class="font-bold text-dark">ضمان الجودة</h3>
-          <p class="text-sm text-gray-600">منتجات أصلية مضمونة</p>
-        </div>
-
-        <div class="flex flex-col items-center text-center px-4">
-          <div class="bg-primary rounded-full w-14 h-14 flex items-center justify-center mb-2">
-            <i class="fas fa-headset text-white text-xl"></i>
-          </div>
-          <h3 class="font-bold text-dark">دعم 24/7</h3>
-          <p class="text-sm text-gray-600">خدمة عملاء على مدار الساعة</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
- 
-<!-- Featured Products -->
-<section class="py-16 bg-white product" id="product">
-  <div class="container mx-auto px-4">
-    <h2 class="text-3xl font-bold text-center text-blue-600 mb-12">المجموعة المميزة</h2>
-
-    <div class="container mx-auto px-4 py-8">
-      <h1 class="text-3xl font-bold text-center text-blue-700 mb-8">منتجاتنا</h1>
-
-      <!-- Loading state -->
-      @if (isLoading) {
-      <div class="flex justify-center items-center h-64">
-        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
-      </div>
-      }
-
-      <!-- Products grid -->
-      @if (!isLoading && products.length > 0) {
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Product card -->
-        @for (product of products; track product.id) {
-        <div class="bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
-             (click)="navigateToProduct(product.id)">
-          <div class="h-64 overflow-hidden relative">
-            <!-- Loading skeleton -->
-            @if (imageLoadingStates[product.id]) {
-            <div class="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
-              <svg class="w-12 h-12 text-gray-300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512">
-                <path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z"/>
-              </svg>
-            </div>
-            }
-            
-            <!-- Product image -->
-            <img
-              [src]="product.media_urls[0] "
-              [alt]="product.name"
-              class="w-full h-64 object-cover"
-              (load)="handleImageLoad(product.id)"
-              (error)="handleImageError($event )"
-              [class.hidden]="imageLoadingStates[product.id] || imageErrors[product.id]"
-            />
-            
-            <!-- Error state - show placeholder -->
-            @if (imageErrors[product.id]) {
-            <div class="absolute inset-0 bg-gray-100 flex items-center justify-center">
-              <div class="text-center p-4">
-                <svg class="w-12 h-12 text-gray-400 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                <p class="text-gray-500 mt-2">تعذر تحميل الصورة</p>
-              </div>
-            </div>
-            }
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-semibold text-blue-700 mb-2">{{ product.name }}</h3>
-            <p class="text-gray-600 mb-4">{{ truncateDescription(product.description) || 'لا يوجد وصف' }}</p>
-            <div class="flex justify-between items-center">
-              <span class="text-lg font-bold text-blue-600">{{ product.price }} دينار</span>
-              @if (product.originalPrice && product.originalPrice > product.price) {
-              <div class="flex flex-col">
-                <span class="text-sm text-gray-500 line-through">{{ product.originalPrice }} دينار</span>
-                <span class="text-sm text-red-600 font-semibold">
-                  وفر {{ calculateDiscount(product.originalPrice, product.price) }}%
-                </span>
-              </div>
-              }
-            </div>
-            <div class="mt-4">
-              <button
-                class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-all"
-                (click)="$event.stopPropagation(); addToCart(product)"
-              >
-                أضف إلى السلة
-              </button>
-            </div>
-          </div>
-        </div>
-        }
-      </div>
-      }
-
-      <!-- No products message -->
-      @if (!isLoading && products.length === 0) {
-      <div class="text-center py-12">
-        <i class="fas fa-box-open text-5xl text-gray-400 mb-4"></i>
-        <p class="text-xl text-gray-600">لا توجد منتجات متاحة حالياً</p>
-      </div>
-      }
-
-      <!-- Pagination controls -->
-      @if (totalPages >= 1 && !isLoading) {
-      <div id="pagination" class="flex justify-center mt-12 space-x-2 space-x-reverse">
-        <button
-          (click)="previousPage()"
-          [disabled]="currentPage === 1"
-          id="prev-btn"
-          class="px-4 py-2 bg-blue-600 text-white rounded disabled:bg-gray-300 disabled:cursor-not-allowed"
-        >
-          السابق
-        </button>
-
-        <div class="flex space-x-1 space-x-reverse" id="page-buttons">
-          <div class="flex space-x-1 space-x-reverse">
-            @for (page of getPagesArray(); track $index; let i = $index) {
-            <button
-              (click)="goToPage(i + 1)"
-              [class.bg-blue-600]="currentPage === i + 1"
-              [class.text-white]="currentPage === i + 1"
-              [class.bg-gray-200]="currentPage !== i + 1"
-              class="px-4 py-2 rounded"
-            >
-              {{ i + 1 }}
-            </button>
-            }
-          </div>
-        </div>
-
-        <button
-          (click)="nextPage()"
-          [disabled]="currentPage === totalPages"
-          id="next-btn"
-          class="px-4 py-2 bg-blue-600 text-white rounded disabled:bg-gray-300 disabled:cursor-not-allowed"
-        >
-          التالي
-        </button>
-      </div>
-      }
-
-      <!-- Page info -->
-      @if (totalItems > 0 && !isLoading) {
-      <div class="text-center mt-4 text-gray-600">
-        عرض {{ getStartIndex() }} - {{ getEndIndex() }} من أصل {{ totalItems }} منتج
-      </div>
-      }
-    </div>
-
-    <div class="text-center mt-12">
-      <button
-        (click)="showAllProducts()"
-        class="inline-block border border-blue-600 text-blue-600 px-6 py-3 rounded-md hover:bg-blue-600 hover:text-white transition-all"
-      >
-        عرض جميع المنتجات
-      </button>
-    </div>
-  </div>
-</section>
-
-<!-- Enhanced Footer -->
-<footer class="text-white bg-primary">
-  <!-- Newsletter Section -->
-  <div class="bg-primary-dark py-8">
-    <div class="container mx-auto px-4">
-      <div class="flex flex-col md:flex-row justify-between items-center">
-        <div class="mb-6 md:mb-0 text-center md:text-right">
-          <h3 class="text-xl font-bold heading-font mb-2">اشترك في نشرتنا الإخبارية</h3>
-          <p class="text-gray-300">كن أول من يعرف عن العروض والمنتجات الجديدة</p>
-        </div>
-        <div class="w-full md:w-1/2 lg:w-1/3">
-          <form class="flex flex-col sm:flex-row gap-2">
-            <input
-              type="email"
-              placeholder="بريدك الإلكتروني"
-              class="flex-grow px-4 py-3 rounded-lg newsletter-input text-gray-800"
-            />
-            <button
-              class="bg-accent px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition-all"
-            >
-              اشتراك
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Main Footer Content -->
-  <div class="container mx-auto px-4 py-12">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-      <!-- Brand Column -->
-      <div class="lg:col-span-2">
-        <h3 class="text-2xl font-bold heading-font mb-4" (click)="scrollToTop()">Promomag</h3>
-        <p class="text-gray-300 mb-6">
-          نصمم مساحات جميلة بأثاث يحكي قصتك. نحن نؤمن بأن منزلك هو انعكاس لشخصيتك.
-        </p>
-
-        <div class="flex space-x-4 space-x-reverse mb-6">
-          <a
-            class="social-icon bg-white bg-opacity-10 w-10 h-10 rounded-full flex items-center justify-center"
-          >
-            <i class="fab fa-facebook-f text-accent"></i>
-          </a>
-          <a
-            class="social-icon bg-white bg-opacity-10 w-10 h-10 rounded-full flex items-center justify-center"
-          >
-            <i class="fab fa-instagram text-accent"></i>
-          </a>
-          <a
-            class="social-icon bg-white bg-opacity-10 w-10 h-10 rounded-full flex items-center justify-center"
-          >
-            <i class="fab fa-twitter text-accent"></i>
-          </a>
-          <a
-            class="social-icon bg-white bg-opacity-10 w-10 h-10 rounded-full flex items-center justify-center"
-          >
-            <i class="fab fa-pinterest-p text-accent"></i>
-          </a>
-        </div>
-      </div>
-
-      <!-- Quick Links -->
-      <div>
-        <h4 class="text-lg font-semibold mb-4 border-b border-gray-700 pb-2">روابط سريعة</h4>
-        <ul class="space-y-3">
-          <li>
-            <a
-              (click)="scrollToTop()"
-              class="text-gray-300 hover:text-white transition-all flex items-center"
-            >
-              <i class="fas fa-chevron-left text-xs ml-2 text-accent"></i>
-              الرئيسية
-            </a>
-          </li>
-          <li>
-            <a class="text-gray-300 hover:text-white transition-all flex items-center">
-              <i class="fas fa-chevron-left text-xs ml-2 text-accent"></i>
-              المتجر
-            </a>
-          </li>
-          <li>
-            <a class="text-gray-300 hover:text-white transition-all flex items-center">
-              <i class="fas fa-chevron-left text-xs ml-2 text-accent"></i>
-              من نحن
-            </a>
-          </li>
-          <li>
-            <a class="text-gray-300 hover:text-white transition-all flex items-center">
-              <i class="fas fa-chevron-left text-xs ml-2 text-accent"></i>
-              اتصل بنا
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Customer Service -->
-      <div>
-        <h4 class="text-lg font-semibold mb-4 border-b border-gray-700 pb-2">خدمة العملاء</h4>
-        <ul class="space-y-3">
-          <li>
-            <a class="text-gray-300 hover:text-white transition-all flex items-center">
-              <i class="fas fa-chevron-left text-xs ml-2 text-accent"></i>
-              الأسئلة الشائعة
-            </a>
-          </li>
-          <li>
-            <a class="text-gray-300 hover:text-white transition-all flex items-center">
-              <i class="fas fa-chevron-left text-xs ml-2 text-accent"></i>
-              الإرجاع والاستبدال
-            </a>
-          </li>
-          <li>
-            <a class="text-gray-300 hover:text-white transition-all flex items-center">
-              <i class="fas fa-chevron-left text-xs ml-2 text-accent"></i>
-              سياسة الشحن
-            </a>
-          </li>
-          <li>
-            <a class="text-gray-300 hover:text-white transition-all flex items-center">
-              <i class="fas fa-chevron-left text-xs ml-2 text-accent"></i>
-              سياسة الخصوصية
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Contact Info -->
-      <div>
-        <h4 class="text-lg font-semibold mb-4 border-b border-gray-700 pb-2">تواصل معنا</h4>
-        <address class="text-gray-300 not-italic">
-          <div class="flex items-start mb-3">
-            <i class="fas fa-map-marker-alt text-accent mt-1 ml-3"></i>
-            <p>123 شارع الأثاث، مدينة التصميم، DC 12345</p>
-          </div>
-          <div class="flex items-center mb-3">
-            <i class="fas fa-envelope text-accent ml-3"></i>
-            <a href="mailto:info@lockbor.com" class="hover:text-white">info@lockbor.com</a>
-          </div>
-          <div class="flex items-center mb-3">
-            <i class="fas fa-phone text-accent ml-3"></i>
-            <a href="tel:1234567890" class="hover:text-white">(123) 456-7890</a>
-          </div>
-          <div class="flex items-center">
-            <i class="fas fa-clock text-accent ml-3"></i>
-            <p>أيام العمل: من الأحد إلى الخميس<br />9 صباحاً - 5 مساءً</p>
-          </div>
-        </address>
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer Bottom -->
-  <div class="bg-primary-dark py-6">
-    <div class="container mx-auto px-4">
-      <div class="flex flex-col md:flex-row justify-between items-center">
-        <div class="mb-4 md:mb-0 text-center md:text-right">
-          <p class="text-gray-400">&copy; 2023 . جميع الحقوق محفوظة.</p>
-        </div>
-
-        <div class="flex flex-wrap justify-center gap-4 mb-4 md:mb-0">
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/196/196578.png"
-            alt="Visa"
-            class="payment-method h-8"
-          />
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/196/196561.png"
-            alt="Mastercard"
-            class="payment-method h-8"
-          />
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/196/196558.png"
-            alt="PayPal"
-            class="payment-method h-8"
-          />
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/196/196565.png"
-            alt="Apple Pay"
-            class="payment-method h-8"
-          />
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/196/196554.png"
-            alt="Mada"
-            class="payment-method h-8"
-          />
-        </div>
-
-        <div class="text-center md:text-left">
-          <a class="text-gray-400 hover:text-white text-sm transition-all">شروط الخدمة</a>
-          <span class="text-gray-600 mx-2">|</span>
-          <a class="text-gray-400 hover:text-white text-sm transition-all">سياسة الخصوصية</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Back to Top Button -->
-  <button
-    id="backToTop"
-    class="fixed bottom-6 left-6 bg-accent w-12 h-12 rounded-full flex items-center justify-center shadow-lg opacity-0 transition-opacity"
-  >
-    <i class="fas fa-arrow-up text-white"></i>
-  </button>
-</footer>
+<app-parallax-background></app-parallax-background>
