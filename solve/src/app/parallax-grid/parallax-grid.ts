@@ -18,7 +18,7 @@ import Parallax from 'parallax-js';
   styleUrls: ['./parallax-grid.css'],
   imports: [CommonModule],
 })
-export class ParallaxGridComponent implements OnInit, AfterViewInit {
+export class ParallaxGridComponent implements   AfterViewInit {
   private parallaxInstance!: Parallax;
   @ViewChild('scene') sceneElement!: ElementRef;
 
@@ -159,9 +159,7 @@ export class ParallaxGridComponent implements OnInit, AfterViewInit {
   //   ];
 
   constructor(private el: ElementRef) {}
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
+ 
 
   ngAfterViewInit(): void {
     this.setHeight();

@@ -1,32 +1,35 @@
 import { Component, Renderer2 } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
-import { FooterComponent } from "../footer/footer";
-
+import { FooterComponent } from '../footer/footer';
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet,RouterModule ],
+  imports: [RouterOutlet, RouterModule],
   templateUrl: './layout.html',
-  styleUrl: './layout.css'
+  styleUrl: './layout.css',
 })
 export class Layout {
+  isHeaderHovered = false;
+  isNavVisible = false;
+  isHovering = false;
+  bodyMarginClass = 'body-menu-hover';
+  title = 'Horizontal Slider Demo';
+
+
+  
   constructor(private renderer: Renderer2) {}
+
+
   scrollToTop(): void {
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
   }
-isHeaderHovered = false;
 
-onHeaderHover(hovered: boolean) {
-  this.isHeaderHovered = hovered;
-}
-
-
-    isNavVisible = false;
-  isHovering = false;
-  bodyMarginClass = 'body-menu-hover';
+  onHeaderHover(hovered: boolean) {
+    this.isHeaderHovered = hovered;
+  }
 
   onMenuHover() {
     this.isHovering = true;
@@ -54,7 +57,7 @@ onHeaderHover(hovered: boolean) {
     this.renderer.removeClass(document.body, this.bodyMarginClass);
     this.isNavVisible = false;
   }
-  title = 'Horizontal Slider Demo';
+
   navigateTo(arg0: string) {
     throw new Error('Method not implemented.');
   }
