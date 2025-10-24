@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 import { Layout } from './layout/layout';
-import { Home } from './home/home';
+import { Home } from './watch/home';
 import { Discover } from './discover/discover';
-import { Experience } from './experience/experience';
+ import { Experience } from './experience/experience';
 import { Technology } from './technology/technology';
 
 export const routes: Routes = [
@@ -12,11 +12,11 @@ export const routes: Routes = [
     component: Layout,
     // children: [{ path: '', component: Home, pathMatch: 'full',title: 'Watch', }],
     children:[
-         { path: 'experience', component: Experience,title: 'Experience' },
+        { path: 'experience', component: Experience,title: 'Experience' },
     { path: 'technology', component: Technology,title: 'Technology' },
   { path: 'discover', component: Discover,title: 'Discover' },
   { path: 'watch', component: Home,title: 'Watch' },
-  { path: '', redirectTo: '/watch', pathMatch: 'full' },]
+  { path: '', redirectTo: '/experience', pathMatch: 'full' },]
   },
 
   // { path: '**', redirectTo: '', pathMatch: 'full' },

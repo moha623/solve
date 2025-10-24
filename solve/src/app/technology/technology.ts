@@ -1,19 +1,90 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-
+import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
+import { ScrollAnimationDirective } from '../scroll-animation.directive';
 @Component({
   selector: 'app-technology',
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule,ScrollAnimationDirective],
   templateUrl: './technology.html',
-  styleUrl: './technology.css'
+  styleUrls: ['./technology.css']
 })
 export class Technology {
-  content = [
-  { title: `الأريكة الذكية مع شحن لاسلكي مدمج`, image: 'https://plus.unsplash.com/premium_photo-1664194584375-879a0470f100?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTEzfHwlRDglQTclRDklODQlRDglQTMlRDglQjElRDklOEElRDklODMlRDglQTklMjAlRDglQTclRDklODQlRDglQjAlRDklODMlRDklOEElRDglQTl8ZW58MHx8MHx8fDA%3D' },
-  { title: `طاولة قهوة بإضاءة وتكنولوجيا ذكية`, image: 'https://images.unsplash.com/photo-1679215805569-7a4450dbbdd1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nzh8fCVEOCVBNyVEOSU4NCVEOCVBMyVEOCVCMSVEOSU4QSVEOSU4MyVEOCVBOSUyMCVEOCVBNyVEOSU4NCVEOCVCMCVEOSU4MyVEOSU4QSVEOCVBOXxlbnwwfHwwfHx8MA%3D%3D' },
-  { title: `كرسي قابل للتعديل بتحكم صوتي`, image: 'https://plus.unsplash.com/premium_photo-1661310048986-a5ce0ede1f83?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDl8fCVEOCVBNyVEOSU4NCVEOCVBMyVEOCVCMSVEOSU4QSVEOSU4MyVEOCVBOSUyMCVEOCVBNyVEOSU4NCVEOCVCMCVEOSU4MyVEOSU4QSVEOCVBOXxlbnwwfHwwfHx8MA%3D%3D' },
-  { title: `سرير ذكي لمراقبة جودة النوم`, image: 'https://images.unsplash.com/photo-1670222061552-c273834aee0c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzh8fCVEOCVBNyVEOSU4NCVEOCVBMyVEOCVCMSVEOSU4QSVEOSU4MyVEOCVBOSUyMCVEOCVBNyVEOSU4NCVEOCVCMCVEOSU4MyVEOSU4QSVEOCVBOXxlbnwwfHwwfHx8MA%3D%3D' },
-  { title: `أثاث منزلي مستدام ومبتكر`, image: 'https://images.unsplash.com/photo-1680503397671-caa25818d36f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzl8fCVEOCVBNyVEOSU4NCVEOCVBMyVEOCVCMSVEOSU4QSVEOSU4MyVEOCVBOSUyMCVEOCVBNyVEOSU4NCVEOCVCMCVEOSU4MyVEOSU4QSVEOCVBOXxlbnwwfHwwfHx8MA%3D%3D' }
-];
+  currentSlide = 0;
+  intervalId: any;
 
+  slides = ['slide1.jpg', 'slide2.jpg', 'slide3.jpg']; // example slide images
+
+  @ViewChildren('slideRef') slideElements!: QueryList<ElementRef>;
+  @ViewChildren('dotRef') dotElements!: QueryList<ElementRef>;
+
+  sections = [
+    { 
+      text: 'A partridge in a pear tree', 
+      image: 'https://images.unsplash.com/photo-1597848212624-e6d4bd7e1e42?w=500&auto=format&fit=crop&q=60'
+    },
+    { 
+      text: 'Two turtle doves', 
+      image: 'https://images.unsplash.com/photo-1597848212624-e6d4bd7e1e42?w=500&auto=format&fit=crop&q=60'
+    },
+    { 
+      text: 'Three french hens', 
+      image: 'https://images.unsplash.com/photo-1597848212624-e6d4bd7e1e42?w=500&auto=format&fit=crop&q=60'
+    },
+    { 
+      text: 'Four calling birds', 
+      image: 'https://images.unsplash.com/photo-1597848212624-e6d4bd7e1e42?w=500&auto=format&fit=crop&q=60'
+    },
+    { 
+      text: 'Five golden rings', 
+      image: 'https://images.unsplash.com/photo-1597848212624-e6d4bd7e1e42?w=500&auto=format&fit=crop&q=60'
+    },
+    { 
+      text: 'Six geese-a-laying', 
+      image: 'https://images.unsplash.com/photo-1597848212624-e6d4bd7e1e42?w=500&auto=format&fit=crop&q=60'
+    },
+    { 
+      text: 'Seven swans a-swimming', 
+      image: 'https://images.unsplash.com/photo-1597848212624-e6d4bd7e1e42?w=500&auto=format&fit=crop&q=60'
+    },
+    { 
+      text: 'Eight maids a-milking', 
+      image: 'https://images.unsplash.com/photo-1597848212624-e6d4bd7e1e42?w=500&auto=format&fit=crop&q=60'
+    },
+    { 
+      text: 'Nine ladies dancing', 
+      image: 'https://images.unsplash.com/photo-1597848212624-e6d4bd7e1e42?w=500&auto=format&fit=crop&q=60'
+    },
+    { 
+      text: 'Ten lords a-leaping', 
+      image: 'https://images.unsplash.com/photo-1597848212624-e6d4bd7e1e42?w=500&auto=format&fit=crop&q=60'
+    },
+    { 
+      text: 'Eleven pipers piping', 
+      image: 'https://images.unsplash.com/photo-1597848212624-e6d4bd7e1e42?w=500&auto=format&fit=crop&q=60'
+    },
+    { 
+      text: 'Twelve drummers drumming', 
+      image: 'https://images.unsplash.com/photo-1597848212624-e6d4bd7e1e42?w=500&auto=format&fit=crop&q=60'
+    }
+  ];
+
+  ngOnInit() {
+     
+    window.scrollTo(0, 0);
+    this.intervalId = setInterval(() => this.showSlide(this.currentSlide + 1), 4000);
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.intervalId);
+  }
+
+  showSlide(index: number) {
+    if (index < 0) index = this.slides.length - 1;
+    if (index >= this.slides.length) index = 0;
+    this.currentSlide = index;
+  }
+
+  onDotClick(index: number) {
+    this.showSlide(index);
+  }
 }

@@ -1,147 +1,216 @@
-/* @import "https://unpkg.com/open-props/open-props.min.css";
-@import "https://unpkg.com/open-props/normalize.min.css"; */
-
-
-main {
-  display: grid;
-  grid-template-columns: 1fr minmax(320px, 600px) 1fr;
-  gap: 2rem;
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
-  color: #333;
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-main > section {
-  grid-column: 2 / 3;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  font-size: 1.1rem;
+:root {
+  --golden-glow: #ffad00; /* your single chosen color */
 }
-
-main > section p {
-  max-width: 40em;
-  margin: 0 auto;
-  text-align: justify;
-}
-
-main > section img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-  align-self: center;
-  box-shadow: 0 4px 10px rgb(0 0 0 / 0.1);
-}
-
- 
-
-/* Optional: subtle background and padding to visually separate the sections */
-main > section:nth-of-type(odd) {
-  background: #fafafa;
-  padding: 1.5rem;
-  border-radius: 8px;
-}
-
-main > section:nth-of-type(even) {
-  background: #fff;
-  padding: 1.5rem;
-  border-radius: 8px;
-}
-
-/* /////////////////////////////////////////////////// */
-*,
-*:after,
-*:before {
-	box-sizing: border-box;
-}
-
-body {
-	display: grid;
-	place-items: center;
-	/* min-height: 100vh; */
-	font-family:  'Google Sans', sans-serif, system-ui;
+:host {
+  font-family: 'Exo', Arial, sans-serif;
+  background-color: #557;
+  color: #fff;
   width: 100vw;
-  overflow-x: hidden;
-  color: var(--text-1);
+  min-height: 100vh;
+  display: block;
 }
 
-:where(h1, h2) {
-	margin: 0;
-  font-family: 'Impact', sans-serif;
-  text-transform: uppercase;
+/* discover-root styles wrapping device frame styles */
+.discover-root {
+  width: 100vw;
+  min-height: 100vh;
 }
 
-main, footer, header {
-/* 	width: 40rem; */
-	width: 100%;
-	max-width: 100%;
-	margin: 0 auto;
+.discover-root .device-iphone-x {
+  height: min(85vh - 2rem, 100%);
+  position: fixed;
+  top: 10vh;
+  bottom: 10vh;
+  right: 40px;
+  z-index: 99;
+  min-height: 420px;
+}
+/* Rings */
+.rings {
+  position: relative;
+}
+.ring {
+  box-shadow: -10px -10px 15px rgba(255, 255, 255, 0.3), 10px 10px 15px rgba(70, 70, 70, 0.15),
+    inset -10px -10px 15px rgba(255, 255, 255, 0.3), inset 10px 10px 15px rgba(70, 70, 70, 0.15);
+  border: 13px solid #ececec;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ring1 {
+  height: 28rem;
+  width: 28rem;
+  animation: glow1 2.5s infinite;
+}
+@keyframes glow1 {
+  60% {
+    background-color: #68aae8;
+  }
+  80%,
+  100% {
+    background-color: var(--golden-glow);
+  }
+}
+.ring2 {
+  height: 20rem;
+  width: 20rem;
+  animation: glow2 2.5s infinite;
+}
+@keyframes glow2 {
+  40% {
+    background-color: #68aae8;
+  }
+  60%,
+  100% {
+    background-color: var(--golden-glow);
+  }
+}
+.ring3 {
+  height: 12rem;
+  width: 12rem;
+  animation: glow3 2.5s infinite;
+}
+@keyframes glow3 {
+  20% {
+    background-color: #68aae8;
+  }
+  40%,
+  100% {
+    background-color: var(--golden-glow);
+  }
+}
+.ring4 {
+  height: 5rem;
+  width: 5rem;
+  animation: glow4 2.5s infinite;
+}
+@keyframes glow4 {
+  0% {
+    background-color: #68aae8;
+  }
+  20%,
+  100% {
+    background-color: var(--golden-glow);
+  }
 }
 
-section {
-	width: 40rem;
-	max-width: 100%;
-	margin: 0 auto;
-	display: grid;
-	gap: var(--size-4);
+/* Body and base background */
+body {
+  font-family: var(--font-sans);
+  background-color: #000;
 }
 
-section p {
-	padding: 0 var(--size-6);
+/* Hero Section */
+.hero-section {
+  position: relative;
+  width: 100%;
+  background: url('https://picsum.photos/1280/720?random=3') no-repeat center center/cover;
+  height: 100vh;
+  overflow: hidden;
+}
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%),
+    rgba(30, 60, 90, 0.2);
+  z-index: 1;
 }
 
-main {
-	background: var(--surface-2);
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	gap: var(--size-4);
-	margin-bottom: var(--size-10);
-	max-width: 100vw;
-  padding: var(--size-4) 0;
+/* Hero Content */
+.hero-content {
+  position: absolute;
+  top: 30%;
+  left: 30%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: white;
+  z-index: 5;
+  width: 80%;
+  max-width: 800px;
+  transition: all 0.5s ease;
+}
+.hero-content h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(150px, 4vw, 4.8rem);
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  color: var(--color-title);
+}
+.hero-content.shrunk {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  width: auto;
+  max-width: none;
+  transform: none;
+  text-align: left;
+  font-size: 1.2rem !important;
+  color: white;
+  z-index: 1000;
+}
+.hero-content.shrunk h1 {
+  font-size: 1.2rem !important;
+  margin: 0;
+  letter-spacing: normal;
 }
 
-
-
- 
- 
-
-h1 {
-	font-size: var(--font-size-fluid-3);
+/* Hero Image Overlay */
+.hero-image-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  z-index: 3;
+  pointer-events: none;
+}
+.man-on-mountain {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
 
+/* Collage */
 .photo-block {
   position: sticky;
   top: calc(50% - 30vh);
   height: 75vh;
-	width: 100%;
-	display: grid;
+  width: 100%;
+  display: grid;
   overflow: hidden;
   background: var(--gray-6);
 }
-
 .photo-grid {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(38deg);
   display: grid;
-	grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, 1fr);
 }
-
 .photo {
   aspect-ratio: 3 / 4;
   width: 20vmax;
 }
-
-.collage {
-  height: 200vh;
-  view-timeline: --collage;
-}
-
 .photo img {
   width: 100%;
   height: 100%;
@@ -162,21 +231,18 @@ h1 {
   --vertical: -100%;
   --horizontal: -100%;
 }
-
 .photo:nth-of-type(7n + 2):nth-of-type(even),
 .photo:nth-of-type(7n + 4):nth-of-type(even),
 .photo:nth-of-type(7n + 6):nth-of-type(even) {
   --vertical: 100%;
   --horizontal: -100%;
 }
-
 .photo:nth-of-type(7n + 2):nth-of-type(odd),
 .photo:nth-of-type(7n + 4):nth-of-type(odd),
 .photo:nth-of-type(7n + 6):nth-of-type(odd) {
   --vertical: 100%;
   --horizontal: 100%;
 }
-
 .photo {
   animation-name: travel;
   animation-fill-mode: both;
@@ -184,7 +250,6 @@ h1 {
   animation-timeline: --collage;
   animation-range: entry 100% exit 0%;
 }
-
 @keyframes travel {
   0% {
     translate: 0 0;
@@ -196,10 +261,13 @@ h1 {
     translate: var(--horizontal) var(--vertical);
   }
 }
+.collage {
+  height: 200vh;
+  view-timeline: --collage;
+}
 
-/* Debugging ViewTimeline Indicator */
+/* Progress Indicators */
 .indicators {
-	/* Can't pass the timeline-name via custom property */
   position: fixed;
   width: 16vw;
   left: 8vw;
@@ -210,11 +278,9 @@ h1 {
   transform: translate(0, -50%);
   justify-items: center;
 }
-
 .indicators:hover {
   opacity: 1;
 }
-
 .progress {
   height: 2.5rem;
   width: 100%;
@@ -223,7 +289,6 @@ h1 {
   border-radius: var(--radius-3);
   overflow: hidden;
 }
-
 .progress__bar {
   background: var(--indigo-6);
   width: 100%;
@@ -231,11 +296,9 @@ h1 {
   transform: scaleX(0);
   transform-origin: 0 50%;
 }
-
 .progress:nth-of-type(even) .progress__bar {
   background: var(--orange-6);
 }
-
 .progress__label {
   position: absolute;
   inset: 0;
@@ -246,122 +309,42 @@ h1 {
   font-size: 1.25rem;
   color: var(--gray-0);
 }
-
-.progress--enter .progress__bar {
-  animation: indicate both linear;
-  animation-timeline: --collage;
-  animation-delay: enter 0%;
-  animation-end-delay: enter 100%;
-}
-.progress--exit .progress__bar {
-  animation: indicate both linear;
-  animation-timeline: --collage;
-  animation-delay: exit 0%;
-  animation-end-delay: exit 100%;
-}
-.progress--cover .progress__bar {
-  animation: indicate both linear;
-  animation-timeline: --collage;
-  animation-delay: cover 0%;
-  animation-end-delay: cover 100%;
-}
+.progress--enter .progress__bar,
+.progress--exit .progress__bar,
+.progress--cover .progress__bar,
 .progress--contain .progress__bar {
   animation: indicate both linear;
   animation-timeline: --collage;
-  animation-delay: contain 0%;
-  animation-end-delay: contain 100%;
 }
-
+.progress--enter .progress__bar {
+  animation-delay: enter 0%;
+}
+.progress--exit .progress__bar {
+  animation-delay: exit 0%;
+}
+.progress--cover .progress__bar {
+  animation-delay: cover 0%;
+}
+.progress--contain .progress__bar {
+  animation-delay: contain 0%;
+}
 @keyframes indicate {
   to {
     transform: scaleX(1);
   }
 }
-/* End debugging timelines */
 
-
-      .hero-title {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            text-align: center;
-            background: linear-gradient(45deg, #d4af37, #a2851a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-
-
-
-        :host {
-  display: block;
-  /* background-color: #2b110e; */
-  color: rgba(255, 255, 255, 0.7);
-  font-family: 'Open Sans', sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-.page {
-  header {
-    overflow: hidden;
-    box-shadow: inset 0 -4em 4em -4em #2b110e;
+/* Media Query for Mobile */
+@media (max-width: 768px) {
+  .hero-content {
+    top: 25%;
+    width: 90%;
   }
-
-  main {
-    position: relative;
-    z-index: 1;
-    /* min-height: 100vh; */
-    border-top: 1px solid #3a1612;
-    padding: 2em 1em 4em;
-    max-width: 580px;
-    margin: 0 auto;
+  .hero-content h1 {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
   }
-}
-
-.parallax {
-  position: relative;
-  width: 100vw;
-  height: 50vw;
-  transform-origin: bottom center;
-  will-change: transform;
-
-  transform: translate3d(0, calc(var(--pct) * 35%), 0)
-    scale3d(calc(var(--pct) / 2 + 1), calc(var(--pct) / 2 + 1), 1);
-
-  & > div {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    will-change: transform;
-    transform-origin: bottom center;
-    transform: translate3d(0, 0, 0);
-
-    &.p1 {
-      transform: translate3d(0, calc(var(--pct) * -20%), 0);
-    }
-    &.p2 {
-      transform: translate3d(0, calc(var(--pct) * -17.5%), 0);
-    }
-    &.p3 {
-      transform: translate3d(0, calc(var(--pct) * -15%), 0);
-    }
-    &.p4 {
-      transform: translate3d(0, calc(var(--pct) * -12.5%), 0);
-    }
-    &.p5 {
-      transform: translate3d(0, calc(var(--pct) * -10%), 0);
-    }
-    &.p6 {
-      transform: translate3d(0, calc(var(--pct) * -7.5%), 0);
-    }
-    &.p7 {
-      transform: translate3d(0, calc(var(--pct) * -5%), 0);
-    }
-    &.p8 {
-      transform: translate3d(0, calc(var(--pct) * -2.5%), 0);
-    }
+  .photo-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
