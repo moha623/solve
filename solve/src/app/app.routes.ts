@@ -4,6 +4,9 @@ import { Home } from './watch/home';
 import { Discover } from './discover/discover';
  import { Experience } from './experience/experience';
 import { Technology } from './technology/technology';
+import { register } from 'module';
+import { registerLocaleData } from '@angular/common';
+import { Register } from './register/register';
 
 export const routes: Routes = [
   {
@@ -14,10 +17,11 @@ export const routes: Routes = [
     children:[
         { path: 'experience', component: Experience,title: 'Experience' },
     { path: 'technology', component: Technology,title: 'Technology' },
-  { path: 'discover', component: Discover,title: 'Discover' },
+  // { path: 'discover', component: Discover,title: 'Discover' },
   { path: 'watch', component: Home,title: 'Watch' },
   { path: '', redirectTo: '/experience', pathMatch: 'full' },]
   },
+  {path:'register',component:Register,title:'Register'}
 
   // { path: '**', redirectTo: '', pathMatch: 'full' },
 

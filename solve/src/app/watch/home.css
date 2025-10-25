@@ -643,3 +643,330 @@ a:hover img {
 }
 
 
+/* Scroll Animation Base Styles */
+.scroll-animated-element {
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition-delay: var(--animation-delay, 0ms);
+}
+
+/* Initial Hidden States */
+.animate-hidden-right {
+  transform: translateX(50px);
+}
+
+.animate-hidden-left {
+  transform: translateX(-50px);
+}
+
+.animate-hidden-up {
+  transform: translateY(50px);
+}
+
+.animate-hidden-down {
+  transform: translateY(-50px);
+}
+
+.animate-hidden-scale {
+  transform: scale(0.8);
+}
+
+.animate-hidden-rotate {
+  transform: rotate(-5deg) scale(0.9);
+}
+
+/* Active State - When element comes into view */
+.animate-active {
+  opacity: 1;
+  transform: translateX(0) translateY(0) scale(1) rotate(0);
+}
+
+/* Specific Animation Types */
+.animate-fade-in-right {
+  transform: translateX(50px);
+}
+
+.animate-fade-in-left {
+  transform: translateX(-50px);
+}
+
+.animate-fade-in-up {
+  transform: translateY(50px);
+}
+
+.animate-fade-in-down {
+  transform: translateY(-50px);
+}
+
+.animate-slide-in-left {
+  transform: translateX(-100px);
+}
+
+.animate-slide-in-right {
+  transform: translateX(100px);
+}
+
+.animate-fade-in {
+  transform: scale(0.95);
+}
+
+.animate-zoom-in {
+  transform: scale(0.7);
+}
+
+.animate-rotate-in {
+  transform: rotate(-10deg) scale(0.8);
+}
+
+/* When active, reset transforms */
+.animate-active.animate-fade-in-right,
+.animate-active.animate-fade-in-left,
+.animate-active.animate-fade-in-up,
+.animate-active.animate-fade-in-down,
+.animate-active.animate-slide-in-left,
+.animate-active.animate-slide-in-right,
+.animate-active.animate-fade-in,
+.animate-active.animate-zoom-in,
+.animate-active.animate-rotate-in {
+  transform: translateX(0) translateY(0) scale(1) rotate(0);
+}
+
+/* Special animations for banner shapes */
+.abstract-shapes [class*="shape-"] {
+  transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Furniture illustration animations */
+.large-abstract-circle {
+  transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.central-cabinet {
+  transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Horizontal scroll animations */
+.horizontal-scroll-wrapper .img-wrapper {
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Card animations */
+.card {
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card-image {
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Parallax section animations */
+#scene .col {
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Text animations */
+.text-section h2,
+.text-section p {
+  transition: all 0.8s ease-out;
+}
+
+/* Staggered delays */
+.delay-100 { --animation-delay: 100ms; }
+.delay-200 { --animation-delay: 200ms; }
+.delay-300 { --animation-delay: 300ms; }
+.delay-400 { --animation-delay: 400ms; }
+.delay-500 { --animation-delay: 500ms; }
+.delay-600 { --animation-delay: 600ms; }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .animate-hidden-right,
+  .animate-hidden-left {
+    transform: translateX(30px);
+  }
+  
+  .animate-hidden-up,
+  .animate-hidden-down {
+    transform: translateY(30px);
+  }
+  
+  .scroll-animated-element {
+    transition-duration: 0.6s;
+  }
+}
+
+
+/* Reset and Base Styles */
+ 
+
+/* Collage */
+.photo-block {
+  position: sticky;
+  top: calc(50% - 30vh);
+  height: 75vh;
+  width: 100%;
+  display: grid;
+  overflow: hidden;
+  background: var(--gray-6);
+}
+
+.photo-grid {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(38deg);
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.photo {
+  aspect-ratio: 3 / 4;
+  width: 20vmax;
+}
+
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo:nth-of-type(7n + 1):nth-of-type(even),
+.photo:nth-of-type(7n + 3):nth-of-type(even),
+.photo:nth-of-type(7n + 5):nth-of-type(even),
+.photo:nth-of-type(7n + 7):nth-of-type(even) {
+  --vertical: -100%;
+  --horizontal: 100%;
+}
+
+.photo:nth-of-type(7n + 1):nth-of-type(odd),
+.photo:nth-of-type(7n + 3):nth-of-type(odd),
+.photo:nth-of-type(7n + 5):nth-of-type(odd),
+.photo:nth-of-type(7n + 7):nth-of-type(odd) {
+  --vertical: -100%;
+  --horizontal: -100%;
+}
+
+.photo:nth-of-type(7n + 2):nth-of-type(even),
+.photo:nth-of-type(7n + 4):nth-of-type(even),
+.photo:nth-of-type(7n + 6):nth-of-type(even) {
+  --vertical: 100%;
+  --horizontal: -100%;
+}
+
+.photo:nth-of-type(7n + 2):nth-of-type(odd),
+.photo:nth-of-type(7n + 4):nth-of-type(odd),
+.photo:nth-of-type(7n + 6):nth-of-type(odd) {
+  --vertical: 100%;
+  --horizontal: 100%;
+}
+
+.photo {
+  animation-name: travel;
+  animation-fill-mode: both;
+  animation-timing-function: linear;
+  animation-timeline: --collage;
+  animation-range: entry 100% exit 0%;
+}
+
+@keyframes travel {
+  0% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 var(--vertical);
+  }
+  100% {
+    translate: var(--horizontal) var(--vertical);
+  }
+}
+
+.collage {
+  height: 200vh;
+  view-timeline: --collage;
+}
+
+/* Progress Indicators */
+.indicators {
+  position: fixed;
+  width: 16vw;
+  left: 8vw;
+  display: grid;
+  opacity: 0;
+  top: 50%;
+  gap: 2rem;
+  transform: translate(0, -50%);
+  justify-items: center;
+}
+
+.indicators:hover {
+  opacity: 1;
+}
+
+.progress {
+  height: 2.5rem;
+  width: 100%;
+  background: var(--gray-8);
+  position: relative;
+  border-radius: var(--radius-3);
+  overflow: hidden;
+}
+
+.progress__bar {
+  background: var(--indigo-6);
+  width: 100%;
+  height: 100%;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+.progress:nth-of-type(even) .progress__bar {
+  background: var(--orange-6);
+}
+
+.progress__label {
+  position: absolute;
+  inset: 0;
+  text-align: center;
+  font-weight: bold;
+  display: grid;
+  place-items: center;
+  font-size: 1.25rem;
+  color: var(--gray-0);
+}
+
+.progress--enter .progress__bar,
+.progress--exit .progress__bar,
+.progress--cover .progress__bar,
+.progress--contain .progress__bar {
+  animation: indicate both linear;
+  animation-timeline: --collage;
+}
+
+.progress--enter .progress__bar {
+  animation-delay: enter 0%;
+}
+
+.progress--exit .progress__bar {
+  animation-delay: exit 0%;
+}
+
+.progress--cover .progress__bar {
+  animation-delay: cover 0%;
+}
+
+.progress--contain .progress__bar {
+  animation-delay: contain 0%;
+}
+
+@keyframes indicate {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Media Query for Mobile */
+@media (max-width: 768px) {
+  .photo-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

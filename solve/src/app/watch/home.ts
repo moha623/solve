@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, HostListener, AfterViewInit } from '@angular/core';
 import Parallax from 'parallax-js';
+import { ScrollAnimationDirective } from '../scroll-animation.directive';
 
 interface FurnitureCard {
   id: number;
@@ -11,13 +12,59 @@ interface FurnitureCard {
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule],
+  imports: [CommonModule,ScrollAnimationDirective],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
 export class Home implements AfterViewInit {
   private parallaxInstance!: Parallax;
+// In your component.ts file
+horizontalImages = [
+  {
+    src: 'https://images.unsplash.com/photo-1658946376297-629ade5ac607?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+    alt: 'Modern sofa'
+  },
+  {
+    src: 'https://plus.unsplash.com/premium_photo-1692179781971-2aa2dbd8bbc0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+    alt: 'Elegant armchair'
+  },
+   {
+    src: 'https://images.unsplash.com/photo-1658946376297-629ade5ac607?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+    alt: 'Modern sofa'
+  },
+  {
+    src: 'https://plus.unsplash.com/premium_photo-1692179781971-2aa2dbd8bbc0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+    alt: 'Elegant armchair'
+  },
+    {
+    src: 'https://images.unsplash.com/photo-1658946376297-629ade5ac607?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+    alt: 'Modern sofa'
+  },
+  {
+    src: 'https://plus.unsplash.com/premium_photo-1692179781971-2aa2dbd8bbc0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+    alt: 'Elegant armchair'
+  },
+    {
+    src: 'https://images.unsplash.com/photo-1658946376297-629ade5ac607?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+    alt: 'Modern sofa'
+  },
+  {
+    src: 'https://plus.unsplash.com/premium_photo-1692179781971-2aa2dbd8bbc0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+    alt: 'Elegant armchair'
+  },
+    {
+    src: 'https://images.unsplash.com/photo-1658946376297-629ade5ac607?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+    alt: 'Modern sofa'
+  },
+  {
+    src: 'https://plus.unsplash.com/premium_photo-1692179781971-2aa2dbd8bbc0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+    alt: 'Elegant armchair'
+  },
+];
 
+ 
+
+ 
   images = [
     {
       title: 'Project One',
@@ -78,6 +125,53 @@ export class Home implements AfterViewInit {
       title: 'Project Twelve',
       url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg',
       hasPlus: true,
+    },
+        {
+      title: 'Project Eleven',
+      url: 'https://images.pexels.com/photos/572897/pexels-photo-572897.jpeg',
+      hasPlus: true,
+    },
+    {
+      title: 'Project Twelve',
+      url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg',
+      hasPlus: true,
+    }
+    ,
+    {
+      title: 'Project Six',
+      url: 'https://images.pexels.com/photos/1374295/pexels-photo-1374295.jpeg',
+      hasPlus: true,
+    },
+    {
+      title: 'Project Seven',
+      url: 'https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg',
+      hasPlus: false,
+    },
+    {
+      title: 'Project Eight',
+      url: 'https://images.pexels.com/photos/15286/pexels-photo.jpg',
+      hasPlus: true,
+    },
+
+     {
+      title: 'Project One',
+      url: 'https://images.pexels.com/photos/1229861/pexels-photo-1229861.jpeg',
+      hasPlus: true,
+    },
+    {
+      title: 'Project Two',
+      url: 'https://images.pexels.com/photos/325185/pexels-photo-325185.jpeg',
+      hasPlus: false,
+    },
+    {
+      title: 'Project Three',
+      url: 'https://images.pexels.com/photos/1761279/pexels-photo-1761279.jpeg',
+      hasPlus: true,
+    },
+    {
+      title: 'Project Four',
+      url: 'https://images.pexels.com/photos/3560044/pexels-photo-3560044.jpeg',
+      hasPlus: false,
     },
   ];
 

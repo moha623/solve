@@ -4,18 +4,19 @@
   (mouseleave)="onMenuLeave()"
 >
   <nav
-    class="nav-container bg-red-700"
+    class="nav-container  "
     [class.nav-visible]="isNavVisible"
     [class.nav-hidden]="!isNavVisible"
     (mouseenter)="onNavHover()"
     (mouseleave)="onNavLeave()"
   >
-    <div class="flex justify-between items-start max-md:items-center gap-x-[2px] mx-10">
+    <div class="flex   gap-x-[2px] mx-10">
       <div
         routerLink="/experience"
         class="flex flex-col flex-grow border-t-4 border-t-gray-300 hover:border-t-orange-600 cursor-pointer"
         routerLinkActive="border-t-orange-600"
         [routerLinkActiveOptions]="{ exact: true }"
+        (click)="isMobile ? closeNav() : null"
       >
         <a
           class="font-bold text-gray-900 hover:text-orange-600 text-left"
@@ -32,6 +33,7 @@
         class="flex flex-col flex-grow border-t-4 border-t-gray-300 hover:border-t-orange-600 cursor-pointer"
         routerLinkActive="border-t-orange-600"
         [routerLinkActiveOptions]="{ exact: true }"
+        (click)="isMobile ? closeNav() : null"
       >
         <a
           class="font-bold text-gray-900 hover:text-orange-600 text-left"
@@ -48,6 +50,7 @@
         class="flex flex-col flex-grow border-t-4 border-t-gray-300 hover:border-t-orange-600 cursor-pointer"
         routerLinkActive="border-t-orange-600"
         [routerLinkActiveOptions]="{ exact: true }"
+        (click)="isMobile ? closeNav() : null"
       >
         <a
           class="font-bold text-gray-900 hover:text-orange-600 text-left"
@@ -64,6 +67,7 @@
         class="flex flex-col flex-grow border-t-4 border-t-gray-300 hover:border-t-orange-600 cursor-pointer"
         routerLinkActive="border-t-orange-600"
         [routerLinkActiveOptions]="{ exact: true }"
+        (click)="isMobile ? closeNav() : null"
       >
         <a
           class="font-bold text-gray-900 hover:text-orange-600 text-left"
@@ -77,7 +81,13 @@
     </div>
   </nav>
 
-  <div class="menu-btn-container sticky" id="menu-btn" (click)="toggleNav()">
+  <!-- Menu Button - Always visible but styled differently for mobile -->
+  <div 
+    class="menu-btn-container" 
+    [class.mobile-menu]="isMobile"
+    (click)="toggleNav()"
+  >
+    <!-- Hamburger Icon for both desktop and mobile -->
     <svg
       *ngIf="!isXIcon"
       xmlns="http://www.w3.org/2000/svg"
@@ -93,31 +103,33 @@
     >
       <line x1="0" y1="2" x2="30" y2="2" />
       <line x1="0" y1="10" x2="30" y2="10" />
+ 
     </svg>
 
+    <!-- X Icon for mobile when menu is open -->
     <svg
-      *ngIf="isXIcon"
+      *ngIf="isXIcon && isMobile"
       xmlns="http://www.w3.org/2000/svg"
       width="50"
-      height="40"
-      viewBox="0 0 40 40"
-      class="menu-icon-circle mobile-only"
+      height="50"
+      viewBox="0 0 50 50"
+      class="menu-icon-x"
     >
-      <circle cx="20" cy="20" r="20" fill="#ffffff" />
+      <circle cx="25" cy="25" r="20" fill="#ffffff" />
       <line
-        x1="12"
-        y1="12"
-        x2="28"
-        y2="28"
+        x1="15"
+        y1="15"
+        x2="35"
+        y2="35"
         stroke="#000000"
         stroke-width="3"
         stroke-linecap="round"
       />
       <line
-        x1="28"
-        y1="12"
-        x2="12"
-        y2="28"
+        x1="35"
+        y1="15"
+        x2="15"
+        y2="35"
         stroke="#000000"
         stroke-width="3"
         stroke-linecap="round"

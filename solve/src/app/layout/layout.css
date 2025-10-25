@@ -1,9 +1,10 @@
+/* Desktop Menu Button - STICKY */
 .menu-btn-container {
-  position: absolute;
+  position: fixed; /* Changed from absolute to fixed for sticky behavior */
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 30;
+  z-index: 1000;
   border-top: 35px solid white;
   border-left: 30px solid transparent;
   border-right: 30px solid transparent;
@@ -11,28 +12,17 @@
   width: 190px;
   border-bottom-left-radius: 300px;
   border-bottom-right-radius: 100px;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.menu-btn-container.sticky {
-  position: fixed;
-  top: 0;
-  transform: translateX(-50%);
-  z-index: 1000;
-}
-
+/* Remove the old .sticky class since we're using fixed position */
 .menu-icon {
-  margin-right: 50px;
   margin-top: -25px;
   display: block;
-}
-
-/* Hide X icon on web screens */
-@media (min-width: 769px) {
-  .menu-icon-circle.mobile-only {
-    display: none;
-  }
 }
 
 /* Navigation container */
@@ -45,7 +35,8 @@
   padding-top: 3rem;
   background-color: white;
   transition: all 0.5s ease-in-out;
-  z-index: 20;
+  z-index: 999;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .nav-hidden {
@@ -57,6 +48,7 @@
 .nav-visible {
   opacity: 1;
   transform: translateY(0);
+  pointer-events: auto;
 }
 
 a,
@@ -67,83 +59,143 @@ span {
   line-height: 30px;
 }
 
-/* Responsive for mobile */
-@media (max-width: 768px) {
+/* Desktop Styles (min-width: 769px) */
+@media (min-width: 769px) {
+  /* Menu button is always sticky/fixed on desktop */
   .menu-btn-container {
-    position: fixed;
-    bottom: 50px;
-    left: 50px;
+    position: fixed; /* Ensures it stays at top when scrolling */
+    top: 0;
+  }
+  
+  /* Desktop hover effects work normally */
+  .main-header:hover .nav-container {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile Styles (max-width: 768px) */
+@media (max-width: 768px) {
+  /* Override desktop fixed positioning for mobile */
+  .menu-btn-container {
+    position: fixed !important;
+    bottom: 30px !important;
+    right: 30px !important;
+    left: auto !important;
     top: auto !important;
     transform: none !important;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    height: auto;
-    width: auto;
-    border-radius: 0;
-    background: transparent;
-    cursor: pointer;
-    z-index: 1001;
+    
+    /* Remove desktop triangle styling */
+    border: none !important;
+    border-radius: 50% !important;
+    width: 60px !important;
+    height: 60px !important;
+    background: white !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    
+    /* Center the icon */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
+  .menu-btn-container .menu-icon {
+    margin-top: 0 !important;
+    margin-right: 0 !important;
+    width: 30px;
+    height: 30px;
+  }
+
+  .menu-icon-x {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* Mobile Navigation */
   .nav-container {
-    position: fixed;
-    bottom: 0;
+    position: fixed !important;
+    bottom: 0 !important;
     top: auto !important;
-    left: 0;
-    width: 100%;
-    height: 60vh;
-    padding: 1rem 0;
-    background-color: rgb(194, 26, 26);
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
-    z-index: 1000;
+    left: 0 !important;
+    width: 100% !important;
+    height: 70vh !important;
+    max-height: 500px;
+    padding: 2rem 0 !important;
+    background-color: white !important;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    z-index: 998;
     overflow-y: auto;
     display: flex;
+    align-items: center;
     justify-content: center;
   }
 
   .nav-hidden {
-    opacity: 0;
-    transform: translateY(100%);
-    pointer-events: none;
+    opacity: 1 !important;
+    transform: translateY(100%) !important;
+    pointer-events: none !important;
   }
 
   .nav-visible {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
   }
 
   .nav-container > div {
-    flex-direction: column;
-    gap: 1rem;
-    max-width: 350px;
-    width: 100%;
-    padding: 0 1rem;
-    display: flex;
-    justify-content: center;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+    max-width: 300px !important;
+    width: 100% !important;
+    padding: 0 1.5rem !important;
   }
 
   .nav-container > div > div {
     border-top: none !important;
-    border-left: 4px solid transparent;
-    text-align: center;
-    cursor: pointer;
+    border-left: 4px solid #d1d5db !important;
+    padding: 1rem !important;
+    text-align: center !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
   }
 
   .nav-container > div > div:hover,
   .nav-container > div > div.router-link-active {
-    border-left-color: #fb923c;
+    border-left-color: #fb923c !important;
+    background-color: #f3f4f6;
   }
 
   .nav-container a,
   .nav-container span {
     text-align: center !important;
+    display: block !important;
+    font-size: 18px !important;
+  }
+
+  .nav-container a {
+    font-size: 20px !important;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Disable hover effects on mobile */
+  .main-header {
+    pointer-events: none;
   }
   
-  /* Show X icon only on mobile */
-  .menu-icon-circle.mobile-only {
-    display: block;
+  .main-header .nav-container,
+  .main-header .menu-btn-container {
+    pointer-events: auto;
+  }
+}
+
+/* Ensure body class is only applied on desktop */
+.body-menu-hover {
+  margin-top: 130px;
+}
+
+@media (max-width: 768px) {
+  .body-menu-hover {
+    margin-top: 0 !important;
   }
 }
