@@ -23,23 +23,24 @@ export class FooterComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     if (!isPlatformBrowser(this.platformId)) return;
 
-    // Initialize letters array
     this.letters = this.phrase.split('').map((char) => {
       return { char, active: false, visible: false };
     });
   }
 
-  // Check footer visibility right after component view initialized
   ngAfterViewInit() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
     this.checkFooterVisibility();
   }
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
     this.checkFooterVisibility();
   }
 
-  // Extracted visibility check to reuse on scroll and after init
   private checkFooterVisibility() {
     if (!isPlatformBrowser(this.platformId) || this.hasAnimated) return;
 
@@ -61,7 +62,6 @@ export class FooterComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isAnimating = true;
     this.currentIndex = 0;
 
-    // Reset all letters
     this.letters.forEach((letter) => {
       letter.active = false;
       letter.visible = false;

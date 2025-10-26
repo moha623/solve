@@ -1,8 +1,14 @@
-import { CommonModule } from '@angular/common';
-import { Component, ElementRef, HostListener, AfterViewInit } from '@angular/core';
 import Parallax from 'parallax-js';
 import { ScrollAnimationDirective } from '../scroll-animation.directive';
-
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  AfterViewInit,
+  Inject,
+  PLATFORM_ID,
+} from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 interface FurnitureCard {
   id: number;
   title: string;
@@ -12,59 +18,82 @@ interface FurnitureCard {
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule,ScrollAnimationDirective],
+  imports: [CommonModule, ScrollAnimationDirective],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
 export class Home implements AfterViewInit {
   private parallaxInstance!: Parallax;
-// In your component.ts file
-horizontalImages = [
-  {
-    src: 'https://images.unsplash.com/photo-1658946376297-629ade5ac607?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
-    alt: 'Modern sofa'
-  },
-  {
-    src: 'https://plus.unsplash.com/premium_photo-1692179781971-2aa2dbd8bbc0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
-    alt: 'Elegant armchair'
-  },
-   {
-    src: 'https://images.unsplash.com/photo-1658946376297-629ade5ac607?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
-    alt: 'Modern sofa'
-  },
-  {
-    src: 'https://plus.unsplash.com/premium_photo-1692179781971-2aa2dbd8bbc0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
-    alt: 'Elegant armchair'
-  },
-    {
-    src: 'https://images.unsplash.com/photo-1658946376297-629ade5ac607?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
-    alt: 'Modern sofa'
-  },
-  {
-    src: 'https://plus.unsplash.com/premium_photo-1692179781971-2aa2dbd8bbc0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
-    alt: 'Elegant armchair'
-  },
-    {
-    src: 'https://images.unsplash.com/photo-1658946376297-629ade5ac607?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
-    alt: 'Modern sofa'
-  },
-  {
-    src: 'https://plus.unsplash.com/premium_photo-1692179781971-2aa2dbd8bbc0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
-    alt: 'Elegant armchair'
-  },
-    {
-    src: 'https://images.unsplash.com/photo-1658946376297-629ade5ac607?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
-    alt: 'Modern sofa'
-  },
-  {
-    src: 'https://plus.unsplash.com/premium_photo-1692179781971-2aa2dbd8bbc0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
-    alt: 'Elegant armchair'
-  },
-];
+  private isBrowser: boolean;
 
- 
+  constructor(private el: ElementRef, @Inject(PLATFORM_ID) private platformId: any) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
- 
+  ngOnInit(): void {
+    if (this.isBrowser) {
+      window.scrollTo(0, 0);
+    }
+  }
+
+  ngAfterViewInit(): void {
+    if (!this.isBrowser) return;
+
+    this.setHeight();
+    const scene = this.el.nativeElement.querySelector('#scene');
+    this.parallaxInstance = new Parallax(scene);
+    this.initParallax();
+  }
+
+  @HostListener('window:resize')
+  onResize(): void {
+    if (!this.isBrowser) return;
+    this.setHeight();
+  }
+
+  horizontalImages = [
+    {
+      src: 'https://images.unsplash.com/photo-1658946376297-629ade5ac607?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+      alt: 'Modern sofa',
+    },
+    {
+      src: 'https://plus.unsplash.com/premium_photo-1692179781971-2aa2dbd8bbc0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+      alt: 'Elegant armchair',
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1658946376297-629ade5ac607?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+      alt: 'Modern sofa',
+    },
+    {
+      src: 'https://plus.unsplash.com/premium_photo-1692179781971-2aa2dbd8bbc0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+      alt: 'Elegant armchair',
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1658946376297-629ade5ac607?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+      alt: 'Modern sofa',
+    },
+    {
+      src: 'https://plus.unsplash.com/premium_photo-1692179781971-2aa2dbd8bbc0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+      alt: 'Elegant armchair',
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1658946376297-629ade5ac607?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+      alt: 'Modern sofa',
+    },
+    {
+      src: 'https://plus.unsplash.com/premium_photo-1692179781971-2aa2dbd8bbc0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+      alt: 'Elegant armchair',
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1658946376297-629ade5ac607?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+      alt: 'Modern sofa',
+    },
+    {
+      src: 'https://plus.unsplash.com/premium_photo-1692179781971-2aa2dbd8bbc0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8c29mYSUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+      alt: 'Elegant armchair',
+    },
+  ];
+
   images = [
     {
       title: 'Project One',
@@ -126,7 +155,7 @@ horizontalImages = [
       url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg',
       hasPlus: true,
     },
-        {
+    {
       title: 'Project Eleven',
       url: 'https://images.pexels.com/photos/572897/pexels-photo-572897.jpeg',
       hasPlus: true,
@@ -135,8 +164,7 @@ horizontalImages = [
       title: 'Project Twelve',
       url: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg',
       hasPlus: true,
-    }
-    ,
+    },
     {
       title: 'Project Six',
       url: 'https://images.pexels.com/photos/1374295/pexels-photo-1374295.jpeg',
@@ -153,7 +181,7 @@ horizontalImages = [
       hasPlus: true,
     },
 
-     {
+    {
       title: 'Project One',
       url: 'https://images.pexels.com/photos/1229861/pexels-photo-1229861.jpeg',
       hasPlus: true,
@@ -220,23 +248,8 @@ horizontalImages = [
     },
   ];
 
-  constructor(private el: ElementRef) {}
-  ngOnInit(): void {
-    window.scrollTo(0, 0);
-  }
-  ngAfterViewInit(): void {
-    this.setHeight();
-    const scene = this.el.nativeElement.querySelector('#scene');
-    this.parallaxInstance = new Parallax(scene);
-    this.initParallax();
-  }
-
-  @HostListener('window:resize')
-  onResize(): void {
-    this.setHeight();
-  }
-
   private setHeight(): void {
+    if (!this.isBrowser) return;
     const vh = window.innerHeight;
     const projects = vh / 2;
 
@@ -259,6 +272,7 @@ horizontalImages = [
   }
 
   private initParallax() {
+    if (!this.isBrowser) return;
     let passiveSupported = false;
     try {
       window.addEventListener(
