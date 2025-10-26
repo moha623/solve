@@ -1,13 +1,13 @@
-import { Component, Renderer2, HostListener } from '@angular/core';
+import { Component, Renderer2, HostListener, Inject, PLATFORM_ID } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { FooterComponent } from "../footer/footer";
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-layout',
   imports: [RouterOutlet, RouterModule, FooterComponent, CommonModule],
   templateUrl: './layout.html',
-  styleUrl: './layout.css',
+  styleUrls: ['./layout.css'],
 })
 export class Layout {
   isHeaderHovered = false;
@@ -18,35 +18,38 @@ export class Layout {
   isXIcon = false;
   isMobile = false;
 
-  constructor(private renderer: Renderer2) {}
+  constructor(private renderer: Renderer2, @Inject(PLATFORM_ID) private platformId: Object) {}
 
   ngOnInit(): void {
-    window.scrollTo(0, 0);
-    this.checkScreenSize();
+    if (isPlatformBrowser(this.platformId)) {
+      window.scrollTo(0, 0);
+      this.checkScreenSize();
+    }
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    this.checkScreenSize();
+    if (isPlatformBrowser(this.platformId)) {
+      this.checkScreenSize();
+    }
   }
 
   checkScreenSize() {
-    this.isMobile = window.innerWidth <= 768;
-    console.log('Is mobile:', this.isMobile); // Debug log
-    // Auto-close nav when switching from mobile to desktop
-    if (!this.isMobile) {
-      this.isNavVisible = false;
-      this.isXIcon = false;
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobile = window.innerWidth <= 768;
+      console.log('Is mobile:', this.isMobile);
+      if (!this.isMobile) {
+        this.isNavVisible = false;
+        this.isXIcon = false;
+      }
     }
   }
 
   toggleNav() {
-    console.log('Toggle nav clicked, isMobile:', this.isMobile); // Debug log
-    // Only allow toggle on mobile
     if (this.isMobile) {
       this.isXIcon = !this.isXIcon;
       this.isNavVisible = !this.isNavVisible;
-      console.log('Nav visible:', this.isNavVisible); // Debug log
+      console.log('Nav visible:', this.isNavVisible);
     }
   }
 
@@ -56,10 +59,12 @@ export class Layout {
   }
 
   scrollToTop(): void {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }
   }
 
   onHeaderHover(hovered: boolean) {
@@ -67,7 +72,6 @@ export class Layout {
   }
 
   onMenuHover() {
-    // Only trigger hover effects on desktop
     if (!this.isMobile) {
       this.isHovering = true;
       this.isNavVisible = true;
@@ -76,11 +80,9 @@ export class Layout {
   }
 
   onMenuLeave() {
-    // Only trigger hover effects on desktop
     if (!this.isMobile) {
       this.isHovering = false;
       this.renderer.removeClass(document.body, this.bodyMarginClass);
-      // Add a small delay before hiding to prevent flickering
       setTimeout(() => {
         if (!this.isHovering) {
           this.isNavVisible = false;
@@ -90,7 +92,6 @@ export class Layout {
   }
 
   onNavHover() {
-    // Only trigger hover effects on desktop
     if (!this.isMobile) {
       this.isHovering = true;
       this.renderer.addClass(document.body, this.bodyMarginClass);
@@ -98,7 +99,6 @@ export class Layout {
   }
 
   onNavLeave() {
-    // Only trigger hover effects on desktop
     if (!this.isMobile) {
       this.isHovering = false;
       this.renderer.removeClass(document.body, this.bodyMarginClass);
