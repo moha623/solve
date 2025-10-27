@@ -35,7 +35,7 @@
     "@angular/ssr": "^19.2.15",
     "@fontsource/instrument-serif": "^5.2.8",
     "@ngneat/overview": "6.1.1",
-    "@ngxpert/hot-toast": "^5.1.1",
+    "@ngxpert/hot-toast": "^4.2.0",
     "@supabase/supabase-js": "^2.56.1",
     "express": "^5.1.0",
     "gsap": "^3.13.0",
